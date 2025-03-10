@@ -4,4 +4,7 @@
     <string name="log_in">Войти</string>
     <string name="login">Вход</string>
     <string name="there_is_no_account">Нет аккаунта?</string>
+
+    <string name="registration">Регистрация</string>
+    <string name="there_is_account">Есть аккаунт?</string>
 </resources>
