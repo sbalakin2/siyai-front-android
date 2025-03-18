@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,11 +15,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -35,6 +31,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.siyai_front_android.R
+import com.example.siyai_front_android.ui.components.buttons.PrimaryButton
+import com.example.siyai_front_android.ui.components.buttons.SecondaryButton
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -100,13 +98,15 @@ fun OnboardingScreen(
                             contentDescription = null,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(start = 24.dp, end = 24.dp, top = 8.dp),
+                                .padding(start = 24.dp, end = 24.dp, top = 8.dp)
+                                .clip(RoundedCornerShape(32.dp)),
                             contentScale = ContentScale.FillWidth
                         )
 
                         Text(
                             text = onboardingImages[page].second,
                             modifier = Modifier.padding(top = 24.dp),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = MaterialTheme.typography.headlineLarge
                         )
 
@@ -134,9 +134,9 @@ fun OnboardingScreen(
                     repeat(pagerState.pageCount) { iteration ->
 
                         val color = if (pagerState.currentPage == iteration) {
-                            MaterialTheme.colorScheme.secondary
+                            MaterialTheme.colorScheme.primary
                         } else {
-                            MaterialTheme.colorScheme.onSecondary
+                            MaterialTheme.colorScheme.onPrimary
                         }
 
                         Box(
@@ -152,56 +152,35 @@ fun OnboardingScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 32.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     if (pagerState.currentPage == 0 || pagerState.currentPage == 1) {
-                        Button(
+                        PrimaryButton(
                             onClick = {
                                 coroutineScope.launch {
                                     pagerState.scrollToPage(pagerState.currentPage + 1)
                                 }
                             },
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(32.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.secondary
-                            ),
-                            contentPadding = PaddingValues(16.dp)
-                        ) {
-                            Text(
-                                text = stringResource(R.string.next),
-                            )
-                        }
+                            text = stringResource(R.string.next)
+                        )
                     } else {
-                        FilledTonalButton(
+                        SecondaryButton(
                             onClick = onLoginClick,
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(end = 4.dp),
-                            shape = RoundedCornerShape(32.dp),
-                            contentPadding = PaddingValues(16.dp)
-                        ) {
-                            Text(
-                                text = stringResource(R.string.login)
-                            )
-                        }
+                            text = stringResource(R.string.log_in)
+                        )
 
-                        Button(
+                        PrimaryButton(
                             onClick = onRegClick,
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(start = 4.dp),
-                            shape = RoundedCornerShape(32.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.secondary
-                            ),
-                            contentPadding = PaddingValues(16.dp)
-                        ) {
-                            Text(
-                                text = stringResource(R.string.registration)
-                            )
-                        }
+                            text = stringResource(R.string.registration)
+                        )
                     }
                 }
             }
