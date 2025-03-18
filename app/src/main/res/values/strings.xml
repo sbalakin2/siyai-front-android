@@ -6,5 +6,16 @@
     <string name="there_is_no_account">Нет аккаунта?</string>
 
     <string name="registration">Регистрация</string>
+    <string name="registration_subtitle">Создай новый аккаунт, чтобы присоединиться к нам</string>
     <string name="there_is_account">Есть аккаунт?</string>
+    <string name="hide_password">Скрыть пароль</string>
+    <string name="show_password">Показать пароль</string>
+    <string name="email">Email</string>
+    <string name="password">Пароль</string>
+    <string name="repeat_password">Повторите пароль</string>
+    <string name="clear">Очистить</string>
+    <string name="register">Зарегестрироваться</string>
+    <string name="invalid_email">Некорректный формат email</string>
+    <string name="invalid_password">Пароль должен содержать минимум 8 символов, включать цифры, заглавные и строчные буквы</string>
+    <string name="invalid_repeat_password">Пароли не совпадают</string>
 </resources>
