@@ -21,7 +21,7 @@
     <string name="password">Пароль</string>
     <string name="repeat_password">Повторите пароль</string>
     <string name="clear">Очистить</string>
-    <string name="register">Зарегестрироваться</string>
+    <string name="register">Зарегистрироваться</string>
     <string name="invalid_email">Некорректный формат email</string>
     <string name="invalid_password">Пароль должен содержать минимум 8 символов, включать цифры, заглавные и строчные буквы</string>
     <string name="invalid_repeat_password">Пароли не совпадают</string>
