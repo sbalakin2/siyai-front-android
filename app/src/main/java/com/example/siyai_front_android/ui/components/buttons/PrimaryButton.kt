@@ -1,5 +1,6 @@
 package com.example.siyai_front_android.ui.components.buttons
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,17 +23,16 @@ fun PrimaryButton(
     Button(
         modifier = modifier,
         onClick = onClick,
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(32.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
             disabledContainerColor = MaterialTheme.colorScheme.primary
-        )
+        ),
+        contentPadding = PaddingValues(vertical = 16.dp)
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.bodyLarge.copy(
-                color = MaterialTheme.colorScheme.onPrimary
-            )
+            style = MaterialTheme.typography.bodyLarge
         )
     }
 }

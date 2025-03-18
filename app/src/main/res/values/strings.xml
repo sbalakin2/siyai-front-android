@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">SIYAI</string>
 
+    <string name="welcome">Добро пожаловать!</string>
+    <string name="get_trained_and_reach_new_heights_with_us">Проходи обучение и достигай\nновых высот вместе с нами</string>
+    <string name="shine">Сияй</string>
+    <string name="with_our_course_you_will_return_to_your_real_self_in_five_weeks">С нашим курсом ты вернешься к\nсебе НАСТОЯЩЕЙ за 5 недель</string>
+    <string name="create_account_faster_and_take_training_wherever_it_suits_you">Быстрее создавай аккаунт и проходи\nобучение там, где тебе удобно</string>
+    <string name="next">Далее</string>
+
     <string name="log_in">Войти</string>
     <string name="login">Вход</string>
     <string name="there_is_no_account">Нет аккаунта?</string>
@@ -14,7 +21,7 @@
     <string name="password">Пароль</string>
     <string name="repeat_password">Повторите пароль</string>
     <string name="clear">Очистить</string>
-    <string name="register">Зарегестрироваться</string>
+    <string name="register">Зарегистрироваться</string>
     <string name="invalid_email">Некорректный формат email</string>
     <string name="invalid_password">Пароль должен содержать минимум 8 символов, включать цифры, заглавные и строчные буквы</string>
     <string name="invalid_repeat_password">Пароли не совпадают</string>

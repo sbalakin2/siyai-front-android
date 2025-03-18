@@ -1,10 +1,10 @@
 package com.example.siyai_front_android.ui.components.buttons
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,20 +19,15 @@ fun SecondaryButton(
     onClick: () -> Unit,
     text: String
 ){
-    Button(
+    FilledTonalButton(
         modifier = modifier,
         onClick = onClick,
-        shape = RoundedCornerShape(18.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.secondary,
-            disabledContainerColor = MaterialTheme.colorScheme.secondary
-        )
+        shape = RoundedCornerShape(32.dp),
+        contentPadding = PaddingValues(16.dp)
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.bodyLarge.copy(
-                color = MaterialTheme.colorScheme.onSecondary
-            )
+            style = MaterialTheme.typography.bodyLarge
         )
     }
 }

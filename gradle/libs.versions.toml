@@ -1,6 +1,8 @@
 [versions]
+activity = "1.10.1"
 agp = "8.4.0"
 androidxNavigation = "2.8.8"
+coil = "3.1.0"
 dagger = "2.55"
 kotlin = "2.1.10"
 coreKtx = "1.15.0"
@@ -14,7 +16,10 @@ kotlinxSerializationJson = "1.8.0"
 ksp = "2.1.10-1.0.29"
 
 [libraries]
+androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activity" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

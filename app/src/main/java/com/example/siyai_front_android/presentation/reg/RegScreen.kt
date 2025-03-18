@@ -20,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -94,16 +93,13 @@ fun RegScreen(
         ) {
             Text(
                 text = stringResource(R.string.registration),
-                style = MaterialTheme.typography.displayLarge.copy(
-                    color = MaterialTheme.colorScheme.onBackground
-                )
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.headlineLarge
             )
             Text(
                 text = stringResource(R.string.registration_subtitle),
                 modifier = Modifier.padding(top = 4.dp),
-                style = MaterialTheme.typography.headlineMedium.copy(
-                    color = MaterialTheme.colorScheme.onSurface
-                ),
+                style = MaterialTheme.typography.titleLarge,
                 maxLines = 3,
                 minLines = 3
             )
