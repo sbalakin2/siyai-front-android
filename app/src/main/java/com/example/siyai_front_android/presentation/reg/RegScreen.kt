@@ -159,6 +159,11 @@ fun RegScreen(
                             } else {
                                 Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                             }
+                        } else {
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.empty_fields),
+                                Toast.LENGTH_SHORT).show()
                         }
                     }
                 )
