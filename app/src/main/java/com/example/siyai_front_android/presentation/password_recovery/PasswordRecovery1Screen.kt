@@ -1,8 +1,7 @@
-package com.example.siyai_front_android.presentation.reg
+package com.example.siyai_front_android.presentation.password_recovery
 
 import android.content.Context
 import android.widget.Toast
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,24 +32,26 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.siyai_front_android.R
-import com.example.siyai_front_android.ui.components.buttons.PrimaryButton
+import com.example.siyai_front_android.ui.components.buttons.SecondaryLoadingButton
 import com.example.siyai_front_android.ui.components.text_fields.ClearedTextField
-import com.example.siyai_front_android.ui.components.text_fields.PasswordTextField
 import com.example.siyai_front_android.ui.icons.SiyAiIcons
 import com.example.siyai_front_android.ui.theme.SiyaifrontandroidTheme
 import com.example.siyai_front_android.utils.isValidEmail
-import com.example.siyai_front_android.utils.isValidPassword
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegScreen(
+fun PasswordRecovery1Screen(
     onBackClick: () -> Unit,
-    onLoginClick: () -> Unit
+    onRecoveryClick: () -> Unit
 ) {
 
     var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var repeatPassword by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -66,19 +68,6 @@ fun RegScreen(
                         )
                     }
                 },
-                actions = {
-                    Text(
-                        text = stringResource(R.string.there_is_account),
-                        modifier = Modifier
-                            .padding(end = 16.dp)
-                            .clickable(
-                                onClick = onLoginClick
-                            ),
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                    )
-                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background
                 )
@@ -92,12 +81,12 @@ fun RegScreen(
                 .padding(horizontal = 16.dp)
         ) {
             Text(
-                text = stringResource(R.string.registration),
+                text = stringResource(R.string.forgot_password),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.headlineLarge
             )
             Text(
-                text = stringResource(R.string.registration_subtitle),
+                text = stringResource(R.string.recovery_password1_subtitle),
                 modifier = Modifier.padding(top = 4.dp),
                 style = MaterialTheme.typography.titleLarge,
                 maxLines = 3,
@@ -115,79 +104,63 @@ fun RegScreen(
                 label = stringResource(R.string.email),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
             )
-            PasswordTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 6.dp),
-                password = password,
-                onPasswordChange = { value ->
-                    password = value
-                },
-                label = stringResource(R.string.password)
-            )
-            PasswordTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 6.dp),
-                password = repeatPassword,
-                onPasswordChange = { value ->
-                    repeatPassword = value
-                },
-                label = stringResource(R.string.repeat_password)
-            )
             Box(
                 modifier = Modifier.weight(1f),
                 contentAlignment = Alignment.BottomCenter
             ) {
-                val context = LocalContext.current
 
-                PrimaryButton(
+                SecondaryLoadingButton(
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.BottomCenter)
                         .padding(bottom = 32.dp),
-                    text = stringResource(R.string.register),
+                    text = stringResource(R.string.recovery),
                     onClick = {
-                        if (email.isNotEmpty() &&
-                            password.isNotEmpty() &&
-                            repeatPassword.isNotEmpty()
-                        ) {
+                        if (email.isNotEmpty()) {
                             val errorMessage =
-                                validateRegistrationData(email, password, repeatPassword, context)
+                                validateRecoveryData(email, context)
                             if (errorMessage == null) {
-                                // TODO: Реализация регистрации
+                                scope.launch {
+                                    isLoading = true
+                                    delay(300)
+                                    // имитация работы с сетью
+                                    // здесь должен быть запрос на сброс пароля
+                                    isLoading = false
+                                    Toast.makeText(
+                                        context,
+                                        context.getString(R.string.sent_letter),
+                                        Toast.LENGTH_SHORT).show()
+                                    onRecoveryClick.invoke()
+                                }
                             } else {
                                 Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                             }
                         }
-                    }
+                    },
+                    isLoading = isLoading
                 )
             }
         }
     }
 }
 
-private fun validateRegistrationData(
+private fun validateRecoveryData(
     email: String,
-    password: String,
-    repeatPassword: String,
     context: Context
 ): String? {
     return when {
         !email.isValidEmail() -> context.getString(R.string.invalid_email)
-        !password.isValidPassword() -> context.getString(R.string.invalid_password)
-        password != repeatPassword -> context.getString(R.string.invalid_repeat_password)
         else -> null
     }
 }
 
 @Composable
 @Preview(showSystemUi = true)
-private fun RegScreen_Preview() {
+private fun PasswordRecoveryScreen_Preview() {
     SiyaifrontandroidTheme {
-        RegScreen(
+        PasswordRecovery1Screen(
             onBackClick = { },
-            onLoginClick = { }
+            onRecoveryClick = { }
         )
     }
 }
