@@ -12,4 +12,13 @@ sealed interface Route {
 
     @Serializable
     data object Reg: Route
+
+    @Serializable
+    data object RecoveryPassword
+
+    @Serializable
+    data object RecoveryPassword1: Route
+
+    @Serializable
+    data object RecoveryPassword2: Route
 }

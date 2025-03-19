@@ -5,4 +5,5 @@ object SiyAiIcons {
     val EyeHide = EyeHideIcon
     val EyeShow = EyeShowIcon
     val Close = CloseIcon
+    val CheckMark = CheckMarkIcon
 }
