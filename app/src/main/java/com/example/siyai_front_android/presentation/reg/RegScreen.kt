@@ -1,6 +1,5 @@
 package com.example.siyai_front_android.presentation.reg
 
-import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -37,8 +36,7 @@ import com.example.siyai_front_android.ui.components.text_fields.ClearedTextFiel
 import com.example.siyai_front_android.ui.components.text_fields.PasswordTextField
 import com.example.siyai_front_android.ui.icons.SiyAiIcons
 import com.example.siyai_front_android.ui.theme.SiyaifrontandroidTheme
-import com.example.siyai_front_android.utils.isValidEmail
-import com.example.siyai_front_android.utils.isValidPassword
+import com.example.siyai_front_android.utils.validateUserData
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -153,7 +151,7 @@ fun RegScreen(
                             repeatPassword.isNotEmpty()
                         ) {
                             val errorMessage =
-                                validateRegistrationData(email, password, repeatPassword, context)
+                                validateUserData(email, password, repeatPassword, context)
                             if (errorMessage == null) {
                                 // TODO: Реализация регистрации
                             } else {
@@ -169,20 +167,6 @@ fun RegScreen(
                 )
             }
         }
-    }
-}
-
-private fun validateRegistrationData(
-    email: String,
-    password: String,
-    repeatPassword: String,
-    context: Context
-): String? {
-    return when {
-        !email.isValidEmail() -> context.getString(R.string.invalid_email)
-        !password.isValidPassword() -> context.getString(R.string.invalid_password)
-        password != repeatPassword -> context.getString(R.string.invalid_repeat_password)
-        else -> null
     }
 }
 
