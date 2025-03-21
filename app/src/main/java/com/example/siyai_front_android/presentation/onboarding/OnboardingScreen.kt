@@ -90,7 +90,7 @@ fun OnboardingScreen(
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 120.dp),
+                            .padding(bottom = 134.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         AsyncImage(
