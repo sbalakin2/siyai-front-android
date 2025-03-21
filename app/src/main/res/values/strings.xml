@@ -11,6 +11,7 @@
     <string name="log_in">Войти</string>
     <string name="login">Вход</string>
     <string name="there_is_no_account">Нет аккаунта?</string>
+    <string name="log_in_to_existing_account">Войдите в уже существующий\nаккаунт, если вы создавали его\nранее</string>
 
     <string name="registration">Регистрация</string>
     <string name="registration_subtitle">Создай новый аккаунт, чтобы присоединиться к нам</string>
@@ -32,4 +33,5 @@
     <string name="recovery_password2_subtitle">Проверьте свой email и перейдите по ссылке в письме</string>
     <string name="sent_letter">Письмо со сбросом пароля отправлено!</string>
     <string name="empty_fields">Заполните все поля</string>
+    <string name="email_empty">Заполните поле email</string>
 </resources>
