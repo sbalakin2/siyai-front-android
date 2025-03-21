@@ -39,6 +39,9 @@ fun MainNavHost(
                 },
                 onRegClick = {
                     navController.navigate(Route.Reg)
+                },
+                onPasswordRecoveryClick = {
+                    navController.navigate(Route.RecoveryPassword)
                 }
             )
         }
@@ -56,9 +59,7 @@ fun MainNavHost(
             composable<Route.RecoveryPassword1> {
                 PasswordRecovery1Screen(
                     onBackClick = {
-                        navController.navigate(Route.Onboarding) {
-                            popUpTo(route = Route.RecoveryPassword) { inclusive = true }
-                        }
+                        navController.popBackStack()
                     },
                     onRecoveryClick = {
                         navController.navigate(Route.RecoveryPassword2)
