@@ -34,4 +34,9 @@
     <string name="sent_letter">Письмо со сбросом пароля отправлено!</string>
     <string name="empty_fields">Заполните все поля</string>
     <string name="email_empty">Заполните поле email</string>
+
+    <string name="confirmation_code_has_been_sent">На Ваш email отправлен\nкод подтверждения</string>
+    <string name="please_check_your_email">Пожалуйста, проверьте Вашу почту\nи введите код подтверждения</string>
+    <string name="confirm_registration">Подтвердить регистрацию</string>
+    <string name="did_not_get_code">Не получили код? Отправить повторно</string>
 </resources>
