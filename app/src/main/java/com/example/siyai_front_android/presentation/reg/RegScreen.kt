@@ -42,7 +42,8 @@ import com.example.siyai_front_android.utils.validateUserData
 @Composable
 fun RegScreen(
     onBackClick: () -> Unit,
-    onLoginClick: () -> Unit
+    onLoginClick: () -> Unit,
+    onEmailConfirmationClick: () -> Unit
 ) {
 
     var email by remember { mutableStateOf("") }
@@ -153,7 +154,7 @@ fun RegScreen(
                             val errorMessage =
                                 validateUserData(email, password, repeatPassword, context)
                             if (errorMessage == null) {
-                                // TODO: Реализация регистрации
+                                onEmailConfirmationClick()
                             } else {
                                 Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                             }
@@ -176,7 +177,8 @@ private fun RegScreen_Preview() {
     SiyaifrontandroidTheme {
         RegScreen(
             onBackClick = { },
-            onLoginClick = { }
+            onLoginClick = { },
+            onEmailConfirmationClick = { }
         )
     }
 }

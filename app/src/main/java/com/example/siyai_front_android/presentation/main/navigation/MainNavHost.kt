@@ -53,6 +53,9 @@ fun MainNavHost(
                 },
                 onLoginClick = {
                     navController.navigate(Route.Login)
+                },
+                onEmailConfirmationClick = {
+                    navController.navigate(Route.EmailConfirmation)
                 }
             )
         }
