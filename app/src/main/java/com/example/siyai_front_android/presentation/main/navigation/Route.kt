@@ -21,4 +21,7 @@ sealed interface Route {
 
     @Serializable
     data object RecoveryPassword2: Route
+
+    @Serializable
+    data object EmailConfirmation: Route
 }
