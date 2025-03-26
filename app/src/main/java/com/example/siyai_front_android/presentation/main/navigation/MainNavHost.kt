@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.example.siyai_front_android.presentation.email_confirmation.EmailConfirmationScreen
 import com.example.siyai_front_android.presentation.login.LoginScreen
 import com.example.siyai_front_android.presentation.onboarding.OnboardingScreen
 import com.example.siyai_front_android.presentation.password_recovery.PasswordRecovery1Screen
@@ -52,6 +53,9 @@ fun MainNavHost(
                 },
                 onLoginClick = {
                     navController.navigate(Route.Login)
+                },
+                onEmailConfirmationClick = {
+                    navController.navigate(Route.EmailConfirmation)
                 }
             )
         }
@@ -75,6 +79,9 @@ fun MainNavHost(
                     }
                 )
             }
+        }
+        composable<Route.EmailConfirmation> {
+            EmailConfirmationScreen()
         }
     }
 }
