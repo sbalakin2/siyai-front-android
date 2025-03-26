@@ -79,9 +79,9 @@ fun MainNavHost(
                     }
                 )
             }
-            composable<Route.EmailConfirmation> {
-                EmailConfirmationScreen()
-            }
+        }
+        composable<Route.EmailConfirmation> {
+            EmailConfirmationScreen()
         }
     }
 }
