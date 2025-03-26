@@ -39,4 +39,6 @@
     <string name="please_check_your_email">Пожалуйста, проверьте Вашу почту\nи введите код подтверждения</string>
     <string name="confirm_registration">Подтвердить регистрацию</string>
     <string name="did_not_get_code">Не получили код? Отправить повторно</string>
+    <string name="incorrect_code_format">Некорректный формат кода</string>
+    <string name="check_is_completed">Проверка выполнена</string>
 </resources>
