@@ -2,6 +2,7 @@ package com.example.siyai_front_android.presentation.main.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,11 +17,12 @@ import com.example.siyai_front_android.presentation.reg.RegScreen
 @Composable
 fun MainNavHost(
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModelFactory: ViewModelProvider.Factory
 ) {
     NavHost(
         navController = navController,
-        startDestination = Route.Onboarding,
+        startDestination = Route.Reg,
         modifier = modifier,
     ) {
         composable<Route.Onboarding> {
@@ -56,7 +58,8 @@ fun MainNavHost(
                 },
                 onEmailConfirmationClick = {
                     navController.navigate(Route.EmailConfirmation)
-                }
+                },
+                viewModelFactory = viewModelFactory
             )
         }
         navigation<Route.RecoveryPassword>(startDestination = Route.RecoveryPassword1) {
