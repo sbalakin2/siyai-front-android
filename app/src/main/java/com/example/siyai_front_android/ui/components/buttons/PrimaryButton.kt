@@ -18,7 +18,8 @@ import com.example.siyai_front_android.ui.theme.SiyaifrontandroidTheme
 fun PrimaryButton(
     modifier: Modifier = Modifier,
     text: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    enabled: Boolean = true
 ){
     Button(
         modifier = modifier,
@@ -26,9 +27,10 @@ fun PrimaryButton(
         shape = RoundedCornerShape(32.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
-            disabledContainerColor = MaterialTheme.colorScheme.primary
+            disabledContentColor = MaterialTheme.colorScheme.onSurface
         ),
-        contentPadding = PaddingValues(vertical = 16.dp)
+        contentPadding = PaddingValues(vertical = 16.dp),
+        enabled = enabled
     ) {
         Text(
             text = text,
