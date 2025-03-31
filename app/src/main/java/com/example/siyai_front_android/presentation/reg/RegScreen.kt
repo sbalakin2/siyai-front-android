@@ -30,6 +30,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.siyai_front_android.R
 import com.example.siyai_front_android.ui.components.buttons.PrimaryButton
 import com.example.siyai_front_android.ui.components.text_fields.ClearedTextField
@@ -43,9 +46,13 @@ import com.example.siyai_front_android.utils.validateUserData
 fun RegScreen(
     onBackClick: () -> Unit,
     onLoginClick: () -> Unit,
-    onEmailConfirmationClick: () -> Unit
+    onEmailConfirmationClick: () -> Unit,
+    viewModelFactory: ViewModelProvider.Factory
 ) {
+    val viewModel: RegViewModel = viewModel(factory = viewModelFactory)
+    val regState by viewModel.regState.collectAsStateWithLifecycle()
 
+    val context = LocalContext.current
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var repeatPassword by remember { mutableStateOf("") }
@@ -138,8 +145,6 @@ fun RegScreen(
                 modifier = Modifier.weight(1f),
                 contentAlignment = Alignment.BottomCenter
             ) {
-                val context = LocalContext.current
-
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -147,25 +152,41 @@ fun RegScreen(
                         .padding(bottom = 32.dp),
                     text = stringResource(R.string.register),
                     onClick = {
-                        if (email.isNotEmpty() &&
+                        val errorMessage =
+                            validateUserData(email, password, repeatPassword, context)
+                        if (errorMessage == null) {
+                            viewModel.registerUser(email, password)
+                        } else {
+                            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                        }
+                    },
+                    enabled = email.isNotEmpty() &&
                             password.isNotEmpty() &&
                             repeatPassword.isNotEmpty()
-                        ) {
-                            val errorMessage =
-                                validateUserData(email, password, repeatPassword, context)
-                            if (errorMessage == null) {
-                                onEmailConfirmationClick()
-                            } else {
-                                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-                            }
-                        } else {
-                            Toast.makeText(
-                                context,
-                                context.getString(R.string.empty_fields),
-                                Toast.LENGTH_SHORT).show()
-                        }
-                    }
                 )
+            }
+
+            when (regState) {
+                is RegState.Success -> {
+                    onEmailConfirmationClick()
+                }
+                is RegState.Error -> {
+                    val errorMessage = if ((regState as RegState.Error).code in 500..599) {
+                        context.getString(R.string.server_error)
+                    } else {
+                        (regState as RegState.Error).message
+                    }
+                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                }
+                is RegState.Exception -> {
+                    Toast.makeText(
+                        context,
+                        (regState as RegState.Exception).message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                is RegState.Loading -> {
+                }
             }
         }
     }
@@ -175,11 +196,11 @@ fun RegScreen(
 @Preview(showSystemUi = true)
 private fun RegScreen_Preview() {
     SiyaifrontandroidTheme {
-        RegScreen(
-            onBackClick = { },
-            onLoginClick = { },
-            onEmailConfirmationClick = { }
-        )
+//        RegScreen(
+//            onBackClick = { },
+//            onLoginClick = { },
+//            onEmailConfirmationClick = { },
+//        )
     }
 }
 
