@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -166,26 +167,28 @@ fun RegScreen(
                 )
             }
 
-            when (regState) {
-                is RegState.Success -> {
-                    onEmailConfirmationClick()
-                }
-                is RegState.Error -> {
-                    val errorMessage = if ((regState as RegState.Error).code in 500..599) {
-                        context.getString(R.string.server_error)
-                    } else {
-                        (regState as RegState.Error).message
+            LaunchedEffect(regState) {
+                when (regState) {
+                    is RegState.Success -> {
+                        onEmailConfirmationClick()
                     }
-                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-                }
-                is RegState.Exception -> {
-                    Toast.makeText(
-                        context,
-                        (regState as RegState.Exception).message,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                is RegState.Loading -> {
+                    is RegState.Error -> {
+                        val errorMessage = if ((regState as RegState.Error).code in 500..599) {
+                            context.getString(R.string.server_error)
+                        } else {
+                            (regState as RegState.Error).message
+                        }
+                        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                    }
+                    is RegState.Exception -> {
+                        Toast.makeText(
+                            context,
+                            (regState as RegState.Exception).message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    is RegState.Loading -> {
+                    }
                 }
             }
         }
