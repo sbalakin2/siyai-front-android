@@ -22,7 +22,7 @@ fun MainNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Route.Reg,
+        startDestination = Route.Onboarding,
         modifier = modifier,
     ) {
         composable<Route.Onboarding> {
