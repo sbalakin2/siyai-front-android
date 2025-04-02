@@ -19,6 +19,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -29,6 +30,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.siyai_front_android.R
 import com.example.siyai_front_android.ui.components.buttons.PrimaryButton
 import com.example.siyai_front_android.ui.components.text_fields.ClearedTextField
@@ -41,8 +45,13 @@ import com.example.siyai_front_android.utils.validateUserData
 fun LoginScreen(
     onBackClick: () -> Unit,
     onRegClick: () -> Unit,
-    onPasswordRecoveryClick: () -> Unit
+    onPasswordRecoveryClick: () -> Unit,
+    onLogin: () -> Unit,
+    viewModelFactory: ViewModelProvider.Factory
 ) {
+    val viewModel: LoginViewModel = viewModel(factory = viewModelFactory)
+    val loginState by viewModel.loginState.collectAsStateWithLifecycle()
+    
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     val context = LocalContext.current
@@ -150,9 +159,37 @@ fun LoginScreen(
                     onClick = {
                         validateUserData(email, password, null, context)?.let { message ->
                             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                            return@PrimaryButton
                         }
+                        viewModel.loginUser(email, password)
                     }
                 )
+            }
+
+            LaunchedEffect(loginState) {
+                when (loginState) {
+                    is LoginState.Success -> {
+                        onLogin()
+                        Toast.makeText(context, "sign in success", Toast.LENGTH_SHORT).show()
+                    }
+                    is LoginState.Error -> {
+                        val errorMessage = if ((loginState as LoginState.Error).code in 500..599) {
+                            context.getString(R.string.server_error)
+                        } else {
+                            (loginState as LoginState.Error).message
+                        }
+                        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                    }
+                    is LoginState.Exception -> {
+                        Toast.makeText(
+                            context,
+                            (loginState as LoginState.Exception).message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    is LoginState.Loading -> {
+                    }
+                }
             }
         }
     }

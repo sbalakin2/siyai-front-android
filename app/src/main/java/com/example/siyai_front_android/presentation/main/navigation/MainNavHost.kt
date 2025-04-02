@@ -46,7 +46,11 @@ fun MainNavHost(
                 },
                 onPasswordRecoveryClick = {
                     navController.navigate(Route.RecoveryPassword)
-                }
+                },
+                onLogin = {
+                    // переход на главный экран
+                },
+                viewModelFactory = viewModelFactory
             )
         }
         composable<Route.Reg> {
