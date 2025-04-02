@@ -25,7 +25,7 @@
     <string name="register">Зарегистрироваться</string>
     <string name="invalid_email">Некорректный формат email</string>
     <string name="invalid_password">Пароль должен содержать минимум 8 символов, включать цифры, заглавные и строчные буквы</string>
-    <string name="invalid_repeat_password">Пароли не совпадают</string>
+    <string name="invalid_repeat_password">Пароли не совпадают, попробуйте снова</string>
     <string name="forgot_password">Забыли пароль?</string>
     <string name="recovery_password1_subtitle">Восстановите его! Введите email, на который мы отправим ссылку</string>
     <string name="recovery">Восстановить</string>
@@ -33,7 +33,6 @@
     <string name="recovery_password2_subtitle">Проверьте свой email и перейдите по ссылке в письме</string>
     <string name="sent_letter">Письмо со сбросом пароля отправлено!</string>
     <string name="empty_fields">Заполните все поля</string>
-    <string name="email_empty">Заполните поле email</string>
     <string name="server_error">Что-то пошло не так, повторите запрос позже</string>
 
     <string name="confirmation_code_has_been_sent">На Ваш email отправлен\nкод подтверждения</string>
