@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 const val TIME_OUT = 120L
-const val BASE_URL = "https://api.effectivemobileshine.ru/"
+const val BASE_URL = "http://188.120.235.39:8010/"
 
 @Module
 internal class RetrofitModule {
