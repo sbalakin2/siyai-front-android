@@ -24,7 +24,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SiyaifrontandroidTheme {
-                MainScreen()
+                MainScreen(
+                    viewModelFactory = viewModelFactory
+                )
             }
         }
     }

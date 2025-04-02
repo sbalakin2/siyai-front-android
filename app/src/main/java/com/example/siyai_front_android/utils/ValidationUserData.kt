@@ -11,9 +11,6 @@ fun validateUserData(
     isRegistration: Boolean = false
 ): String? {
     return when {
-        email.isEmpty() -> {
-            context.getString(R.string.email_empty)
-        }
         !email.isValidEmail() -> {
             context.getString(R.string.invalid_email)
         }

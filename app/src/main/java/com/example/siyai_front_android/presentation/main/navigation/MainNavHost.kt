@@ -2,10 +2,12 @@ package com.example.siyai_front_android.presentation.main.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.toRoute
 import com.example.siyai_front_android.presentation.email_confirmation.EmailConfirmationScreen
 import com.example.siyai_front_android.presentation.login.LoginScreen
 import com.example.siyai_front_android.presentation.onboarding.OnboardingScreen
@@ -16,7 +18,8 @@ import com.example.siyai_front_android.presentation.reg.RegScreen
 @Composable
 fun MainNavHost(
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModelFactory: ViewModelProvider.Factory
 ) {
     NavHost(
         navController = navController,
@@ -54,9 +57,10 @@ fun MainNavHost(
                 onLoginClick = {
                     navController.navigate(Route.Login)
                 },
-                onEmailConfirmationClick = {
-                    navController.navigate(Route.EmailConfirmation)
-                }
+                onEmailConfirmationClick = { email, password ->
+                    navController.navigate(Route.EmailConfirmation(email, password))
+                },
+                viewModelFactory = viewModelFactory
             )
         }
         navigation<Route.RecoveryPassword>(startDestination = Route.RecoveryPassword1) {
@@ -81,7 +85,8 @@ fun MainNavHost(
             }
         }
         composable<Route.EmailConfirmation> {
-            EmailConfirmationScreen()
+            val emailConfirmation = it.toRoute<Route.EmailConfirmation>()
+            EmailConfirmationScreen(emailConfirmation.email, emailConfirmation.password)
         }
     }
 }

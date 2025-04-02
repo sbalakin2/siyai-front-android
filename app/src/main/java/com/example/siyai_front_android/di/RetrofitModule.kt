@@ -1,5 +1,6 @@
 package com.example.siyai_front_android.di
 
+import com.example.siyai_front_android.data.remote.NetworkApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -13,7 +14,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 const val TIME_OUT = 120L
-const val BASE_URL = "https://api.effectivemobileshine.ru/"
+const val BASE_URL = "http://188.120.235.39:8010/"
 
 @Module
 internal class RetrofitModule {
@@ -55,5 +56,11 @@ internal class RetrofitModule {
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .baseUrl(BASE_URL)
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideNetworkApi(retrofit: Retrofit): NetworkApi {
+        return retrofit.create(NetworkApi::class.java)
     }
 }
