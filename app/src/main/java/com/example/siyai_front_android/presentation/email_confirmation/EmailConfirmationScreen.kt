@@ -60,8 +60,10 @@ import com.example.siyai_front_android.utils.EMAIL_CONFIRMATION_CODE_SIZE
 
 @SuppressLint("MutableCollectionMutableState")
 @Composable
-fun EmailConfirmationScreen() {
-
+fun EmailConfirmationScreen(
+    email: String,
+    password: String
+) {
     val context = LocalContext.current
     val code = remember { mutableStateListOf("", "", "", "", "", "") }
     val focusRequesters = List(EMAIL_CONFIRMATION_CODE_SIZE) { FocusRequester() }
