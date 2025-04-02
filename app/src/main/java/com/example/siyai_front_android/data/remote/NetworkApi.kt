@@ -7,7 +7,7 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface NetworkApi {
-    @POST("auth_server/v1/auth/registration")
+    @POST("/user-service/v1/registration")
     suspend fun registerUser(
         @Header("Authorization") authorization: String,
         @Body regRequest: RegRequest
