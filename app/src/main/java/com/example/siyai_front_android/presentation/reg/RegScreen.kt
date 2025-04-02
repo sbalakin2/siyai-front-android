@@ -41,13 +41,14 @@ import com.example.siyai_front_android.ui.components.text_fields.PasswordTextFie
 import com.example.siyai_front_android.ui.icons.SiyAiIcons
 import com.example.siyai_front_android.ui.theme.SiyaifrontandroidTheme
 import com.example.siyai_front_android.utils.validateUserData
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegScreen(
     onBackClick: () -> Unit,
     onLoginClick: () -> Unit,
-    onEmailConfirmationClick: () -> Unit,
+    onEmailConfirmationClick: (email: String, password: String) -> Unit,
     viewModelFactory: ViewModelProvider.Factory
 ) {
     val viewModel: RegViewModel = viewModel(factory = viewModelFactory)
@@ -153,13 +154,11 @@ fun RegScreen(
                         .padding(bottom = 32.dp),
                     text = stringResource(R.string.register),
                     onClick = {
-                        val errorMessage =
-                            validateUserData(email, password, repeatPassword, context)
-                        if (errorMessage == null) {
-                            viewModel.registerUser(email, password)
-                        } else {
+                        validateUserData(email, password, repeatPassword, context)?.let { errorMessage ->
                             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                            return@PrimaryButton
                         }
+                        viewModel.registerUser(email, password)
                     },
                     enabled = email.isNotEmpty() &&
                             password.isNotEmpty() &&
@@ -167,10 +166,27 @@ fun RegScreen(
                 )
             }
 
+            LaunchedEffect(password, repeatPassword) {
+
+                delay(1000L)
+
+                if (
+                    password.isNotEmpty() &&
+                    repeatPassword.isNotEmpty() &&
+                    password != repeatPassword
+                ) {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.invalid_repeat_password),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
             LaunchedEffect(regState) {
                 when (regState) {
                     is RegState.Success -> {
-                        onEmailConfirmationClick()
+                        onEmailConfirmationClick(email, password)
                     }
                     is RegState.Error -> {
                         val errorMessage = if ((regState as RegState.Error).code in 500..599) {
