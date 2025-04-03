@@ -2,6 +2,7 @@ package com.example.siyai_front_android.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.siyai_front_android.presentation.login.LoginViewModel
 import com.example.siyai_front_android.presentation.reg.RegViewModel
 import dagger.Binds
 import dagger.Module
@@ -17,4 +18,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(RegViewModel::class)
     abstract fun bindRegViewModel(regViewModel: RegViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LoginViewModel::class)
+    abstract fun bindLoginViewModel(loginViewModel: LoginViewModel): ViewModel
 }
