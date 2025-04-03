@@ -49,7 +49,7 @@ fun SecondaryLoadingButton(
 @Composable
 @Preview(showBackground = false)
 private fun SecondaryLoadingButton_Preview(){
-    val isLoading by remember { mutableStateOf(false) }
+    val isLoading by remember { mutableStateOf(true) }
 
     SiyaifrontandroidTheme {
         SecondaryLoadingButton(
