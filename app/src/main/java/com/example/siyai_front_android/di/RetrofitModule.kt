@@ -1,5 +1,6 @@
 package com.example.siyai_front_android.di
 
+import com.example.siyai_front_android.data.interceptors.AuthInterceptor
 import com.example.siyai_front_android.data.remote.NetworkApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
@@ -14,7 +15,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 const val TIME_OUT = 120L
-const val BASE_URL = "http://188.120.235.39:8010/"
+const val BASE_URL = "https://api.effectivemobileshine.ru"
 
 @Module
 internal class RetrofitModule {
@@ -39,6 +40,7 @@ internal class RetrofitModule {
             .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
             .readTimeout(TIME_OUT, TimeUnit.SECONDS)
             .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
+            .addInterceptor(AuthInterceptor())
             .addNetworkInterceptor(loggingInterceptor)
             .retryOnConnectionFailure(true).build()
     }

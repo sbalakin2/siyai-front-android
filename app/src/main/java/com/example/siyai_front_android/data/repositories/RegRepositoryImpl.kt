@@ -4,7 +4,6 @@ import com.example.siyai_front_android.data.remote.NetworkApi
 import com.example.siyai_front_android.data.remote.dto.RegRequest
 import com.example.siyai_front_android.domain.repositories.RegRepository
 import com.example.siyai_front_android.utils.NetworkResult
-import com.example.siyai_front_android.utils.createCredentials
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -16,8 +15,8 @@ class RegRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             try {
                 val response = networkApi.registerUser(
-                    authorization = createCredentials(email, password),
-                    regRequest = RegRequest(email = email, password = password))
+                    regRequest = RegRequest(email = email, password = password)
+                )
                 val body = response.body()
                 if (response.isSuccessful && body != null) {
                     return@withContext NetworkResult.Success(Unit)

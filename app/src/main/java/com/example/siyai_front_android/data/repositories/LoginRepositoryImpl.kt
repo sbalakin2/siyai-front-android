@@ -4,7 +4,6 @@ import com.example.siyai_front_android.data.remote.NetworkApi
 import com.example.siyai_front_android.data.remote.dto.LoginRequest
 import com.example.siyai_front_android.domain.repositories.LoginRepository
 import com.example.siyai_front_android.utils.NetworkResult
-import com.example.siyai_front_android.utils.createCredentials
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -17,7 +16,6 @@ class LoginRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO){
             try {
                 val response = networkApi.loginUser(
-                    authorization = createCredentials(email, password),
                     loginRequest = LoginRequest(email = email, password = password)
                 )
                 val body = response.body()
