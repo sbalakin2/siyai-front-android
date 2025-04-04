@@ -24,4 +24,7 @@ sealed interface Route {
 
     @Serializable
     data class EmailConfirmation(val email: String, val password: String): Route
+
+    @Serializable
+    data object LetsMeet: Route
 }
