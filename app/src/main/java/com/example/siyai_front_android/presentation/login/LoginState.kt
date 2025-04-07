@@ -5,4 +5,5 @@ sealed interface LoginState {
     data class Error(val code: Int, val message: String) : LoginState
     data class Exception(val message: String) : LoginState
     data object Loading : LoginState
+    data object Empty : LoginState
 }

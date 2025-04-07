@@ -21,7 +21,8 @@ class RecoveryPasswordViewModel @Inject constructor(
     fun recoveryPassword(email: String) {
         viewModelScope.launch {
             _recoveryPasswordState.value = RecoveryPasswordState.Loading
-            _recoveryPasswordState.value = recoveryPasswordUseCase.invoke(email)
+            _recoveryPasswordState.value = runCatching { recoveryPasswordUseCase.invoke(email) }
+                .getOrElse { RecoveryPasswordState.Exception(it.localizedMessage ?: "Unknown error") }
         }
     }
 
