@@ -52,4 +52,7 @@
     <string name="lets_meet_city">Город</string>
     <string name="enter_to_app">Войти</string>
 
+    <string name="ok">OK</string>
+    <string name="cancel">Отмена</string>
+
 </resources>
