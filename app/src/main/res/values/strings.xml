@@ -41,4 +41,18 @@
     <string name="did_not_get_code">Не получили код? Отправить повторно</string>
     <string name="incorrect_code_format">Некорректный формат кода</string>
     <string name="check_is_completed">Проверка выполнена</string>
+
+    <string name="lets_meet">Давай знакомится!</string>
+    <string name="lets_meet_subtitle">Подстроим аккаунт под тебя и поможем, если тебе нужна будет помощь</string>
+    <string name="lets_meet_name">Имя</string>
+    <string name="lets_meet_surname">Фамилия</string>
+    <string name="lets_meet_phone">Телефон</string>
+    <string name="lets_meet_birthday">Дата рождения</string>
+    <string name="lets_meet_country">Страна</string>
+    <string name="lets_meet_city">Город</string>
+    <string name="enter_to_app">Войти</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Отмена</string>
+
 </resources>
