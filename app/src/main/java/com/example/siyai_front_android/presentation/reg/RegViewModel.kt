@@ -18,7 +18,8 @@ class RegViewModel @Inject constructor(
 
     fun registerUser(email: String, password: String) {
         viewModelScope.launch {
-            _regState.value = regUseCase(email, password)
+            _regState.value = runCatching { regUseCase.invoke(email, password) }
+                .getOrElse { RegState.Exception(it.localizedMessage ?: "Unknown error") }
         }
     }
 }

@@ -171,6 +171,7 @@ fun LoginScreen(
                     is LoginState.Success -> {
                         onLogin()
                         Toast.makeText(context, "sign in success", Toast.LENGTH_SHORT).show()
+                        viewModel.resetState()
                     }
                     is LoginState.Error -> {
                         val errorMessage = if ((loginState as LoginState.Error).code in 500..599) {
@@ -179,6 +180,7 @@ fun LoginScreen(
                             (loginState as LoginState.Error).message
                         }
                         Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                        viewModel.resetState()
                     }
                     is LoginState.Exception -> {
                         Toast.makeText(
@@ -186,9 +188,10 @@ fun LoginScreen(
                             (loginState as LoginState.Exception).message,
                             Toast.LENGTH_SHORT
                         ).show()
+                        viewModel.resetState()
                     }
-                    is LoginState.Loading -> {
-                    }
+                    is LoginState.Loading -> {}
+                    is LoginState.Empty -> {}
                 }
             }
         }

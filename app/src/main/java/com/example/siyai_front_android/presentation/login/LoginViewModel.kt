@@ -18,7 +18,12 @@ class LoginViewModel @Inject constructor(
 
     fun loginUser(email: String, password: String) {
         viewModelScope.launch {
-            _loginState.value = loginUseCase(email, password)
+            _loginState.value = runCatching { loginUseCase.invoke(email, password) }
+                .getOrElse { LoginState.Exception(it.localizedMessage ?: "Unknown error") }
         }
+    }
+
+    fun resetState() {
+        _loginState.value = LoginState.Empty
     }
 }
