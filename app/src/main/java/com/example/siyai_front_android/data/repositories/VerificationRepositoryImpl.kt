@@ -6,7 +6,6 @@ import com.example.siyai_front_android.data.remote.dto.VerificationRequest
 import com.example.siyai_front_android.domain.dto.Verification
 import com.example.siyai_front_android.domain.repositories.VerificationRepository
 import com.example.siyai_front_android.utils.NetworkResult
-import com.example.siyai_front_android.utils.createCredentials
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -18,7 +17,6 @@ class VerificationRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             try {
                 val response = networkApi.verify(
-                    authorization = createCredentials(),
                     verificationRequest = VerificationRequest(email)
                 )
                 val body = response.body()
