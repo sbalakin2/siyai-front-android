@@ -1,22 +1,22 @@
 package com.example.siyai_front_android.data.repositories
 
 import com.example.siyai_front_android.data.remote.NetworkApi
-import com.example.siyai_front_android.data.remote.dto.LoginRequest
-import com.example.siyai_front_android.domain.repositories.LoginRepository
+import com.example.siyai_front_android.data.remote.dto.RecoveryPasswordRequest
+import com.example.siyai_front_android.domain.repositories.RecoveryPasswordRepository
 import com.example.siyai_front_android.utils.NetworkResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class LoginRepositoryImpl @Inject constructor(
+class RecoveryPasswordRepositoryImpl @Inject constructor(
     private val networkApi: NetworkApi
-) : LoginRepository{
+) : RecoveryPasswordRepository {
 
-    override suspend fun loginUser(email: String, password: String): NetworkResult<Unit> =
+    override suspend fun recoveryPassword(email: String): NetworkResult<Unit> =
         withContext(Dispatchers.IO){
             try {
-                val response = networkApi.loginUser(
-                    loginRequest = LoginRequest(email = email, password = password)
+                val response = networkApi.recoveryPassword(
+                    recoveryPasswordRequest = RecoveryPasswordRequest(email = email)
                 )
                 val body = response.body()
                 if (response.isSuccessful && body != null) {

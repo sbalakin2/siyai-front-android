@@ -14,6 +14,7 @@ import com.example.siyai_front_android.presentation.onboarding.OnboardingScreen
 import com.example.siyai_front_android.presentation.password_recovery.PasswordRecovery1Screen
 import com.example.siyai_front_android.presentation.password_recovery.PasswordRecovery2Screen
 import com.example.siyai_front_android.presentation.reg.RegScreen
+import com.example.siyai_front_android.presentation.welcome.LetsMeetScreen
 
 @Composable
 fun MainNavHost(
@@ -82,15 +83,14 @@ fun MainNavHost(
                     },
                     onRecoveryClick = {
                         navController.navigate(Route.RecoveryPassword2)
-                    }
+                    },
+                    viewModelFactory = viewModelFactory
                 )
             }
             composable<Route.RecoveryPassword2> {
                 PasswordRecovery2Screen(
                     onBackClick = {
-                        navController.navigate(Route.Onboarding) {
-                            popUpTo(route = Route.RecoveryPassword) { inclusive = true }
-                        }
+                        navController.popBackStack()
                     }
                 )
             }
@@ -110,6 +110,9 @@ fun MainNavHost(
                 },
                 viewModelFactory = viewModelFactory
             )
+        }
+        composable<Route.LetsMeet> {
+            LetsMeetScreen()
         }
     }
 }

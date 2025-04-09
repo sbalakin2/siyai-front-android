@@ -4,6 +4,8 @@ import com.example.siyai_front_android.domain.usecases.VerifyUseCase
 import com.example.siyai_front_android.domain.usecases.VerifyUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.LoginUseCase
 import com.example.siyai_front_android.domain.usecases.LoginUseCaseImpl
+import com.example.siyai_front_android.domain.usecases.RecoveryPasswordUseCase
+import com.example.siyai_front_android.domain.usecases.RecoveryPasswordUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.RegUseCase
 import com.example.siyai_front_android.domain.usecases.RegUseCaseImpl
 import dagger.Binds
@@ -17,6 +19,9 @@ interface UseCaseModule {
 
     @Binds
     fun bindLoginUseCase(loginUseCase: LoginUseCaseImpl): LoginUseCase
+
+    @Binds
+    fun bindRecoveryPasswordUseCase(recoveryPasswordUseCase: RecoveryPasswordUseCaseImpl): RecoveryPasswordUseCase
 
     @Binds
     fun bindVerifyUseCase(verifyUseCase: VerifyUseCaseImpl): VerifyUseCase

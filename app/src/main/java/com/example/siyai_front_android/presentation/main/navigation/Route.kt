@@ -23,6 +23,9 @@ sealed interface Route {
     data object RecoveryPassword2: Route
 
     @Serializable
+    data object LetsMeet: Route
+
+    @Serializable
     data class EmailConfirmation(
         val email: String,
         val password: String,
