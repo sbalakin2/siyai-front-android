@@ -16,7 +16,7 @@ class RegRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             try {
                 val response = networkApi.registerUser(
-                    authorization = createCredentials(email, password),
+                    authorization = createCredentials(),
                     regRequest = RegRequest(email = email, password = password))
                 val body = response.body()
                 if (response.isSuccessful && body != null) {
