@@ -1,5 +1,6 @@
 package com.example.siyai_front_android.presentation.reg
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -35,6 +36,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.siyai_front_android.R
+import com.example.siyai_front_android.presentation.email_confirmation.VerificationState
 import com.example.siyai_front_android.ui.components.buttons.PrimaryButton
 import com.example.siyai_front_android.ui.components.text_fields.ClearedTextField
 import com.example.siyai_front_android.ui.components.text_fields.PasswordTextField
@@ -48,11 +50,11 @@ import kotlinx.coroutines.delay
 fun RegScreen(
     onBackClick: () -> Unit,
     onLoginClick: () -> Unit,
-    onEmailConfirmationClick: (email: String, password: String) -> Unit,
+    onRegClick: (email: String, password: String, expDate: Int, otp: Int) -> Unit,
     viewModelFactory: ViewModelProvider.Factory
 ) {
     val viewModel: RegViewModel = viewModel(factory = viewModelFactory)
-    val regState by viewModel.regState.collectAsStateWithLifecycle()
+    val verificationState by viewModel.verificationState.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
     var email by remember { mutableStateOf("") }
@@ -158,7 +160,16 @@ fun RegScreen(
                             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                             return@PrimaryButton
                         }
-                        viewModel.registerUser(email, password)
+
+                        viewModel.verify(email)
+
+                        getVerificationState(
+                            verificationState = verificationState,
+                            context = context,
+                            email = email,
+                            password = password,
+                            onRegClick = onRegClick
+                        )
                     },
                     enabled = email.isNotEmpty() &&
                             password.isNotEmpty() &&
@@ -183,30 +194,41 @@ fun RegScreen(
                 }
             }
 
-            LaunchedEffect(regState) {
-                when (regState) {
-                    is RegState.Success -> {
-                        onEmailConfirmationClick(email, password)
-                    }
-                    is RegState.Error -> {
-                        val errorMessage = if ((regState as RegState.Error).code in 500..599) {
-                            context.getString(R.string.server_error)
-                        } else {
-                            (regState as RegState.Error).message
-                        }
-                        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-                    }
-                    is RegState.Exception -> {
-                        Toast.makeText(
-                            context,
-                            (regState as RegState.Exception).message,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    is RegState.Loading -> {
-                    }
-                }
+            LaunchedEffect(verificationState) {
+                getVerificationState(
+                    verificationState = verificationState,
+                    context = context,
+                    email = email,
+                    password = password,
+                    onRegClick = onRegClick
+                )
             }
+        }
+    }
+}
+
+private fun getVerificationState(
+    verificationState: VerificationState,
+    context: Context,
+    email: String,
+    password: String,
+    onRegClick: (email: String, password: String, expDate: Int, otp: Int) -> Unit) {
+    when (verificationState) {
+        is VerificationState.Success -> {
+            onRegClick(email, password, verificationState.expDate, verificationState.otp)
+        }
+        is VerificationState.Error -> {
+            val errorMessage = when (verificationState.code) {
+                in 500..599 -> context.getString(R.string.server_error)
+                400 -> context.getString(R.string.user_is_already_registered)
+                else -> verificationState.message
+            }
+            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+        }
+        is VerificationState.Exception -> {
+            Toast.makeText(context, verificationState.message, Toast.LENGTH_SHORT).show()
+        }
+        VerificationState.Idle -> {
         }
     }
 }
