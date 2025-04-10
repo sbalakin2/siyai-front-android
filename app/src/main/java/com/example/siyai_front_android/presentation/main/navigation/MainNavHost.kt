@@ -94,6 +94,9 @@ fun MainNavHost(
         }
         composable<Route.LetsMeet> {
             LetsMeetScreen(
+                onProfileCreated = {
+                    // переход на главный экран
+                },
                 viewModelFactory = viewModelFactory
             )
         }

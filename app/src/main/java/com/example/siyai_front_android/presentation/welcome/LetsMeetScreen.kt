@@ -45,6 +45,7 @@ import java.util.Date
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LetsMeetScreen(
+    onProfileCreated: () -> Unit,
     viewModelFactory: ViewModelProvider.Factory
 ) {
     val viewModel: LetsMeetViewModel = viewModel(factory = viewModelFactory)
@@ -72,7 +73,7 @@ fun LetsMeetScreen(
     LaunchedEffect(letsMeetState) {
         when (val currentState = letsMeetState) {
             is LetsMeetState.Success -> {
-
+                onProfileCreated()
             }
 
             is LetsMeetState.Error -> {
