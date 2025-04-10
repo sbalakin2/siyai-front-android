@@ -93,7 +93,9 @@ fun MainNavHost(
             EmailConfirmationScreen(emailConfirmation.email, emailConfirmation.password)
         }
         composable<Route.LetsMeet> {
-            LetsMeetScreen()
+            LetsMeetScreen(
+                viewModelFactory = viewModelFactory
+            )
         }
     }
 }

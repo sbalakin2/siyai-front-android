@@ -24,6 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.siyai_front_android.R
 import com.example.siyai_front_android.ui.components.buttons.PrimaryButton
 import com.example.siyai_front_android.ui.components.text_fields.BaseTextField
@@ -34,7 +36,10 @@ import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LetsMeetScreen() {
+fun LetsMeetScreen(
+    viewModelFactory: ViewModelProvider.Factory
+) {
+    val viewModel: LetsMeetViewModel = viewModel(factory = viewModelFactory)
 
     var userName by rememberSaveable { mutableStateOf("") }
     var userSurname by rememberSaveable { mutableStateOf("") }
@@ -146,7 +151,7 @@ fun LetsMeetScreen() {
 @Preview(showSystemUi = true)
 private fun LetsMeetScreen_Preview() {
     SiyaifrontandroidTheme {
-        LetsMeetScreen()
+//        LetsMeetScreen()
     }
 }
 

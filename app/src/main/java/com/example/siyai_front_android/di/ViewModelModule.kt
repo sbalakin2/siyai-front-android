@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.siyai_front_android.presentation.login.LoginViewModel
 import com.example.siyai_front_android.presentation.password_recovery.RecoveryPasswordViewModel
 import com.example.siyai_front_android.presentation.reg.RegViewModel
+import com.example.siyai_front_android.presentation.welcome.LetsMeetViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -29,4 +30,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(RecoveryPasswordViewModel::class)
     abstract fun bindRecoveryPasswordViewModel(recoveryPasswordViewModel: RecoveryPasswordViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LetsMeetViewModel::class)
+    abstract fun bindLetsMeetViewModel(letsMeetViewModel: LetsMeetViewModel): ViewModel
 }
