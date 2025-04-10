@@ -26,7 +26,7 @@ import com.example.siyai_front_android.ui.theme.SiyaifrontandroidTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun <T : Any> DropDownTextField(
+fun <T : Any?> DropDownTextField(
     value: T,
     onValueChange: (item: T) -> Unit,
     modifier: Modifier = Modifier,
