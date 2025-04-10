@@ -5,4 +5,5 @@ sealed interface LetsMeetState {
     data class Error(val code: Int, val message: String) : LetsMeetState
     data class Exception(val message: String) : LetsMeetState
     data object Loading : LetsMeetState
+    data object Nothing: LetsMeetState
 }
