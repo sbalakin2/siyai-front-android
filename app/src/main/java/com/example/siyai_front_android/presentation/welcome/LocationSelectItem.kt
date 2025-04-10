@@ -1,6 +1,6 @@
 package com.example.siyai_front_android.presentation.welcome
 
-data class CountrySelectItem(
+data class LocationSelectItem(
     val label: String,
     val value: String
 )

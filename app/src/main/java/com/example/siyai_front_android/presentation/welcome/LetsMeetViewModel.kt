@@ -18,12 +18,12 @@ class LetsMeetViewModel @Inject constructor(
     val letsMeetState: StateFlow<LetsMeetState> = _letsMeetState.asStateFlow()
 
     private val _countries = MutableStateFlow(
-        listOf(CountrySelectItem(label = "Россия", value = "RUSSIA"))
+        listOf(LocationSelectItem(label = "Россия", value = "RUSSIA"))
     )
     val counties = _countries.asStateFlow()
 
     private val _cities = MutableStateFlow(
-        listOf(CitySelectItem(label = "Москва", value = "MOSCOW"))
+        listOf(LocationSelectItem(label = "Москва", value = "MOSCOW"))
     )
     val cities = _cities.asStateFlow()
 

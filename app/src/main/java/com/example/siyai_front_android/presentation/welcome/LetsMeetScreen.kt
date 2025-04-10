@@ -1,6 +1,5 @@
 package com.example.siyai_front_android.presentation.welcome
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,8 +18,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -52,35 +53,38 @@ fun LetsMeetScreen(
     val counties by viewModel.counties.collectAsStateWithLifecycle()
     val cities by viewModel.cities.collectAsStateWithLifecycle()
 
-    var userName by rememberSaveable { mutableStateOf("") }
-    var userSurname by rememberSaveable { mutableStateOf("") }
-    var city by rememberSaveable { mutableStateOf<CitySelectItem?>(null) }
-    var userBirthday by rememberSaveable { mutableStateOf<Date?>(null) }
-    var country by rememberSaveable { mutableStateOf<CountrySelectItem?>(null) }
+    var name by rememberSaveable { mutableStateOf("") }
+    var surname by rememberSaveable { mutableStateOf("") }
+    var birthday by rememberSaveable { mutableStateOf<Date?>(null) }
+    var cityIndex by rememberSaveable { mutableIntStateOf(-1) }
+    var countryIndex by rememberSaveable { mutableIntStateOf(-1) }
 
-    val isEnterToAppEnabled by remember {
+    val isCreateProfileEnabled by remember {
         derivedStateOf {
-            sequenceOf(userName, userSurname).all { it.isNotEmpty() }
-                    && sequenceOf(city, userBirthday, country).all { it != null }
+            name.isNotEmpty() && surname.isNotEmpty() && birthday != null
+                    && cityIndex != -1 && countryIndex != -1
         }
     }
-    var isProfileLoading by remember { mutableStateOf(false) }
+    val isProfileCreating by remember { derivedStateOf { letsMeetState is LetsMeetState.Loading } }
 
     val context = LocalContext.current
-    LaunchedEffect(letsMeetState) {
-        isProfileLoading = letsMeetState is LetsMeetState.Loading
 
+    LaunchedEffect(letsMeetState) {
         when (val currentState = letsMeetState) {
+            is LetsMeetState.Success -> {
+
+            }
+
             is LetsMeetState.Error -> {
                 Toast.makeText(context, currentState.message, Toast.LENGTH_SHORT).show()
             }
+
             is LetsMeetState.Exception -> {
                 Toast.makeText(context, currentState.message, Toast.LENGTH_SHORT).show()
             }
+
             else -> {}
         }
-
-        Log.d("LetsMeetScreen", "LetsMeetScreen: $letsMeetState")
     }
 
     Scaffold(
@@ -112,56 +116,56 @@ fun LetsMeetScreen(
             Spacer(modifier = Modifier.height(20.dp))
 
             BaseTextField(
-                value = userName,
-                onValueChange = { value -> userName = value },
+                value = name,
+                onValueChange = { value -> name = value },
                 label = stringResource(R.string.lets_meet_name),
-                enabled = !isProfileLoading,
+                enabled = !isProfileCreating,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 6.dp)
             )
 
             BaseTextField(
-                value = userSurname,
-                onValueChange = { value -> userSurname = value },
+                value = surname,
+                onValueChange = { value -> surname = value },
                 label = stringResource(R.string.lets_meet_surname),
-                enabled = !isProfileLoading,
+                enabled = !isProfileCreating,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 6.dp)
             )
 
             DatePickerTextField(
-                value = userBirthday,
-                onValueChange = { value -> userBirthday = value },
+                value = birthday,
+                onValueChange = { value -> birthday = value },
                 label = stringResource(R.string.lets_meet_birthday),
-                enabled = !isProfileLoading,
+                enabled = !isProfileCreating,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 6.dp)
             )
 
             DropDownTextField(
-                value = country,
-                onValueChange = { value -> country = value },
+                index = countryIndex,
+                onIndexChange = { index -> countryIndex = index },
                 label = stringResource(R.string.lets_meet_country),
-                itemLabel = { it?.label ?: "" },
+                itemLabel = { it.label },
                 items = counties,
                 fullScreen = false,
-                enabled = !isProfileLoading,
+                enabled = !isProfileCreating,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 6.dp)
             )
 
             DropDownTextField(
-                value = city,
-                onValueChange = { value -> city = value },
+                index = cityIndex ,
+                onIndexChange = { index -> cityIndex = index },
                 label = stringResource(R.string.lets_meet_city),
-                itemLabel = { it?.label ?: "" },
+                itemLabel = { it.label },
                 items = cities,
                 fullScreen = false,
-                enabled = !isProfileLoading,
+                enabled = !isProfileCreating,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 6.dp)
@@ -174,19 +178,17 @@ fun LetsMeetScreen(
                     .fillMaxWidth()
                     .padding(top = 6.dp, bottom = 32.dp),
                 text = stringResource(R.string.enter_to_app),
-                isLoading = isProfileLoading,
+                isLoading = isProfileCreating,
                 onClick = {
-                    val data = createUserProfileData(
-                        userName = userName,
-                        userSurname = userSurname,
-                        userBirthday = userBirthday,
-                        country = country,
-                        city = city
-                    ) ?: return@SecondaryLoadingButton
-
-                    viewModel.createUserProfile(data)
+                    createUserProfileData(
+                        userName = name,
+                        userSurname = surname,
+                        userBirthday = birthday,
+                        userCountry = counties.getOrNull(countryIndex),
+                        userCity = cities.getOrNull(cityIndex)
+                    )?.let { data -> viewModel.createUserProfile(data) }
                 },
-                enabled = isEnterToAppEnabled && !isProfileLoading
+                enabled = isCreateProfileEnabled && !isProfileCreating
             )
         }
     }
@@ -196,10 +198,10 @@ private fun createUserProfileData(
     userName: String,
     userSurname: String,
     userBirthday: Date?,
-    country: CountrySelectItem?,
-    city: CitySelectItem?
+    userCountry: LocationSelectItem?,
+    userCity: LocationSelectItem?
 ): UserProfileData? {
-    if (userBirthday == null || country == null || city == null) {
+    if (userBirthday == null || userCountry == null || userCity == null) {
         return null
     }
 
@@ -208,13 +210,21 @@ private fun createUserProfileData(
         name = userName,
         surName = userSurname,
         birthday = userBirthday.toISODateString(),
-        country = country.value,
-        city = city.value
+        country = userCountry.value,
+        city = userCity.value
     )
 
     return data
 }
 
+private fun locationSaver() = run {
+    val label = "label"
+    val value = "value"
+    mapSaver(
+        save = { mapOf(label to it.label, value to it.value) },
+        restore = { LocationSelectItem(it[label] as String, it[value] as String) }
+    )
+}
 
 @Composable
 @Preview(showSystemUi = true)
