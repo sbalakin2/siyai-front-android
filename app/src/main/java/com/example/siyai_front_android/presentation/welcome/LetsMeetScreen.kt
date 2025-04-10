@@ -21,7 +21,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -216,15 +215,6 @@ private fun createUserProfileData(
     )
 
     return data
-}
-
-private fun locationSaver() = run {
-    val label = "label"
-    val value = "value"
-    mapSaver(
-        save = { mapOf(label to it.label, value to it.value) },
-        restore = { LocationSelectItem(it[label] as String, it[value] as String) }
-    )
 }
 
 @Composable
