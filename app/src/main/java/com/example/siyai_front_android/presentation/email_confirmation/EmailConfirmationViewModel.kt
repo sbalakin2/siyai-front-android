@@ -32,4 +32,12 @@ class EmailConfirmationViewModel @Inject constructor(
             _verificationState.value = verifyUseCase(email)
         }
     }
+
+    fun clearRegState() {
+        _regState.value = RegState.Idle
+    }
+
+    fun clearVerificationState() {
+        _verificationState.value = VerificationState.Idle
+    }
 }

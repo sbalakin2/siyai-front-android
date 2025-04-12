@@ -233,12 +233,6 @@ fun EmailConfirmationScreen(
                             Toast.LENGTH_SHORT
                         ).show()
                     }
-
-                    getRegState(
-                        regState = regState,
-                        context = context,
-                        onEmailConfirmationClick = onEmailConfirmationClick
-                    )
                 },
                 enabled = isCodeComplete(code)
             )
@@ -250,12 +244,6 @@ fun EmailConfirmationScreen(
                     .clickable(
                         onClick = {
                             viewModel.verify(email)
-
-                            getVerificationState(
-                                verificationState = verificationState,
-                                context = context,
-                                onResendingCodeClick = onResendingCodeClick
-                            )
                         }
                     ),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -268,7 +256,8 @@ fun EmailConfirmationScreen(
         getRegState(
             regState = regState,
             context = context,
-            onEmailConfirmationClick = onEmailConfirmationClick
+            onEmailConfirmationClick = onEmailConfirmationClick,
+            clearRegState = viewModel::clearRegState
         )
     }
 
@@ -276,7 +265,8 @@ fun EmailConfirmationScreen(
         getVerificationState(
             verificationState = verificationState,
             context = context,
-            onResendingCodeClick = onResendingCodeClick
+            onResendingCodeClick = onResendingCodeClick,
+            clearVerificationState = viewModel::clearVerificationState
         )
     }
 
@@ -315,22 +305,25 @@ fun pasteFromClipboard(context: Context, code: MutableList<String>) {
 private fun getRegState(
     regState: RegState,
     context: Context,
-    onEmailConfirmationClick: () -> Unit
+    onEmailConfirmationClick: () -> Unit,
+    clearRegState: () ->  Unit
 ) {
     when (regState) {
         is RegState.Success -> {
             onEmailConfirmationClick()
+            clearRegState()
         }
         is RegState.Error -> {
             val errorMessage = when (regState.code) {
                 in 500..599 -> context.getString(R.string.server_error)
-                400 -> context.getString(R.string.user_is_already_registered)
                 else -> regState.message
             }
             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            clearRegState()
         }
         is RegState.Exception -> {
             Toast.makeText(context, regState.message, Toast.LENGTH_SHORT).show()
+            clearRegState()
         }
         RegState.Idle -> {
         }
@@ -340,19 +333,21 @@ private fun getRegState(
 private fun getVerificationState(
     verificationState: VerificationState,
     context: Context,
-    onResendingCodeClick: () -> Unit
+    onResendingCodeClick: () -> Unit,
+    clearVerificationState: () ->  Unit
 ) {
     when (verificationState) {
         is VerificationState.Success -> {
             onResendingCodeClick()
+            clearVerificationState()
         }
         is VerificationState.Error -> {
             val errorMessage = when (verificationState.code) {
                 in 500..599 -> context.getString(R.string.server_error)
-                400 -> context.getString(R.string.user_is_already_registered)
                 else -> verificationState.message
             }
             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            clearVerificationState()
         }
         is VerificationState.Exception -> {
             Toast.makeText(
@@ -360,6 +355,7 @@ private fun getVerificationState(
                 verificationState.message,
                 Toast.LENGTH_SHORT
             ).show()
+            clearVerificationState()
         }
         VerificationState.Idle -> {
         }
