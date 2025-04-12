@@ -160,16 +160,7 @@ fun RegScreen(
                             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                             return@PrimaryButton
                         }
-
                         viewModel.verify(email)
-
-                        getVerificationState(
-                            verificationState = verificationState,
-                            context = context,
-                            email = email,
-                            password = password,
-                            onRegClick = onRegClick
-                        )
                     },
                     enabled = email.isNotEmpty() &&
                             password.isNotEmpty() &&
@@ -200,7 +191,8 @@ fun RegScreen(
                     context = context,
                     email = email,
                     password = password,
-                    onRegClick = onRegClick
+                    onRegClick = onRegClick,
+                    clearVerificationState = viewModel::clearVerificationState
                 )
             }
         }
@@ -212,21 +204,25 @@ private fun getVerificationState(
     context: Context,
     email: String,
     password: String,
-    onRegClick: (email: String, password: String, expDate: Int, otp: Int) -> Unit) {
+    onRegClick: (email: String, password: String, expDate: Int, otp: Int) -> Unit,
+    clearVerificationState: () -> Unit
+) {
     when (verificationState) {
         is VerificationState.Success -> {
             onRegClick(email, password, verificationState.expDate, verificationState.otp)
+            clearVerificationState()
         }
         is VerificationState.Error -> {
             val errorMessage = when (verificationState.code) {
                 in 500..599 -> context.getString(R.string.server_error)
-                400 -> context.getString(R.string.user_is_already_registered)
                 else -> verificationState.message
             }
             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            clearVerificationState()
         }
         is VerificationState.Exception -> {
             Toast.makeText(context, verificationState.message, Toast.LENGTH_SHORT).show()
+            clearVerificationState()
         }
         VerificationState.Idle -> {
         }

@@ -22,4 +22,8 @@ class RegViewModel @Inject constructor(
             _verificationState.value = verifyUseCase(email)
         }
     }
+
+    fun clearVerificationState() {
+        _verificationState.value = VerificationState.Idle
+    }
 }
