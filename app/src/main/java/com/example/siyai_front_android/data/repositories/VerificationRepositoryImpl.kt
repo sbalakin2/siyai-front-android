@@ -8,6 +8,7 @@ import com.example.siyai_front_android.domain.repositories.VerificationRepositor
 import com.example.siyai_front_android.utils.NetworkResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 import javax.inject.Inject
 
 class VerificationRepositoryImpl @Inject constructor(
@@ -23,7 +24,11 @@ class VerificationRepositoryImpl @Inject constructor(
                 if (response.isSuccessful && body != null) {
                     return@withContext NetworkResult.Success(body.toVerification())
                 } else {
-                    return@withContext NetworkResult.Error(response.code(), response.message())
+                    val errorBody = response.errorBody()?.string().orEmpty()
+                    val json = JSONObject(errorBody)
+                    val code = json.optInt("code")
+                    val message = json.optString("message")
+                    return@withContext NetworkResult.Error(code, message)
                 }
             } catch (e: Exception) {
                 return@withContext NetworkResult.Exception(e)
