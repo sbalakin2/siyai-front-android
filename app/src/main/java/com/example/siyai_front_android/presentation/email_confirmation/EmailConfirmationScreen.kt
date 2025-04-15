@@ -83,6 +83,7 @@ fun EmailConfirmationScreen(
     val focusRequesters = List(EMAIL_CONFIRMATION_CODE_SIZE) { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
 
+    var receivedCode by rememberSaveable(otp) { mutableIntStateOf(0) }
     val enteredCode = remember { mutableStateListOf("", "", "", "", "", "") }
     var inputCodeCount by rememberSaveable { mutableIntStateOf(0) }
 
@@ -222,7 +223,7 @@ fun EmailConfirmationScreen(
                 text = stringResource(R.string.confirm_registration),
                 onClick = {
                     if (inputCodeCount < INPUT_CODE_MAX_COUNT) {
-                        if (compareCode(otp, enteredCode)) {
+                        if (compareCode(receivedCode, enteredCode)) {
                             viewModel.registerUser(email, password)
                         } else {
                             inputCodeCount++
@@ -258,6 +259,9 @@ fun EmailConfirmationScreen(
                     .clickable(
                         onClick = {
                             viewModel.verify(email)
+                            inputCodeCount = 0
+                            resetEnteredCode(enteredCode)
+                            focusRequesters[0].requestFocus()
                         }
                     ),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -272,7 +276,8 @@ fun EmailConfirmationScreen(
             context = context,
             onEmailConfirmationClick = onEmailConfirmationClick,
             onResendingCodeClick = onResendingCodeClick,
-            clearEmailConfirmationState = viewModel::clearEmailConfirmationState
+            clearEmailConfirmationState = viewModel::clearEmailConfirmationState,
+            setReceivedCode = { receivedCode = it }
         )
     }
 
@@ -315,7 +320,8 @@ private fun getEmailConfirmationState(
     context: Context,
     onEmailConfirmationClick: () -> Unit,
     onResendingCodeClick: (Int) -> Unit,
-    clearEmailConfirmationState: () ->  Unit
+    clearEmailConfirmationState: () ->  Unit,
+    setReceivedCode: (Int) -> Unit
 ) {
     when (emailConfirmationState) {
         is EmailConfirmationState.RegSuccess -> {
@@ -323,6 +329,7 @@ private fun getEmailConfirmationState(
             clearEmailConfirmationState()
         }
         is EmailConfirmationState.VerificationSuccess -> {
+            setReceivedCode(emailConfirmationState.otp)
             onResendingCodeClick(emailConfirmationState.otp)
             clearEmailConfirmationState()
         }
