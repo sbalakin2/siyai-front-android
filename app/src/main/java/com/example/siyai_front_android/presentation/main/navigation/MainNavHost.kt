@@ -62,8 +62,15 @@ fun MainNavHost(
                 onLoginClick = {
                     navController.navigate(Route.Login)
                 },
-                onEmailConfirmationClick = { email, password ->
-                    navController.navigate(Route.EmailConfirmation(email, password))
+                onRegClick = { email, password, expDate, otp ->
+                    navController.navigate(
+                        Route.EmailConfirmation(
+                            email = email,
+                            password = password,
+                            expDate = expDate,
+                            otp = otp
+                        )
+                    )
                 },
                 viewModelFactory = viewModelFactory
             )
@@ -90,7 +97,19 @@ fun MainNavHost(
         }
         composable<Route.EmailConfirmation> {
             val emailConfirmation = it.toRoute<Route.EmailConfirmation>()
-            EmailConfirmationScreen(emailConfirmation.email, emailConfirmation.password)
+            EmailConfirmationScreen(
+                email = emailConfirmation.email,
+                password = emailConfirmation.password,
+                expDate = emailConfirmation.expDate,
+                otp = emailConfirmation.otp,
+                onEmailConfirmationClick = {
+
+                },
+                onResendingCodeClick = {
+
+                },
+                viewModelFactory = viewModelFactory
+            )
         }
         composable<Route.LetsMeet> {
             LetsMeetScreen()
