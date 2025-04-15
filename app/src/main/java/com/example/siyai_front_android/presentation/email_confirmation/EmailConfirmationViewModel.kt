@@ -15,29 +15,50 @@ class EmailConfirmationViewModel @Inject constructor(
     private val regUseCase: RegUseCase
 ): ViewModel() {
 
-    private val _regState = MutableStateFlow<RegState>(RegState.Idle)
-    val regState: StateFlow<RegState> = _regState.asStateFlow()
-
-    private val _verificationState = MutableStateFlow<VerificationState>(VerificationState.Idle)
-    val verificationState: StateFlow<VerificationState> = _verificationState.asStateFlow()
+    private val _emailConfirmationState =
+        MutableStateFlow<EmailConfirmationState>(EmailConfirmationState.Idle)
+    val emailConfirmationState: StateFlow<EmailConfirmationState> =
+        _emailConfirmationState.asStateFlow()
 
     fun registerUser(email: String, password: String) {
         viewModelScope.launch {
-            _regState.value = regUseCase(email, password)
+            _emailConfirmationState.value = when (val result = regUseCase(email, password)) {
+                RegState.Success -> {
+                    EmailConfirmationState.RegSuccess
+                }
+                is RegState.Error -> {
+                    EmailConfirmationState.Error(result.code, result.message)
+                }
+                is RegState.Exception -> {
+                    EmailConfirmationState.Exception(result.message)
+                }
+                RegState.Idle -> {
+                    EmailConfirmationState.Idle
+                }
+            }
         }
     }
 
     fun verify(email: String) {
         viewModelScope.launch {
-            _verificationState.value = verifyUseCase(email)
+            _emailConfirmationState.value = when (val result = verifyUseCase(email)) {
+                is VerificationState.Success -> {
+                    EmailConfirmationState.VerificationSuccess(result.expDate, result.otp)
+                }
+                is VerificationState.Error -> {
+                    EmailConfirmationState.Error(result.code, result.message)
+                }
+                is VerificationState.Exception -> {
+                    EmailConfirmationState.Exception(result.message)
+                }
+                VerificationState.Idle -> {
+                    EmailConfirmationState.Idle
+                }
+            }
         }
     }
 
-    fun clearRegState() {
-        _regState.value = RegState.Idle
-    }
-
-    fun clearVerificationState() {
-        _verificationState.value = VerificationState.Idle
+    fun clearEmailConfirmationState() {
+        _emailConfirmationState.value = EmailConfirmationState.Idle
     }
 }
