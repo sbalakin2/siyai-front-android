@@ -93,7 +93,10 @@ fun MainNavHost(
             EmailConfirmationScreen(emailConfirmation.email, emailConfirmation.password)
         }
         composable<Route.LetsMeet> {
+            val letsMeetArgs = it.toRoute<Route.LetsMeet>()
+
             LetsMeetScreen(
+                email = letsMeetArgs.email,
                 onProfileCreated = {
                     // переход на главный экран
                 },

@@ -44,6 +44,7 @@ import java.util.Date
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LetsMeetScreen(
+    email: String,
     onProfileCreated: () -> Unit,
     viewModelFactory: ViewModelProvider.Factory
 ) {
@@ -181,6 +182,7 @@ fun LetsMeetScreen(
                 isLoading = isProfileCreating,
                 onClick = {
                     createUserProfileData(
+                        userEmail = email,
                         userName = name,
                         userSurname = surname,
                         userBirthday = birthday,
@@ -195,6 +197,7 @@ fun LetsMeetScreen(
 }
 
 private fun createUserProfileData(
+    userEmail: String,
     userName: String,
     userSurname: String,
     userBirthday: Date?,
@@ -206,7 +209,7 @@ private fun createUserProfileData(
     }
 
     val data = UserProfileData(
-        email = "test1@mail.com",
+        email = userEmail,
         name = userName,
         surName = userSurname,
         birthday = userBirthday.toISODateString(),
