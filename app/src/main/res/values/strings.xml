@@ -44,6 +44,7 @@
     <string name="Incorrect_confirmation_code">Неправильный код подтверждения</string>
     <string name="code_lifetime_has_expired">Время жизни кода истекло</string>
     <string name="check_is_completed">Проверка выполнена</string>
+    <string name="number_of_input_attempts_is_exhausted">Количество попыток ввода исчерпано, пожалуйста, запросите код подтверждения повторно</string>
 
     <string name="lets_meet">Давай знакомится!</string>
     <string name="lets_meet_subtitle">Подстроим аккаунт под тебя и поможем, если тебе нужна будет помощь</string>

@@ -3,7 +3,6 @@ package com.example.siyai_front_android.presentation.email_confirmation
 import android.annotation.SuppressLint
 import android.content.ClipboardManager
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,9 +29,11 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
@@ -61,6 +62,8 @@ import com.example.siyai_front_android.R
 import com.example.siyai_front_android.ui.components.buttons.PrimaryButton
 import com.example.siyai_front_android.ui.icons.SiyAiIcons
 import com.example.siyai_front_android.utils.EMAIL_CONFIRMATION_CODE_SIZE
+import com.example.siyai_front_android.utils.INPUT_CODE_MAX_COUNT
+import com.example.siyai_front_android.utils.createToast
 
 @SuppressLint("MutableCollectionMutableState")
 @Composable
@@ -70,25 +73,23 @@ fun EmailConfirmationScreen(
     expDate: Int,
     otp: Int,
     onEmailConfirmationClick: () -> Unit,
-    onResendingCodeClick: () -> Unit,
+    onResendingCodeClick: (Int) -> Unit,
     viewModelFactory: ViewModelProvider.Factory
 ) {
     val viewModel: EmailConfirmationViewModel = viewModel(factory = viewModelFactory)
-    val regState by viewModel.regState.collectAsStateWithLifecycle()
-    val verificationState by viewModel.verificationState.collectAsStateWithLifecycle()
+    val emailConfirmationState by viewModel.emailConfirmationState.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
-    val code = remember { mutableStateListOf("", "", "", "", "", "") }
     val focusRequesters = List(EMAIL_CONFIRMATION_CODE_SIZE) { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
 
+    var receivedCode by rememberSaveable(otp) { mutableIntStateOf(0) }
+    val enteredCode = remember { mutableStateListOf("", "", "", "", "", "") }
+    var inputCodeCount by rememberSaveable { mutableIntStateOf(0) }
+
     LaunchedEffect(expDate) {
         if (expDate == 0) {
-            Toast.makeText(
-                context,
-                context.getString(R.string.code_lifetime_has_expired),
-                Toast.LENGTH_SHORT
-            ).show()
+            createToast(context, context.getString(R.string.code_lifetime_has_expired))
         }
     }
 
@@ -130,18 +131,21 @@ fun EmailConfirmationScreen(
                     val height by animateDpAsState(targetValue = if (isFocused) 68.dp else 64.dp)
 
                     TextField(
-                        value = code[index],
+                        value = enteredCode[index],
                         onValueChange = { newValue ->
                             if (newValue.isDigitsOnly()) {
-                                code[index] = newValue.lastOrNull()?.toString().orEmpty()
-                                if (code[index].isBlank() && index > 0) {
+                                enteredCode[index] = newValue.lastOrNull()?.toString().orEmpty()
+                                if (enteredCode[index].isBlank() && index > 0) {
                                     focusRequesters[index - 1].requestFocus()
                                 } else if (index < EMAIL_CONFIRMATION_CODE_SIZE - 1) {
                                     focusRequesters[index + 1].requestFocus()
                                 }
                             }
 
-                            if (index == EMAIL_CONFIRMATION_CODE_SIZE - 1 && isCodeComplete(code)) {
+                            if (
+                                index == EMAIL_CONFIRMATION_CODE_SIZE - 1 &&
+                                isEnteredCodeComplete(enteredCode)
+                            ) {
                                 keyboardController?.hide()
                             }
                         },
@@ -150,11 +154,11 @@ fun EmailConfirmationScreen(
                             .onKeyEvent { event ->
                                 if (event.type == KeyEventType.KeyUp
                                     && event.key == Key.Backspace
-                                    && code[index].isEmpty()
+                                    && enteredCode[index].isEmpty()
                                     && index > 0
                                 ) {
                                     focusRequesters[index - 1].requestFocus()
-                                    code[index - 1] = ""
+                                    enteredCode[index - 1] = ""
                                     true
                                 } else {
                                     false
@@ -168,7 +172,7 @@ fun EmailConfirmationScreen(
                             color = MaterialTheme.colorScheme.surface
                         ),
                         placeholder = {
-                            if (!isFocused && code[index].isBlank()) {
+                            if (!isFocused && enteredCode[index].isBlank()) {
                                 Text(
                                     text = "__",
                                     style = MaterialTheme.typography.bodyLarge
@@ -218,23 +222,34 @@ fun EmailConfirmationScreen(
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp),
                 text = stringResource(R.string.confirm_registration),
                 onClick = {
-                    if (compareOtp(otp, code)) {
-                        viewModel.registerUser(email, password)
-                    } else {
-                        for (i in code.indices) {
-                            code[i] = ""
+                    if (inputCodeCount < INPUT_CODE_MAX_COUNT) {
+                        if (compareCode(receivedCode, enteredCode)) {
+                            viewModel.registerUser(email, password)
+                        } else {
+                            inputCodeCount++
+                            resetEnteredCode(enteredCode)
+                            focusRequesters[0].requestFocus()
+
+                            if (inputCodeCount < INPUT_CODE_MAX_COUNT) {
+                                createToast(
+                                    context,
+                                    context.getString(R.string.Incorrect_confirmation_code)
+                                )
+                            } else {
+                                createToast(
+                                    context,
+                                    context.getString(R.string.number_of_input_attempts_is_exhausted)
+                                )
+                            }
                         }
-
-                        focusRequesters[0].requestFocus()
-
-                        Toast.makeText(
+                    } else {
+                        createToast(
                             context,
-                            context.getString(R.string.Incorrect_confirmation_code),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                            context.getString(R.string.number_of_input_attempts_is_exhausted)
+                        )
                     }
                 },
-                enabled = isCodeComplete(code)
+                enabled = isEnteredCodeComplete(enteredCode)
             )
 
             Text(
@@ -244,6 +259,9 @@ fun EmailConfirmationScreen(
                     .clickable(
                         onClick = {
                             viewModel.verify(email)
+                            inputCodeCount = 0
+                            resetEnteredCode(enteredCode)
+                            focusRequesters[0].requestFocus()
                         }
                     ),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -252,21 +270,14 @@ fun EmailConfirmationScreen(
         }
     }
 
-    LaunchedEffect(regState) {
-        getRegState(
-            regState = regState,
+    LaunchedEffect(emailConfirmationState) {
+        getEmailConfirmationState(
+            emailConfirmationState = emailConfirmationState,
             context = context,
             onEmailConfirmationClick = onEmailConfirmationClick,
-            clearRegState = viewModel::clearRegState
-        )
-    }
-
-    LaunchedEffect(verificationState) {
-        getVerificationState(
-            verificationState = verificationState,
-            context = context,
             onResendingCodeClick = onResendingCodeClick,
-            clearVerificationState = viewModel::clearVerificationState
+            clearEmailConfirmationState = viewModel::clearEmailConfirmationState,
+            setReceivedCode = { receivedCode = it }
         )
     }
 
@@ -275,13 +286,19 @@ fun EmailConfirmationScreen(
     }
 }
 
-fun isCodeComplete(code: MutableList<String>): Boolean {
-    return code.all { it.isNotEmpty() }
+fun isEnteredCodeComplete(enteredCode: MutableList<String>): Boolean {
+    return enteredCode.all { it.isNotEmpty() }
 }
 
-fun compareOtp(otp: Int, code: SnapshotStateList<String>): Boolean {
-    val enteredOtp = code.joinToString("").toIntOrNull()
-    return enteredOtp != null && enteredOtp == otp
+fun compareCode(receivedCode: Int, enteredCode: SnapshotStateList<String>): Boolean {
+    val enteredOtp = enteredCode.joinToString("").toIntOrNull()
+    return enteredOtp != null && enteredOtp == receivedCode
+}
+
+fun resetEnteredCode(enteredCode: SnapshotStateList<String>) {
+    for (i in enteredCode.indices) {
+        enteredCode[i] = ""
+    }
 }
 
 fun pasteFromClipboard(context: Context, code: MutableList<String>) {
@@ -294,70 +311,41 @@ fun pasteFromClipboard(context: Context, code: MutableList<String>) {
             }
         }
     } else {
-        Toast.makeText(
-            context,
-            context.getString(R.string.incorrect_code_format),
-            Toast.LENGTH_SHORT
-        ).show()
+        createToast(context, context.getString(R.string.incorrect_code_format))
     }
 }
 
-private fun getRegState(
-    regState: RegState,
+private fun getEmailConfirmationState(
+    emailConfirmationState: EmailConfirmationState,
     context: Context,
     onEmailConfirmationClick: () -> Unit,
-    clearRegState: () ->  Unit
+    onResendingCodeClick: (Int) -> Unit,
+    clearEmailConfirmationState: () ->  Unit,
+    setReceivedCode: (Int) -> Unit
 ) {
-    when (regState) {
-        is RegState.Success -> {
+    when (emailConfirmationState) {
+        is EmailConfirmationState.RegSuccess -> {
             onEmailConfirmationClick()
-            clearRegState()
+            clearEmailConfirmationState()
         }
-        is RegState.Error -> {
-            val errorMessage = when (regState.code) {
+        is EmailConfirmationState.VerificationSuccess -> {
+            setReceivedCode(emailConfirmationState.otp)
+            onResendingCodeClick(emailConfirmationState.otp)
+            clearEmailConfirmationState()
+        }
+        is EmailConfirmationState.Error -> {
+            val errorMessage = when (emailConfirmationState.code) {
                 in 500..599 -> context.getString(R.string.server_error)
-                else -> regState.message
+                else -> emailConfirmationState.message
             }
-            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-            clearRegState()
+            createToast(context, errorMessage)
+            clearEmailConfirmationState()
         }
-        is RegState.Exception -> {
-            Toast.makeText(context, regState.message, Toast.LENGTH_SHORT).show()
-            clearRegState()
+        is EmailConfirmationState.Exception -> {
+            createToast(context, emailConfirmationState.message)
+            clearEmailConfirmationState()
         }
-        RegState.Idle -> {
-        }
-    }
-}
-
-private fun getVerificationState(
-    verificationState: VerificationState,
-    context: Context,
-    onResendingCodeClick: () -> Unit,
-    clearVerificationState: () ->  Unit
-) {
-    when (verificationState) {
-        is VerificationState.Success -> {
-            onResendingCodeClick()
-            clearVerificationState()
-        }
-        is VerificationState.Error -> {
-            val errorMessage = when (verificationState.code) {
-                in 500..599 -> context.getString(R.string.server_error)
-                else -> verificationState.message
-            }
-            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-            clearVerificationState()
-        }
-        is VerificationState.Exception -> {
-            Toast.makeText(
-                context,
-                verificationState.message,
-                Toast.LENGTH_SHORT
-            ).show()
-            clearVerificationState()
-        }
-        VerificationState.Idle -> {
+        EmailConfirmationState.Idle -> {
         }
     }
 }
