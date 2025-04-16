@@ -103,7 +103,11 @@ fun MainNavHost(
                 expDate = emailConfirmation.expDate,
                 otp = emailConfirmation.otp,
                 onEmailConfirmationClick = {
-                    navController.navigate(Route.LetsMeet)
+                    navController.navigate(Route.LetsMeet) {
+                        popUpTo(Route.Reg) {
+                            inclusive = false
+                        }
+                    }
                 },
                 onResendingCodeClick = {
 
