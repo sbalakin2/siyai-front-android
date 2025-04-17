@@ -13,10 +13,15 @@ sealed interface AuthRoute {
     data object Reg: AuthRoute
 
     @Serializable
-    data object RecoveryPassword
+    data object RecoveryPassword: AuthRoute
 
     @Serializable
-    data class EmailConfirmation(val email: String, val password: String): AuthRoute
+    data class EmailConfirmation(
+        val email: String,
+        val password: String,
+        val expDate: Int,
+        val otp: Int
+    ): AuthRoute
 
     @Serializable
     data object LetsMeet: AuthRoute

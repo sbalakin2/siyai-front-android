@@ -63,8 +63,15 @@ fun AuthNavHost(
                 onLoginClick = {
                     navController.navigate(AuthRoute.Login)
                 },
-                onEmailConfirmationClick = { email, password ->
-                    navController.navigate(AuthRoute.EmailConfirmation(email, password))
+                onRegClick = { email, password, expDate, otp ->
+                    navController.navigate(
+                        AuthRoute.EmailConfirmation(
+                            email = email,
+                            password = password,
+                            expDate = expDate,
+                            otp = otp
+                        )
+                    )
                 },
                 viewModelFactory = viewModelFactory
             )
@@ -91,7 +98,23 @@ fun AuthNavHost(
         }
         composable<AuthRoute.EmailConfirmation> {
             val emailConfirmation = it.toRoute<AuthRoute.EmailConfirmation>()
-            EmailConfirmationScreen(emailConfirmation.email, emailConfirmation.password)
+            EmailConfirmationScreen(
+                email = emailConfirmation.email,
+                password = emailConfirmation.password,
+                expDate = emailConfirmation.expDate,
+                otp = emailConfirmation.otp,
+                onEmailConfirmationClick = {
+                    navController.navigate(AuthRoute.LetsMeet) {
+                        popUpTo(AuthRoute.Reg) {
+                            inclusive = false
+                        }
+                    }
+                },
+                onResendingCodeClick = {
+
+                },
+                viewModelFactory = viewModelFactory
+            )
         }
         composable<AuthRoute.LetsMeet> {
             LetsMeetScreen()
