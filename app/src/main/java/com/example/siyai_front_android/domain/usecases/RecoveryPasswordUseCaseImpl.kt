@@ -1,7 +1,7 @@
 package com.example.siyai_front_android.domain.usecases
 
 import com.example.siyai_front_android.domain.repositories.RecoveryPasswordRepository
-import com.example.siyai_front_android.presentation.password_recovery.RecoveryPasswordState
+import com.example.siyai_front_android.presentation.auth.password_recovery.RecoveryPasswordState
 import com.example.siyai_front_android.utils.NetworkResult
 import javax.inject.Inject
 
