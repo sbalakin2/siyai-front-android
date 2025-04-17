@@ -6,4 +6,16 @@ object SiyAiIcons {
     val EyeShow = EyeShowIcon
     val Close = CloseIcon
     val CheckMark = CheckMarkIcon
+    val HomeUnselected = HomeUnselectedIcon
+    val HomeSelected = HomeSelectedIcon
+    val TrainingUnselected = TrainingUnselectedIcon
+    val TrainingSelected = TrainingSelectedIcon
+    val AudionUnselected = AudioUnselectedIcon
+    val AudionSelected = AudioSelectedIcon
+    val ProfileUnselected = ProfileUnselectedIcon
+    val ProfileSelected = ProfileSelectedIcon
+    val Instagram = InstagramIcon
+    val Plus = PlusIcon
+    val Check = CheckIcon
+    val Archive = ArchiveIcon
 }
