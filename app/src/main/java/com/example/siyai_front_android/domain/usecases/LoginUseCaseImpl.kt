@@ -1,7 +1,7 @@
 package com.example.siyai_front_android.domain.usecases
 
 import com.example.siyai_front_android.domain.repositories.LoginRepository
-import com.example.siyai_front_android.presentation.login.LoginState
+import com.example.siyai_front_android.presentation.auth.login.LoginState
 import com.example.siyai_front_android.utils.NetworkResult
 import javax.inject.Inject
 
