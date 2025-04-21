@@ -1,7 +1,7 @@
 package com.example.siyai_front_android.domain.usecases
 
 import com.example.siyai_front_android.domain.repositories.RegRepository
-import com.example.siyai_front_android.presentation.email_confirmation.RegState
+import com.example.siyai_front_android.presentation.auth.email_confirmation.RegState
 import com.example.siyai_front_android.utils.NetworkResult
 import javax.inject.Inject
 

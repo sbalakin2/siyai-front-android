@@ -59,6 +59,29 @@
     <string name="ok">OK</string>
     <string name="cancel">Отмена</string>
 
+    <string name="home">Главная</string>
+    <string name="training">Обучение</string>
+    <string name="audio">Аудио</string>
+    <string name="profile">Профиль</string>
+
+    <string name="hello_user">Привет, %1$s!</string>
+    <string name="sign_of_the_day">ЗНАК ДНЯ</string>
+    <string name="sign_of_the_day_title">Выход есть всегда</string>
+    <string name="free_lessons">Бесплатные уроки</string>
+    <string name="tracklists">Треклисты</string>
+    <string name="tracklists_subtitle1">Нет ни одного трекера</string>
+    <string name="tracklists_subtitle2">Создайте его прямо сейчас</string>
+    <string name="every_day">Каждый день</string>
+    <string name="day_form1">день</string>
+    <string name="day_form2">дня</string>
+    <string name="day_form3">деней</string>
+    <string name="waiting_list">ЛИСТ ОЖИДАНИЯ</string>
+    <string name="waiting_list_subtitle">SIYAI New Year 12 поток</string>
+    <string name="shop">Магазин</string>
+    <string name="purchased">Купленные</string>
+    <string name="all">Все</string>
+    <string name="price">%1$s руб</string>
+
     <string name="edit">Редактировать</string>
     <string name="my_stats">Моя статистика</string>
     <string name="support">Поддержка</string>

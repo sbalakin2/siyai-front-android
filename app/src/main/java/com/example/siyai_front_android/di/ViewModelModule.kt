@@ -2,10 +2,10 @@ package com.example.siyai_front_android.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.siyai_front_android.presentation.email_confirmation.EmailConfirmationViewModel
-import com.example.siyai_front_android.presentation.login.LoginViewModel
-import com.example.siyai_front_android.presentation.password_recovery.RecoveryPasswordViewModel
-import com.example.siyai_front_android.presentation.reg.RegViewModel
+import com.example.siyai_front_android.presentation.auth.email_confirmation.EmailConfirmationViewModel
+import com.example.siyai_front_android.presentation.auth.login.LoginViewModel
+import com.example.siyai_front_android.presentation.auth.password_recovery.RecoveryPasswordViewModel
+import com.example.siyai_front_android.presentation.auth.reg.RegViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
