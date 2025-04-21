@@ -13,6 +13,7 @@ import com.example.siyai_front_android.presentation.login.LoginScreen
 import com.example.siyai_front_android.presentation.onboarding.OnboardingScreen
 import com.example.siyai_front_android.presentation.password_recovery.PasswordRecovery1Screen
 import com.example.siyai_front_android.presentation.password_recovery.PasswordRecovery2Screen
+import com.example.siyai_front_android.presentation.profile.ProfileScreen
 import com.example.siyai_front_android.presentation.reg.RegScreen
 import com.example.siyai_front_android.presentation.welcome.LetsMeetScreen
 
@@ -117,6 +118,9 @@ fun MainNavHost(
         }
         composable<Route.LetsMeet> {
             LetsMeetScreen()
+        }
+        composable<Route.Profile> {
+            ProfileScreen()
         }
     }
 }

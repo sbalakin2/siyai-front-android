@@ -32,4 +32,7 @@ sealed interface Route {
         val expDate: Int,
         val otp: Int
     ): Route
+
+    @Serializable
+    data object Profile: Route
 }
