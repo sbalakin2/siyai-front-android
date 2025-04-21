@@ -6,4 +6,6 @@ object SiyAiIcons {
     val EyeShow = EyeShowIcon
     val Close = CloseIcon
     val CheckMark = CheckMarkIcon
+    val Edit = EditIcon
+    val Forward = ForwardIcon
 }
