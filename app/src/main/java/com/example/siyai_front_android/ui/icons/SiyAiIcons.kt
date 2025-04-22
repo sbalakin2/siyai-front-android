@@ -18,4 +18,6 @@ object SiyAiIcons {
     val Plus = PlusIcon
     val Check = CheckIcon
     val Archive = ArchiveIcon
+    val Edit = EditIcon
+    val Forward = ForwardIcon
 }

@@ -82,5 +82,11 @@
     <string name="all">Все</string>
     <string name="price">%1$s руб</string>
 
-
+    <string name="edit">Редактировать</string>
+    <string name="my_stats">Моя статистика</string>
+    <string name="support">Поддержка</string>
+    <string name="restore_purchases">Восстановить покупки</string>
+    <string name="rate_app">Оценить приложение</string>
+    <string name="about_app">О приложении</string>
+    <string name="log_out_of_app">Выйти из приложения</string>
 </resources>
