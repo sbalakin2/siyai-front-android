@@ -38,8 +38,8 @@ fun ProfileScreen() {
             model = R.drawable.avatar_image,
             contentDescription = null,
             modifier = Modifier
-                .padding(top = 80.dp)
-                .size(176.dp)
+                .padding(top = 64.dp)
+                .size(160.dp)
                 .clip(RoundedCornerShape(112.dp)),
             contentScale = ContentScale.Crop
         )
@@ -72,7 +72,7 @@ fun ProfileScreen() {
         }
 
         ProfileItem(
-            modifier = Modifier.fillMaxWidth().padding(top = 40.dp, bottom = 20.dp),
+            modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
             iconRes = R.drawable.statistics_image,
             titleRes = R.string.my_stats
         )
@@ -80,7 +80,7 @@ fun ProfileScreen() {
         Divider()
 
         ProfileItem(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 20.dp),
+            modifier = Modifier.fillMaxWidth(),
             iconRes = R.drawable.support_image,
             titleRes = R.string.support
         )
@@ -88,7 +88,7 @@ fun ProfileScreen() {
         Divider()
 
         ProfileItem(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 20.dp),
+            modifier = Modifier.fillMaxWidth(),
             iconRes = R.drawable.restoring_image,
             titleRes = R.string.restore_purchases
         )
@@ -96,7 +96,7 @@ fun ProfileScreen() {
         Divider()
 
         ProfileItem(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 20.dp),
+            modifier = Modifier.fillMaxWidth(),
             iconRes = R.drawable.rate_image,
             titleRes = R.string.rate_app
         )
@@ -104,7 +104,7 @@ fun ProfileScreen() {
         Divider()
 
         ProfileItem(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 20.dp),
+            modifier = Modifier.fillMaxWidth(),
             iconRes = R.drawable.about_app_image,
             titleRes = R.string.about_app
         )
@@ -112,7 +112,7 @@ fun ProfileScreen() {
         Divider()
 
         ProfileItem(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 20.dp),
+            modifier = Modifier.fillMaxWidth(),
             iconRes = R.drawable.log_out_image,
             titleRes = R.string.log_out_of_app
         )
