@@ -22,7 +22,7 @@ fun ProfileItem(
     titleRes: Int,
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier.padding(vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
