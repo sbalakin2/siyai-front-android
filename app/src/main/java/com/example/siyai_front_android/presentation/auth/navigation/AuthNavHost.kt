@@ -9,12 +9,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.toRoute
 import com.example.siyai_front_android.presentation.auth.email_confirmation.EmailConfirmationScreen
+import com.example.siyai_front_android.presentation.auth.lets_meet.LetsMeetScreen
 import com.example.siyai_front_android.presentation.auth.login.LoginScreen
 import com.example.siyai_front_android.presentation.auth.onboarding.OnboardingScreen
 import com.example.siyai_front_android.presentation.auth.password_recovery.PasswordRecovery1Screen
 import com.example.siyai_front_android.presentation.auth.password_recovery.PasswordRecovery2Screen
 import com.example.siyai_front_android.presentation.auth.reg.RegScreen
-import com.example.siyai_front_android.presentation.auth.welcome.LetsMeetScreen
 
 @Composable
 fun AuthNavHost(

@@ -1,4 +1,4 @@
-package com.example.siyai_front_android.presentation.auth.welcome
+package com.example.siyai_front_android.presentation.auth.lets_meet
 
 sealed interface LetsMeetState {
     data object Success: LetsMeetState
