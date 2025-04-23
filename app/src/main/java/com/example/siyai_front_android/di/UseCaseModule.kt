@@ -1,15 +1,17 @@
 package com.example.siyai_front_android.di
 
-import com.example.siyai_front_android.domain.usecases.VerifyUseCase
-import com.example.siyai_front_android.domain.usecases.VerifyUseCaseImpl
-import com.example.siyai_front_android.domain.usecases.LetsMeetUseCase
-import com.example.siyai_front_android.domain.usecases.LetsMeetUseCaseImpl
+import com.example.siyai_front_android.domain.usecases.CreateProfileUseCase
+import com.example.siyai_front_android.domain.usecases.CreateProfileUseCaseImpl
+import com.example.siyai_front_android.domain.usecases.GetCountiesWithCitiesUseCase
+import com.example.siyai_front_android.domain.usecases.GetCountiesWithCitiesUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.LoginUseCase
 import com.example.siyai_front_android.domain.usecases.LoginUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.RecoveryPasswordUseCase
 import com.example.siyai_front_android.domain.usecases.RecoveryPasswordUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.RegUseCase
 import com.example.siyai_front_android.domain.usecases.RegUseCaseImpl
+import com.example.siyai_front_android.domain.usecases.VerifyUseCase
+import com.example.siyai_front_android.domain.usecases.VerifyUseCaseImpl
 import dagger.Binds
 import dagger.Module
 
@@ -28,8 +30,13 @@ interface UseCaseModule {
     ): RecoveryPasswordUseCase
 
     @Binds
-    fun bindLetsMeetUseCase(letsMeetUseCase: LetsMeetUseCaseImpl): LetsMeetUseCase
+    fun bindCreateProfileUseCase(createProfileUseCase: CreateProfileUseCaseImpl): CreateProfileUseCase
 
     @Binds
     fun bindVerifyUseCase(verifyUseCase: VerifyUseCaseImpl): VerifyUseCase
+
+    @Binds
+    fun bindCountryWithCitiesUseCase(
+        countryWithCitiesUseCase: GetCountiesWithCitiesUseCaseImpl
+    ): GetCountiesWithCitiesUseCase
 }

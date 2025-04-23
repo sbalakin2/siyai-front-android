@@ -1,7 +1,7 @@
-package com.example.siyai_front_android.data.remote.mapper
+package com.example.siyai_front_android.data.mappers
 
 import com.example.siyai_front_android.data.remote.dto.UserProfileRequest
-import com.example.siyai_front_android.domain.model.UserProfileData
+import com.example.siyai_front_android.domain.dto.UserProfileData
 
 fun UserProfileData.toCreateProfileRequest(): UserProfileRequest {
     return UserProfileRequest(

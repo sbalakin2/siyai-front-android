@@ -1,15 +1,17 @@
 package com.example.siyai_front_android.di
 
-import com.example.siyai_front_android.data.repositories.LetsMeetRepositoryImpl
-import com.example.siyai_front_android.data.repositories.VerificationRepositoryImpl
+import com.example.siyai_front_android.data.repositories.CountryWithCitiesRepositoryImpl
+import com.example.siyai_front_android.data.repositories.CreateProfileRepositoryImpl
 import com.example.siyai_front_android.data.repositories.LoginRepositoryImpl
 import com.example.siyai_front_android.data.repositories.RecoveryPasswordRepositoryImpl
 import com.example.siyai_front_android.data.repositories.RegRepositoryImpl
-import com.example.siyai_front_android.domain.repositories.LetsMeetRepository
+import com.example.siyai_front_android.data.repositories.VerificationRepositoryImpl
+import com.example.siyai_front_android.domain.repositories.CountryWithCitiesRepository
+import com.example.siyai_front_android.domain.repositories.CreateProfileRepository
 import com.example.siyai_front_android.domain.repositories.LoginRepository
 import com.example.siyai_front_android.domain.repositories.RecoveryPasswordRepository
-import com.example.siyai_front_android.domain.repositories.VerificationRepository
 import com.example.siyai_front_android.domain.repositories.RegRepository
+import com.example.siyai_front_android.domain.repositories.VerificationRepository
 import dagger.Binds
 import dagger.Module
 
@@ -28,7 +30,14 @@ interface DataModule {
     ): RecoveryPasswordRepository
 
     @Binds
-    fun bindLetsMeetRepository(letsMeetRepository: LetsMeetRepositoryImpl): LetsMeetRepository
+    fun bindCreateProfileRepository(
+        createProfileRepository: CreateProfileRepositoryImpl
+    ): CreateProfileRepository
+
+    @Binds
+    fun bindCountryWithCitiesRepository(
+        countryWithCitiesRepository: CountryWithCitiesRepositoryImpl
+    ): CountryWithCitiesRepository
 
     @Binds
     fun bindVerificationRepository(

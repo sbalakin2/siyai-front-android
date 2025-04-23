@@ -2,8 +2,10 @@ package com.example.siyai_front_android.presentation.auth.welcome
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.siyai_front_android.domain.model.UserProfileData
-import com.example.siyai_front_android.domain.usecases.LetsMeetUseCase
+import com.example.siyai_front_android.domain.dto.CountryWithCities
+import com.example.siyai_front_android.domain.dto.UserProfileData
+import com.example.siyai_front_android.domain.usecases.CreateProfileUseCase
+import com.example.siyai_front_android.domain.usecases.GetCountiesWithCitiesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,26 +13,30 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class LetsMeetViewModel @Inject constructor(
-    private val letsMeetUseCase: LetsMeetUseCase
+    private val getCountiesWithCitiesUseCase: GetCountiesWithCitiesUseCase,
+    private val createProfileUseCase: CreateProfileUseCase
 ) : ViewModel() {
 
     private val _letsMeetState = MutableStateFlow<LetsMeetState>(LetsMeetState.Nothing)
     val letsMeetState: StateFlow<LetsMeetState> = _letsMeetState.asStateFlow()
 
-    private val _countries = MutableStateFlow(
-        listOf(LocationSelectItem(label = "Россия", value = "RUSSIA"))
-    )
-    val counties = _countries.asStateFlow()
+    private val _countriesWithCities = MutableStateFlow<List<CountryWithCities>>(emptyList())
+    val countiesWithCities = _countriesWithCities.asStateFlow()
 
-    private val _cities = MutableStateFlow(
-        listOf(LocationSelectItem(label = "Москва", value = "MOSCOW"))
-    )
-    val cities = _cities.asStateFlow()
+    init {
+        loadCountriesWithCities()
+    }
+
+    private fun loadCountriesWithCities() {
+        viewModelScope.launch {
+            _countriesWithCities.value = getCountiesWithCitiesUseCase()
+        }
+    }
 
     fun createUserProfile(data: UserProfileData) {
         viewModelScope.launch {
             _letsMeetState.value = LetsMeetState.Loading
-            _letsMeetState.value = runCatching { letsMeetUseCase(data) }
+            _letsMeetState.value = runCatching { createProfileUseCase(data) }
                 .getOrElse { LetsMeetState.Exception(it.localizedMessage ?: "Unknown error") }
         }
     }

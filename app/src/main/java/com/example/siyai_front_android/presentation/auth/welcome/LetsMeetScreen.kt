@@ -32,7 +32,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.siyai_front_android.R
-import com.example.siyai_front_android.domain.model.UserProfileData
+import com.example.siyai_front_android.domain.dto.UserProfileData
 import com.example.siyai_front_android.ui.components.buttons.SecondaryLoadingButton
 import com.example.siyai_front_android.ui.components.text_fields.BaseTextField
 import com.example.siyai_front_android.ui.components.text_fields.DatePickerTextField
@@ -50,15 +50,19 @@ fun LetsMeetScreen(
 ) {
     val viewModel: LetsMeetViewModel = viewModel(factory = viewModelFactory)
 
-    val letsMeetState by viewModel.letsMeetState.collectAsStateWithLifecycle()
-    val counties by viewModel.counties.collectAsStateWithLifecycle()
-    val cities by viewModel.cities.collectAsStateWithLifecycle()
+    val countiesWithCities by viewModel.countiesWithCities.collectAsStateWithLifecycle()
+    var cities by remember { mutableStateOf<List<String>>(emptyList()) }
+
+    var countryIndex by rememberSaveable { mutableIntStateOf(-1) }
+    var cityIndex by rememberSaveable { mutableIntStateOf(-1) }
+
+    LaunchedEffect(countryIndex) {
+        cities = countiesWithCities.getOrNull(countryIndex)?.cities ?: emptyList()
+    }
 
     var name by rememberSaveable { mutableStateOf("") }
     var surname by rememberSaveable { mutableStateOf("") }
     var birthday by rememberSaveable { mutableStateOf<Date?>(null) }
-    var cityIndex by rememberSaveable { mutableIntStateOf(-1) }
-    var countryIndex by rememberSaveable { mutableIntStateOf(-1) }
 
     val isCreateProfileEnabled by remember {
         derivedStateOf {
@@ -66,6 +70,8 @@ fun LetsMeetScreen(
                     && cityIndex != -1 && countryIndex != -1
         }
     }
+
+    val letsMeetState by viewModel.letsMeetState.collectAsStateWithLifecycle()
     val isProfileCreating by remember { derivedStateOf { letsMeetState is LetsMeetState.Loading } }
 
     val context = LocalContext.current
@@ -77,11 +83,13 @@ fun LetsMeetScreen(
             }
 
             is LetsMeetState.Error -> {
-                Toast.makeText(context, currentState.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Error: " + currentState.message, Toast.LENGTH_SHORT)
+                    .show()
             }
 
             is LetsMeetState.Exception -> {
-                Toast.makeText(context, currentState.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Exception: " + currentState.message, Toast.LENGTH_SHORT)
+                    .show()
             }
 
             else -> {}
@@ -148,10 +156,10 @@ fun LetsMeetScreen(
 
             DropDownTextField(
                 index = countryIndex,
-                onIndexChange = { index -> countryIndex = index },
+                onIndexChange = { index -> countryIndex = index; cityIndex = -1 },
                 label = stringResource(R.string.lets_meet_country),
-                itemLabel = { it.label },
-                items = counties,
+                itemLabel = { it.name },
+                items = countiesWithCities,
                 fullScreen = false,
                 enabled = !isProfileCreating,
                 modifier = Modifier
@@ -160,13 +168,13 @@ fun LetsMeetScreen(
             )
 
             DropDownTextField(
-                index = cityIndex ,
+                index = cityIndex,
                 onIndexChange = { index -> cityIndex = index },
                 label = stringResource(R.string.lets_meet_city),
-                itemLabel = { it.label },
+                itemLabel = { it },
                 items = cities,
                 fullScreen = false,
-                enabled = !isProfileCreating,
+                enabled = !isProfileCreating && cities.isNotEmpty(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 6.dp)
@@ -186,7 +194,7 @@ fun LetsMeetScreen(
                         userName = name,
                         userSurname = surname,
                         userBirthday = birthday,
-                        userCountry = counties.getOrNull(countryIndex),
+                        userCountry = countiesWithCities.getOrNull(countryIndex)?.name,
                         userCity = cities.getOrNull(cityIndex)
                     )?.let { data -> viewModel.createUserProfile(data) }
                 },
@@ -201,8 +209,8 @@ private fun createUserProfileData(
     userName: String,
     userSurname: String,
     userBirthday: Date?,
-    userCountry: LocationSelectItem?,
-    userCity: LocationSelectItem?
+    userCountry: String?,
+    userCity: String?
 ): UserProfileData? {
     if (userBirthday == null || userCountry == null || userCity == null) {
         return null
@@ -213,8 +221,8 @@ private fun createUserProfileData(
         name = userName,
         surName = userSurname,
         birthday = userBirthday.toISODateString(),
-        country = userCountry.value,
-        city = userCity.value
+        country = userCountry,
+        city = userCity
     )
 
     return data

@@ -1,4 +1,4 @@
-package com.example.siyai_front_android.domain.model
+package com.example.siyai_front_android.domain.dto
 
 data class UserProfileData(
     val email: String,
