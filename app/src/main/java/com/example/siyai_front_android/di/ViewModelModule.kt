@@ -6,6 +6,10 @@ import com.example.siyai_front_android.presentation.login.LoginViewModel
 import com.example.siyai_front_android.presentation.password_recovery.RecoveryPasswordViewModel
 import com.example.siyai_front_android.presentation.reg.RegViewModel
 import com.example.siyai_front_android.presentation.welcome.LetsMeetViewModel
+import com.example.siyai_front_android.presentation.auth.email_confirmation.EmailConfirmationViewModel
+import com.example.siyai_front_android.presentation.auth.login.LoginViewModel
+import com.example.siyai_front_android.presentation.auth.password_recovery.RecoveryPasswordViewModel
+import com.example.siyai_front_android.presentation.auth.reg.RegViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -15,6 +19,13 @@ abstract class ViewModelModule {
 
     @Binds
     abstract fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EmailConfirmationViewModel::class)
+    abstract fun bindEmailConfigurationViewModel(
+        emailConfirmationViewModel: EmailConfirmationViewModel
+    ): ViewModel
 
     @Binds
     @IntoMap

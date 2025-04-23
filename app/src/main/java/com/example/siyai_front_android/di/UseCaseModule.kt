@@ -1,5 +1,7 @@
 package com.example.siyai_front_android.di
 
+import com.example.siyai_front_android.domain.usecases.VerifyUseCase
+import com.example.siyai_front_android.domain.usecases.VerifyUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.LetsMeetUseCase
 import com.example.siyai_front_android.domain.usecases.LetsMeetUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.LoginUseCase
@@ -27,4 +29,7 @@ interface UseCaseModule {
 
     @Binds
     fun bindLetsMeetUseCase(letsMeetUseCase: LetsMeetUseCaseImpl): LetsMeetUseCase
+
+    @Binds
+    fun bindVerifyUseCase(verifyUseCase: VerifyUseCaseImpl): VerifyUseCase
 }

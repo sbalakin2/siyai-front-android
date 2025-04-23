@@ -34,13 +34,17 @@
     <string name="sent_letter">Письмо со сбросом пароля отправлено!</string>
     <string name="empty_fields">Заполните все поля</string>
     <string name="server_error">Что-то пошло не так, повторите запрос позже</string>
+    <string name="user_is_already_registered">Пользователь с указанными данными уже зарегистрирован</string>
 
     <string name="confirmation_code_has_been_sent">На Ваш email отправлен\nкод подтверждения</string>
     <string name="please_check_your_email">Пожалуйста, проверьте Вашу почту\nи введите код подтверждения</string>
     <string name="confirm_registration">Подтвердить регистрацию</string>
     <string name="did_not_get_code">Не получили код? Отправить повторно</string>
     <string name="incorrect_code_format">Некорректный формат кода</string>
+    <string name="Incorrect_confirmation_code">Неправильный код подтверждения</string>
+    <string name="code_lifetime_has_expired">Время жизни кода истекло</string>
     <string name="check_is_completed">Проверка выполнена</string>
+    <string name="number_of_input_attempts_is_exhausted">Количество попыток ввода исчерпано, пожалуйста, запросите код подтверждения повторно</string>
 
     <string name="lets_meet">Давай знакомится!</string>
     <string name="lets_meet_subtitle">Подстроим аккаунт под тебя и поможем, если тебе нужна будет помощь</string>
@@ -55,4 +59,34 @@
     <string name="ok">OK</string>
     <string name="cancel">Отмена</string>
 
+    <string name="home">Главная</string>
+    <string name="training">Обучение</string>
+    <string name="audio">Аудио</string>
+    <string name="profile">Профиль</string>
+
+    <string name="hello_user">Привет, %1$s!</string>
+    <string name="sign_of_the_day">ЗНАК ДНЯ</string>
+    <string name="sign_of_the_day_title">Выход есть всегда</string>
+    <string name="free_lessons">Бесплатные уроки</string>
+    <string name="tracklists">Треклисты</string>
+    <string name="tracklists_subtitle1">Нет ни одного трекера</string>
+    <string name="tracklists_subtitle2">Создайте его прямо сейчас</string>
+    <string name="every_day">Каждый день</string>
+    <string name="day_form1">день</string>
+    <string name="day_form2">дня</string>
+    <string name="day_form3">деней</string>
+    <string name="waiting_list">ЛИСТ ОЖИДАНИЯ</string>
+    <string name="waiting_list_subtitle">SIYAI New Year 12 поток</string>
+    <string name="shop">Магазин</string>
+    <string name="purchased">Купленные</string>
+    <string name="all">Все</string>
+    <string name="price">%1$s руб</string>
+
+    <string name="edit">Редактировать</string>
+    <string name="my_stats">Моя статистика</string>
+    <string name="support">Поддержка</string>
+    <string name="restore_purchases">Восстановить покупки</string>
+    <string name="rate_app">Оценить приложение</string>
+    <string name="about_app">О приложении</string>
+    <string name="log_out_of_app">Выйти из приложения</string>
 </resources>

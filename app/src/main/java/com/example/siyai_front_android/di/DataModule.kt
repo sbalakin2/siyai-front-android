@@ -1,12 +1,14 @@
 package com.example.siyai_front_android.di
 
 import com.example.siyai_front_android.data.repositories.LetsMeetRepositoryImpl
+import com.example.siyai_front_android.data.repositories.VerificationRepositoryImpl
 import com.example.siyai_front_android.data.repositories.LoginRepositoryImpl
 import com.example.siyai_front_android.data.repositories.RecoveryPasswordRepositoryImpl
 import com.example.siyai_front_android.data.repositories.RegRepositoryImpl
 import com.example.siyai_front_android.domain.repositories.LetsMeetRepository
 import com.example.siyai_front_android.domain.repositories.LoginRepository
 import com.example.siyai_front_android.domain.repositories.RecoveryPasswordRepository
+import com.example.siyai_front_android.domain.repositories.VerificationRepository
 import com.example.siyai_front_android.domain.repositories.RegRepository
 import dagger.Binds
 import dagger.Module
@@ -27,4 +29,9 @@ interface DataModule {
 
     @Binds
     fun bindLetsMeetRepository(letsMeetRepository: LetsMeetRepositoryImpl): LetsMeetRepository
+
+    @Binds
+    fun bindVerificationRepository(
+        verificationRepository: VerificationRepositoryImpl
+    ): VerificationRepository
 }
