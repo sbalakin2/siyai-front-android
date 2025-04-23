@@ -126,9 +126,7 @@ fun AuthNavHost(
 
             LetsMeetScreen(
                 email = letsMeetArgs.email,
-                onProfileCreated = {
-                    // переход на главный экран
-                },
+                onProfileCreated = navigateToHome,
                 viewModelFactory = viewModelFactory
             )
         }
