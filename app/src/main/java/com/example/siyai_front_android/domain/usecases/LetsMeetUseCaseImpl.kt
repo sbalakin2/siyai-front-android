@@ -2,7 +2,7 @@ package com.example.siyai_front_android.domain.usecases
 
 import com.example.siyai_front_android.domain.model.UserProfileData
 import com.example.siyai_front_android.domain.repositories.LetsMeetRepository
-import com.example.siyai_front_android.presentation.welcome.LetsMeetState
+import com.example.siyai_front_android.presentation.auth.welcome.LetsMeetState
 import com.example.siyai_front_android.utils.NetworkResult
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package com.example.siyai_front_android.presentation.welcome
+package com.example.siyai_front_android.presentation.auth.welcome
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -6,7 +6,7 @@ import com.example.siyai_front_android.presentation.auth.email_confirmation.Emai
 import com.example.siyai_front_android.presentation.auth.login.LoginViewModel
 import com.example.siyai_front_android.presentation.auth.password_recovery.RecoveryPasswordViewModel
 import com.example.siyai_front_android.presentation.auth.reg.RegViewModel
-import com.example.siyai_front_android.presentation.welcome.LetsMeetViewModel
+import com.example.siyai_front_android.presentation.auth.welcome.LetsMeetViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
