@@ -104,7 +104,7 @@ fun AuthNavHost(
                 expDate = emailConfirmation.expDate,
                 otp = emailConfirmation.otp,
                 onEmailConfirmationClick = {
-                    navController.navigate(AuthRoute.LetsMeet) {
+                    navController.navigate(AuthRoute.LetsMeet("none")) {
                         popUpTo(AuthRoute.Reg) {
                             inclusive = false
                         }
@@ -117,7 +117,15 @@ fun AuthNavHost(
             )
         }
         composable<AuthRoute.LetsMeet> {
-            LetsMeetScreen()
+            val letsMeetArgs = it.toRoute<AuthRoute.LetsMeet>()
+
+            LetsMeetScreen(
+                email = letsMeetArgs.email,
+                onProfileCreated = {
+                    // переход на главный экран
+                },
+                viewModelFactory = viewModelFactory
+            )
         }
     }
 }

@@ -24,7 +24,7 @@ sealed interface AuthRoute {
     ): AuthRoute
 
     @Serializable
-    data object LetsMeet: AuthRoute
+    data class LetsMeet(val email: String): AuthRoute
 }
 
 sealed class RecoveryPasswordRoute{
