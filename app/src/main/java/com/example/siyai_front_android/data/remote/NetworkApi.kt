@@ -5,6 +5,7 @@ import com.example.siyai_front_android.data.remote.dto.RecoveryPasswordRequest
 import com.example.siyai_front_android.data.remote.dto.VerificationResponse
 import com.example.siyai_front_android.data.remote.dto.RegRequest
 import com.example.siyai_front_android.data.remote.dto.VerificationRequest
+import com.example.siyai_front_android.data.remote.dto.UserProfileRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -29,4 +30,9 @@ interface NetworkApi {
     suspend fun verify(
         @Body verificationRequest: VerificationRequest
     ): Response<VerificationResponse>
+
+    @POST("/user-service/v1/create-profile")
+    suspend fun createUserProfile(
+        @Body userProfileRequest: UserProfileRequest
+    ): Response<Unit>
 }

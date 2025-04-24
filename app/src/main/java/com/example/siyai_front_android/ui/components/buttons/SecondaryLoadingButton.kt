@@ -21,15 +21,17 @@ import com.example.siyai_front_android.ui.theme.SiyaifrontandroidTheme
 @Composable
 fun SecondaryLoadingButton(
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
     text: String,
-    isLoading: Boolean
+    isLoading: Boolean,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ){
     Button(
         modifier = modifier,
         onClick = onClick,
         shape = RoundedCornerShape(32.dp),
-        contentPadding = PaddingValues(vertical = 16.dp)
+        contentPadding = PaddingValues(vertical = 16.dp),
+        enabled = enabled
     ) {
         if (isLoading){
             CircularProgressIndicator(

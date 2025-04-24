@@ -24,11 +24,56 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.siyai_front_android.ui.theme.SiyaifrontandroidTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T : Any> DropDownTextField(
     value: T,
     onValueChange: (item: T) -> Unit,
+    modifier: Modifier = Modifier,
+    label: String,
+    itemLabel: (item: T) -> String = { it.toString() },
+    items: List<T>,
+    placeholder: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    prefix: @Composable (() -> Unit)? = null,
+    suffix: @Composable (() -> Unit)? = null,
+    supportingText: @Composable (() -> Unit)? = null,
+    isError: Boolean = false,
+    enabled: Boolean = true,
+    fullScreen: Boolean = false,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
+) {
+    DropDownTextField(
+        index = items.indexOf(value),
+        onIndexChange = { index -> onValueChange(items[index]) },
+        modifier = modifier,
+        label = label,
+        itemLabel = itemLabel,
+        items = items,
+        placeholder = placeholder,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        prefix = prefix,
+        suffix = suffix,
+        supportingText = supportingText,
+        isError = isError,
+        enabled = enabled,
+        fullScreen = fullScreen,
+        visualTransformation = visualTransformation,
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
+        interactionSource = interactionSource
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun <T : Any> DropDownTextField(
+    index: Int,
+    onIndexChange: (index: Int) -> Unit,
     modifier: Modifier = Modifier,
     label: String,
     itemLabel: (item: T) -> String = { it.toString() },
@@ -56,7 +101,7 @@ fun <T : Any> DropDownTextField(
     ) {
 
         BaseTextField(
-            value = itemLabel(value),
+            value = items.getOrNull(index)?.let(itemLabel) ?: "",
             onValueChange = {},
             modifier = Modifier
                 .menuAnchor()
@@ -85,7 +130,7 @@ fun <T : Any> DropDownTextField(
                 .run { if (fullScreen) fillMaxHeight() else this }
                 .exposedDropdownSize(matchTextFieldWidth = true)
         ) {
-            items.forEach { item ->
+            items.forEachIndexed { index, item ->
                 DropdownMenuItem(
                     text = {
                         Text(
@@ -95,7 +140,7 @@ fun <T : Any> DropDownTextField(
                         )
                     },
                     onClick = {
-                        onValueChange(item)
+                        onIndexChange(index)
                         isFieldExpanded = false
                     }
                 )
