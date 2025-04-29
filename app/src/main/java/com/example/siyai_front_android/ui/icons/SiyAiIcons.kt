@@ -20,4 +20,5 @@ object SiyAiIcons {
     val Archive = ArchiveIcon
     val Edit = EditIcon
     val Forward = ForwardIcon
+    val Trash = TrashIcon
 }
