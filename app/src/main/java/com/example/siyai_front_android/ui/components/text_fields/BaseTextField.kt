@@ -68,6 +68,8 @@ fun BaseTextField(
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent,
+            disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant
         )
     )
 }
