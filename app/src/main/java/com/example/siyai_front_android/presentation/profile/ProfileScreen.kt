@@ -26,7 +26,9 @@ import com.example.siyai_front_android.R
 import com.example.siyai_front_android.ui.icons.SiyAiIcons
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(
+    onEditClick: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -53,7 +55,7 @@ fun ProfileScreen() {
 
         FilledTonalButton(
             onClick = {
-
+                onEditClick()
             },
             modifier = Modifier.padding(top = 16.dp),
             shape = RoundedCornerShape(24.dp),

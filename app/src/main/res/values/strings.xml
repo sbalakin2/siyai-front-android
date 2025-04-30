@@ -89,4 +89,16 @@
     <string name="rate_app">Оценить приложение</string>
     <string name="about_app">О приложении</string>
     <string name="log_out_of_app">Выйти из приложения</string>
+
+    <string name="choose_another_photo">Выбрать другое фото</string>
+    <string name="remove_photo">X Удалить фото</string>
+    <string name="push_notifications">Push уведомления</string>
+    <string name="remove_account">Удалить аккаунт</string>
+    <string name="removing_account_bottom_sheet_title">Вы действительно хотите удалить аккаунт?</string>
+    <string name="removing_account_bottom_sheet_text">Данные будут окончательно удалены в течение 14 дней</string>
+    <string name="selection_photo_bottom_sheet_title">Добавьте фотографию профиля</string>
+    <string name="selection_photo_bottom_sheet_confirm_one_text">Галерея</string>
+    <string name="selection_photo_bottom_sheet_confirm_two_text">Открыть камеру</string>
+    <string name="remove">Удалить</string>
+    <string name="apply">Применить</string>
 </resources>

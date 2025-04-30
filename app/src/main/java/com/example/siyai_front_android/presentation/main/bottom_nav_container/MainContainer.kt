@@ -21,13 +21,26 @@ fun MainContainer(
     val navController = rememberNavController()
     val navState by navController.currentBackStackEntryAsState()
 
+    val screensWithBottomBar = listOf(
+        MainRoute.Home,
+        MainRoute.Training,
+        MainRoute.Audio,
+        MainRoute.Profile
+    )
+
+    val mainRoute = navState?.destination?.route?.toMainRoute()
+
+    val isShowBottomBar = mainRoute in screensWithBottomBar
+
     Scaffold(
         modifier = modifier,
         bottomBar = {
-            BottomNavBar(
-                navController = navController,
-                selectedItem = navState?.destination?.route?.toMainRoute() ?: MainRoute.Home
-            )
+            if (isShowBottomBar) {
+                BottomNavBar(
+                    navController = navController,
+                    selectedItem = mainRoute ?: MainRoute.Home
+                )
+            }
         }
     ) { innerPadding ->
         MainNavHost(

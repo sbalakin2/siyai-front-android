@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.siyai_front_android.presentation.auth.navigation.AuthRoute
 import com.example.siyai_front_android.presentation.main.home_container.navigation.HomeContainer
 import com.example.siyai_front_android.presentation.profile.ProfileScreen
+import com.example.siyai_front_android.presentation.profile_editing.ProfileEditingScreen
 
 
 @Composable
@@ -29,7 +31,21 @@ fun MainNavHost(
         composable<MainRoute.Training> {}
         composable<MainRoute.Audio> {}
         composable<MainRoute.Profile> {
-            ProfileScreen()
+            ProfileScreen(
+                onEditClick = {
+                    navController.navigate(MainRoute.ProfileEditing)
+                }
+            )
+        }
+        composable<MainRoute.ProfileEditing> {
+            ProfileEditingScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onOnboardingClick = {
+
+                }
+            )
         }
     }
 }

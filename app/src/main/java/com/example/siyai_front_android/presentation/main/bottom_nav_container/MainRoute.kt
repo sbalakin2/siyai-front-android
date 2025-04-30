@@ -16,6 +16,9 @@ sealed interface MainRoute{
 
     @Serializable
     data object Profile: MainRoute
+
+    @Serializable
+    data object ProfileEditing: MainRoute
 }
 
 fun String.toMainRoute(): MainRoute {
@@ -25,6 +28,7 @@ fun String.toMainRoute(): MainRoute {
         "Training" -> MainRoute.Training
         "Audio" -> MainRoute.Audio
         "Profile" -> MainRoute.Profile
+        "ProfileEditing" -> MainRoute.ProfileEditing
         else -> throw IllegalArgumentException("Unknown MainRoute: $route")
     }
 }
