@@ -30,6 +30,7 @@ import com.example.siyai_front_android.ui.theme.SiyaifrontandroidTheme
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModelFactory: ViewModelProvider.Factory,
+    navigateToSignOfTheDayScreen: () -> Unit,
     navigateToFreeLessonsScreen: () -> Unit,
     navigateToAddTrackScreen: () -> Unit,
     navigateToArchiveScreen: () -> Unit,
@@ -54,7 +55,7 @@ fun HomeScreen(
         }
 
         item(span = { GridItemSpan(maxCurrentLineSpan) }) {
-            SignOfTheDay(onClick = { /* TODO */ })
+            SignOfTheDay(onClick = navigateToSignOfTheDayScreen)
         }
 
         item(span = { GridItemSpan(maxCurrentLineSpan) }) {
@@ -120,6 +121,7 @@ private fun HomeScreen_Preview() {
     SiyaifrontandroidTheme {
         HomeScreen(
             viewModelFactory = ViewModelFactory(mapOf()),
+            navigateToSignOfTheDayScreen = { /*TODO*/ },
             navigateToFreeLessonsScreen = { /*TODO*/ },
             navigateToAddTrackScreen = { /*TODO*/ },
             navigateToArchiveScreen = { /*TODO*/ }) {
