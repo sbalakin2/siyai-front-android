@@ -85,7 +85,7 @@ fun ProfileEditingScreen(
     val photoSelectionSheetState = rememberModalBottomSheetState()
     var showPhotoSelectionBottomSheet by remember { mutableStateOf(false) }
 
-    val removingAccountSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val removingAccountSheetState = rememberModalBottomSheetState()
     var showRemovingAccountBottomSheet by remember { mutableStateOf(false) }
 
     val coroutineScope = rememberCoroutineScope()
@@ -321,7 +321,6 @@ private fun PhotoSelectionBottomSheet(
         onDismissRequest = onDismissRequest,
         modifier = Modifier.fillMaxWidth(),
         sheetState = sheetState,
-        shape = RoundedCornerShape(0.dp),
         containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.9f),
         tonalElevation = 0.dp,
         dragHandle = null
@@ -330,7 +329,6 @@ private fun PhotoSelectionBottomSheet(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 64.dp, vertical = 32.dp),
-            verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -380,17 +378,15 @@ private fun RemovingAccountBottomSheet(
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxWidth(),
         containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.9f),
         tonalElevation = 0.dp,
-        dragHandle = null,
-        windowInsets = WindowInsets(0, 0, 0, 0)
+        dragHandle = null
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.Bottom,
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
@@ -403,7 +399,7 @@ private fun RemovingAccountBottomSheet(
             Text(
                 text = stringResource(R.string.removing_account_bottom_sheet_title),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(top = 24.dp),
+                modifier = Modifier.padding(top = 8.dp),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleLarge
             )
@@ -437,30 +433,6 @@ private fun RemovingAccountBottomSheet(
                     .padding(top = 16.dp)
                     .fillMaxWidth()
             )
-
-            OutlinedIconButton(
-                onClick = {
-                    coroutineScope.launch {
-                        sheetState.hide()
-                        onDismissRequest()
-                    }
-                },
-                modifier = Modifier
-                    .padding(vertical = 64.dp)
-                    .size(64.dp),
-                shape = CircleShape,
-                border = BorderStroke(
-                    width = 2.dp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            ) {
-                Icon(
-                    imageVector = SiyAiIcons.Close,
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
         }
     }
 }
