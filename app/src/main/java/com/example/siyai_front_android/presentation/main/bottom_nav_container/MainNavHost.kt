@@ -51,7 +51,11 @@ fun MainNavHost(
             )
         }
         composable<MainRoute.SignOfTheDay> {
-            SignOfTheDayScreen()
+            SignOfTheDayScreen(
+                onBackClicked = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
