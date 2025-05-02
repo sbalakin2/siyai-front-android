@@ -13,7 +13,8 @@ import com.example.siyai_front_android.presentation.main.home_container.home.Hom
 fun HomeNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    viewModelFactory: ViewModelProvider.Factory
+    viewModelFactory: ViewModelProvider.Factory,
+    navigateToSignOfTheDayScreen: () -> Unit,
 ) {
     NavHost(
         navController = navController,
@@ -23,6 +24,7 @@ fun HomeNavHost(
         composable<HomeRoute.Home> {
             HomeScreen(
                 viewModelFactory = viewModelFactory,
+                navigateToSignOfTheDayScreen = navigateToSignOfTheDayScreen,
                 navigateToArchiveScreen = {},
                 navigateToAddTrackScreen = {},
                 navigateToFreeLessonsScreen = {},

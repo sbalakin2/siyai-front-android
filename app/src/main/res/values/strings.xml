@@ -82,6 +82,9 @@
     <string name="all">Все</string>
     <string name="price">%1$s руб</string>
 
+    <string name="close_sign_day_screen">Закрыть экран</string>
+    <string name="sign_of_the_day_image">Знак дня</string>
+
     <string name="edit">Редактировать</string>
     <string name="my_stats">Моя статистика</string>
     <string name="support">Поддержка</string>

@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.siyai_front_android.presentation.auth.navigation.AuthRoute
 import com.example.siyai_front_android.presentation.main.home_container.navigation.HomeContainer
 import com.example.siyai_front_android.presentation.profile.ProfileScreen
 import com.example.siyai_front_android.presentation.profile_editing.ProfileEditingScreen
+import com.example.siyai_front_android.presentation.sign_day.SignOfTheDayScreen
 
 
 @Composable
@@ -25,7 +25,10 @@ fun MainNavHost(
     ) {
         composable<MainRoute.Home> {
             HomeContainer(
-                viewModelFactory = viewModelFactory
+                viewModelFactory = viewModelFactory,
+                navigateToSignOfTheDayScreen = {
+                    navController.navigate(MainRoute.SignOfTheDay)
+                }
             )
         }
         composable<MainRoute.Training> {}
@@ -44,6 +47,13 @@ fun MainNavHost(
                 },
                 onOnboardingClick = {
 
+                }
+            )
+        }
+        composable<MainRoute.SignOfTheDay> {
+            SignOfTheDayScreen(
+                onBackClicked = {
+                    navController.popBackStack()
                 }
             )
         }

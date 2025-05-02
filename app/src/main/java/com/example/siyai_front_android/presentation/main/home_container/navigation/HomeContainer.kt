@@ -8,13 +8,15 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun HomeContainer(
     modifier: Modifier = Modifier,
-    viewModelFactory: ViewModelProvider.Factory
+    viewModelFactory: ViewModelProvider.Factory,
+    navigateToSignOfTheDayScreen: () -> Unit,
 ) {
     val navController = rememberNavController()
 
     HomeNavHost(
         navController = navController,
         modifier = modifier,
-        viewModelFactory = viewModelFactory
+        viewModelFactory = viewModelFactory,
+        navigateToSignOfTheDayScreen = navigateToSignOfTheDayScreen
     )
 }
