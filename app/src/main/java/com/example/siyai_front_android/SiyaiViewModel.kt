@@ -1,4 +1,4 @@
-package com.example.siyai_front_android.presentation.siyai_container
+package com.example.siyai_front_android
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

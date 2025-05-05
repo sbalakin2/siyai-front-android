@@ -9,9 +9,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.siyai_front_android.SiyaiViewModel
 import com.example.siyai_front_android.presentation.auth.navigation.AuthScreen
 import com.example.siyai_front_android.presentation.main.bottom_nav_container.MainContainer
-import com.example.siyai_front_android.presentation.siyai_container.SiyaiViewModel
 
 @Composable
 fun SiyaiNavHost(

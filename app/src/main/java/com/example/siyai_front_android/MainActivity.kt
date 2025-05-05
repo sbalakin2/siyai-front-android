@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
 import com.example.siyai_front_android.presentation.siyai_container.SiyaiContainer
-import com.example.siyai_front_android.presentation.siyai_container.SiyaiViewModel
 import com.example.siyai_front_android.ui.theme.SiyaifrontandroidTheme
 import javax.inject.Inject
 
