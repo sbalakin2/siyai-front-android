@@ -1,5 +1,6 @@
 package com.example.siyai_front_android.presentation.profile
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,14 +22,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.example.siyai_front_android.R
 import com.example.siyai_front_android.ui.icons.SiyAiIcons
 
 @Composable
 fun ProfileScreen(
-    onEditClick: () -> Unit
+    onEditClick: () -> Unit,
+    viewModelFactory: ViewModelProvider.Factory
 ) {
+    val viewModel: ProfileViewModel = viewModel(factory = viewModelFactory)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -114,7 +120,9 @@ fun ProfileScreen(
         Divider()
 
         ProfileItem(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = viewModel::exitFromApp),
             iconRes = R.drawable.log_out_image,
             titleRes = R.string.log_out_of_app
         )

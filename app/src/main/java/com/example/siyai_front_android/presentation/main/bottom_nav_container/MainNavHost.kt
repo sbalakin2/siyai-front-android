@@ -37,7 +37,8 @@ fun MainNavHost(
             ProfileScreen(
                 onEditClick = {
                     navController.navigate(MainRoute.ProfileEditing)
-                }
+                },
+                viewModelFactory = viewModelFactory
             )
         }
         composable<MainRoute.ProfileEditing> {

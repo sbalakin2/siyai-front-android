@@ -10,7 +10,7 @@ import androidx.navigation.compose.rememberNavController
 fun AuthScreen(
     modifier: Modifier = Modifier,
     viewModelFactory: ViewModelProvider.Factory,
-    navigateToHome: () -> Unit
+    enterToApp: () -> Unit
 ) {
     val navController = rememberNavController()
 
@@ -18,6 +18,6 @@ fun AuthScreen(
         navController = navController,
         modifier = modifier,
         viewModelFactory = viewModelFactory,
-        navigateToHome = navigateToHome
+        enterToApp = enterToApp
     )
 }

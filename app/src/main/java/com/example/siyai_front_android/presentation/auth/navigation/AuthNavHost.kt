@@ -21,7 +21,7 @@ fun AuthNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     viewModelFactory: ViewModelProvider.Factory,
-    navigateToHome: () -> Unit
+    enterToApp: () -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -50,7 +50,7 @@ fun AuthNavHost(
                     navController.navigate(AuthRoute.RecoveryPassword)
                 },
                 onLoginSuccess = {
-                    navigateToHome.invoke()
+                    enterToApp.invoke()
                 },
                 viewModelFactory = viewModelFactory
             )
@@ -126,7 +126,7 @@ fun AuthNavHost(
 
             LetsMeetScreen(
                 email = letsMeetArgs.email,
-                onProfileCreated = navigateToHome,
+                onProfileCreated = enterToApp,
                 viewModelFactory = viewModelFactory
             )
         }

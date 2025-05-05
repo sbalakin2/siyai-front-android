@@ -1,11 +1,13 @@
 package com.example.siyai_front_android.di
 
+import com.example.siyai_front_android.data.repositories.AuthStatusRepositoryImpl
 import com.example.siyai_front_android.data.repositories.CountryWithCitiesRepositoryImpl
 import com.example.siyai_front_android.data.repositories.CreateProfileRepositoryImpl
 import com.example.siyai_front_android.data.repositories.LoginRepositoryImpl
 import com.example.siyai_front_android.data.repositories.RecoveryPasswordRepositoryImpl
 import com.example.siyai_front_android.data.repositories.RegRepositoryImpl
 import com.example.siyai_front_android.data.repositories.VerificationRepositoryImpl
+import com.example.siyai_front_android.domain.repositories.AuthStatusRepository
 import com.example.siyai_front_android.domain.repositories.CountryWithCitiesRepository
 import com.example.siyai_front_android.domain.repositories.CreateProfileRepository
 import com.example.siyai_front_android.domain.repositories.LoginRepository
@@ -43,4 +45,10 @@ interface DataModule {
     fun bindVerificationRepository(
         verificationRepository: VerificationRepositoryImpl
     ): VerificationRepository
+
+
+    @Binds
+    fun bindAuthStatusRepository(
+        authStatusRepository: AuthStatusRepositoryImpl
+    ): AuthStatusRepository
 }
