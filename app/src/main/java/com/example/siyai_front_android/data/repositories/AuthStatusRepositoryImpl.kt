@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.siyai_front_android.domain.dto.AuthProgress
 import com.example.siyai_front_android.domain.repositories.AuthStatusRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -17,24 +19,51 @@ class AuthStatusRepositoryImpl @Inject constructor(
 
     private val dataStore = context.dataStore
 
-    override fun authStatus(): Flow<Boolean> {
+    override suspend fun isUserAuthorized(): Flow<Boolean> {
+        registrationAbortedCheck()
+
         return dataStore.data
-            .map { preferences -> preferences[AUTH_STATE] ?: false }
+            .map { preferences -> preferences[IS_AUTH] ?: false }
     }
 
-    override suspend fun logIn() {
-        dataStore.edit { preferences ->
-            preferences[AUTH_STATE] = true
+    /**
+     * Проверяет, была ли регистрация завершена до конца или нет
+     */
+    private suspend fun registrationAbortedCheck() {
+        val currentPreferences = dataStore.data.first()
+
+        val isRegister = currentPreferences[IS_REGISTER] ?: false
+        val isAuth = currentPreferences[IS_AUTH] ?: false
+
+        // регистрация прервана
+        if (!isAuth && isRegister) {
+            // продолжаем без дальнейших шагов после регистрации
+            dataStore.edit { preferences -> preferences[IS_AUTH] = true }
+        }
+    }
+
+    override suspend fun logIn(progress: AuthProgress) {
+        when (progress) {
+            // завершен шаг регистрации
+            AuthProgress.Register -> {
+                dataStore.edit { preferences -> preferences[IS_REGISTER] = true }
+            }
+            // может войти в приложение
+            AuthProgress.LogIn, AuthProgress.RegisterAndCreateProfile -> {
+                dataStore.edit { preferences -> preferences[IS_AUTH] = true }
+            }
         }
     }
 
     override suspend fun logOut() {
         dataStore.edit { preferences ->
-            preferences[AUTH_STATE] = false
+            preferences[IS_AUTH] = false
+            preferences[IS_REGISTER] = false
         }
     }
 
     companion object {
-        private val AUTH_STATE = booleanPreferencesKey("auth_state")
+        private val IS_AUTH = booleanPreferencesKey("is_auth")
+        private val IS_REGISTER = booleanPreferencesKey("is_register")
     }
 }

@@ -7,5 +7,5 @@ import javax.inject.Inject
 class GetAuthStatusUseCaseImpl @Inject constructor(
     private val repository: AuthStatusRepository
 ) : GetAuthStatusUseCase {
-    override fun invoke(): Flow<Boolean> = repository.authStatus()
+    override suspend fun invoke(): Flow<Boolean> = repository.isUserAuthorized()
 }

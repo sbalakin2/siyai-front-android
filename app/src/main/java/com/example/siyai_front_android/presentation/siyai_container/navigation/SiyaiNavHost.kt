@@ -31,7 +31,7 @@ fun SiyaiNavHost(
             // Онбоардинг и авторизация/регистрация
             composable<Route.Auth> {
                 AuthScreen(
-                    enterToApp = viewModel::enterToApp,
+                    enterToApp = viewModel::setAuthProgress,
                     viewModelFactory = viewModelFactory
                 )
             }

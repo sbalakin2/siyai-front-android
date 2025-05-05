@@ -1,12 +1,13 @@
 package com.example.siyai_front_android.domain.repositories
 
+import com.example.siyai_front_android.domain.dto.AuthProgress
 import kotlinx.coroutines.flow.Flow
 
 interface AuthStatusRepository {
 
-    fun authStatus(): Flow<Boolean>
+    suspend fun isUserAuthorized(): Flow<Boolean>
 
-    suspend fun logIn()
+    suspend fun logIn(progress: AuthProgress)
 
     suspend fun logOut()
 }

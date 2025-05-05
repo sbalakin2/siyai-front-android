@@ -2,6 +2,7 @@ package com.example.siyai_front_android
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.siyai_front_android.domain.dto.AuthProgress
 import com.example.siyai_front_android.domain.usecases.EnterToAppUseCase
 import com.example.siyai_front_android.domain.usecases.ExitFromAppUseCase
 import com.example.siyai_front_android.domain.usecases.GetAuthStatusUseCase
@@ -34,8 +35,8 @@ class SiyaiViewModel @Inject constructor(
         }
     }
 
-    fun enterToApp() {
-        viewModelScope.launch { enterToAppUseCase() }
+    fun setAuthProgress(progress: AuthProgress) {
+        viewModelScope.launch { enterToAppUseCase(progress) }
     }
 
     fun exitFromApp() {
