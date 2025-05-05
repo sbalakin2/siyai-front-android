@@ -16,7 +16,8 @@ import com.example.siyai_front_android.presentation.sign_day.SignOfTheDayScreen
 fun MainNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    viewModelFactory: ViewModelProvider.Factory
+    viewModelFactory: ViewModelProvider.Factory,
+    exitFromApp: () -> Unit,
 ) {
     NavHost(
         navController = navController,
@@ -38,7 +39,7 @@ fun MainNavHost(
                 onEditClick = {
                     navController.navigate(MainRoute.ProfileEditing)
                 },
-                viewModelFactory = viewModelFactory
+                onExitClick = exitFromApp
             )
         }
         composable<MainRoute.ProfileEditing> {

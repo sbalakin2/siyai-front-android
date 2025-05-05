@@ -36,7 +36,10 @@ fun SiyaiNavHost(
         }
         // Основное приложение
         composable<Route.Main> {
-            MainContainer(viewModelFactory = viewModelFactory)
+            MainContainer(
+                exitFromApp = viewModel::exitFromApp,
+                viewModelFactory = viewModelFactory
+            )
         }
     }
 }

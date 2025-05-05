@@ -22,8 +22,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.example.siyai_front_android.R
 import com.example.siyai_front_android.ui.icons.SiyAiIcons
@@ -31,10 +29,8 @@ import com.example.siyai_front_android.ui.icons.SiyAiIcons
 @Composable
 fun ProfileScreen(
     onEditClick: () -> Unit,
-    viewModelFactory: ViewModelProvider.Factory
+    onExitClick: () -> Unit,
 ) {
-    val viewModel: ProfileViewModel = viewModel(factory = viewModelFactory)
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -122,7 +118,7 @@ fun ProfileScreen(
         ProfileItem(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable(onClick = viewModel::exitFromApp),
+                .clickable(onClick = onExitClick),
             iconRes = R.drawable.log_out_image,
             titleRes = R.string.log_out_of_app
         )

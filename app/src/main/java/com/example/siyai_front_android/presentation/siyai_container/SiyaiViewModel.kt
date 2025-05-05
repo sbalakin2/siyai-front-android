@@ -3,6 +3,7 @@ package com.example.siyai_front_android.presentation.siyai_container
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.siyai_front_android.domain.usecases.EnterToAppUseCase
+import com.example.siyai_front_android.domain.usecases.ExitFromAppUseCase
 import com.example.siyai_front_android.domain.usecases.GetAuthStatusUseCase
 import com.example.siyai_front_android.presentation.siyai_container.navigation.Route
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 class SiyaiViewModel @Inject constructor(
     private val getAuthStatusUseCase: GetAuthStatusUseCase,
-    private val enterToAppUseCase: EnterToAppUseCase
+    private val enterToAppUseCase: EnterToAppUseCase,
+    private val exitFromAppUseCase: ExitFromAppUseCase
 ) : ViewModel() {
 
     private val _startDestination = MutableStateFlow<Route>(Route.Auth)
@@ -29,8 +31,10 @@ class SiyaiViewModel @Inject constructor(
     }
 
     fun enterToApp() {
-        viewModelScope.launch {
-            enterToAppUseCase()
-        }
+        viewModelScope.launch { enterToAppUseCase() }
+    }
+
+    fun exitFromApp() {
+        viewModelScope.launch { exitFromAppUseCase() }
     }
 }
