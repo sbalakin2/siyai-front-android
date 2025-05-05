@@ -22,24 +22,26 @@ fun SiyaiNavHost(
     val viewModel: SiyaiViewModel = viewModel(factory = viewModelFactory)
     val startDestination by viewModel.startDestination.collectAsStateWithLifecycle()
 
-    NavHost(
-        navController = navController,
-        startDestination = startDestination,
-        modifier = modifier,
-    ) {
-        // Онбоардинг и авторизация/регистрация
-        composable<Route.Auth> {
-            AuthScreen(
-                enterToApp = viewModel::enterToApp,
-                viewModelFactory = viewModelFactory
-            )
-        }
-        // Основное приложение
-        composable<Route.Main> {
-            MainContainer(
-                exitFromApp = viewModel::exitFromApp,
-                viewModelFactory = viewModelFactory
-            )
+    if (startDestination != Route.Splash) {
+        NavHost(
+            navController = navController,
+            startDestination = startDestination,
+            modifier = modifier,
+        ) {
+            // Онбоардинг и авторизация/регистрация
+            composable<Route.Auth> {
+                AuthScreen(
+                    enterToApp = viewModel::enterToApp,
+                    viewModelFactory = viewModelFactory
+                )
+            }
+            // Основное приложение
+            composable<Route.Main> {
+                MainContainer(
+                    exitFromApp = viewModel::exitFromApp,
+                    viewModelFactory = viewModelFactory
+                )
+            }
         }
     }
 }

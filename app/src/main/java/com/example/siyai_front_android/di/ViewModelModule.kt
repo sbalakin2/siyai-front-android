@@ -7,7 +7,6 @@ import com.example.siyai_front_android.presentation.auth.lets_meet.LetsMeetViewM
 import com.example.siyai_front_android.presentation.auth.login.LoginViewModel
 import com.example.siyai_front_android.presentation.auth.password_recovery.RecoveryPasswordViewModel
 import com.example.siyai_front_android.presentation.auth.reg.RegViewModel
-import com.example.siyai_front_android.presentation.profile.ProfileViewModel
 import com.example.siyai_front_android.presentation.siyai_container.SiyaiViewModel
 import dagger.Binds
 import dagger.Module
@@ -50,10 +49,4 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SiyaiViewModel::class)
     abstract fun bindSiyaiViewModel(siyaiViewModel: SiyaiViewModel): ViewModel
-
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(ProfileViewModel::class)
-    abstract fun bindProfileViewModel(profileViewModel: ProfileViewModel): ViewModel
 }
