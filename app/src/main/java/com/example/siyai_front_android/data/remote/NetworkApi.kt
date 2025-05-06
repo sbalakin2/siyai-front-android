@@ -8,6 +8,7 @@ import com.example.siyai_front_android.data.remote.dto.VerificationRequest
 import com.example.siyai_front_android.data.remote.dto.UserProfileRequest
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 
 interface NetworkApi {
@@ -33,6 +34,11 @@ interface NetworkApi {
 
     @POST("/user-service/v1/create-profile")
     suspend fun createUserProfile(
+        @Body userProfileRequest: UserProfileRequest
+    ): Response<Unit>
+
+    @PATCH("/user-service/v1/edit-profile")
+    suspend fun editProfile(
         @Body userProfileRequest: UserProfileRequest
     ): Response<Unit>
 }
