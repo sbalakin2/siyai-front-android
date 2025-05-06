@@ -7,6 +7,7 @@ import com.example.siyai_front_android.presentation.auth.lets_meet.LetsMeetViewM
 import com.example.siyai_front_android.presentation.auth.login.LoginViewModel
 import com.example.siyai_front_android.presentation.auth.password_recovery.RecoveryPasswordViewModel
 import com.example.siyai_front_android.presentation.auth.reg.RegViewModel
+import com.example.siyai_front_android.presentation.profile_editing.ProfileEditingViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -43,4 +44,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(LetsMeetViewModel::class)
     abstract fun bindLetsMeetViewModel(letsMeetViewModel: LetsMeetViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProfileEditingViewModel::class)
+    abstract fun bindProfileEditingViewModel(
+        profileEditingViewModel: ProfileEditingViewModel
+    ): ViewModel
 }
