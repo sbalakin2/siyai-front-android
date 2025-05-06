@@ -3,12 +3,14 @@ package com.example.siyai_front_android.di
 import com.example.siyai_front_android.data.repositories.CountryWithCitiesRepositoryImpl
 import com.example.siyai_front_android.data.repositories.CreateProfileRepositoryImpl
 import com.example.siyai_front_android.data.repositories.LoginRepositoryImpl
+import com.example.siyai_front_android.data.repositories.ProfileEditingRepositoryImpl
 import com.example.siyai_front_android.data.repositories.RecoveryPasswordRepositoryImpl
 import com.example.siyai_front_android.data.repositories.RegRepositoryImpl
 import com.example.siyai_front_android.data.repositories.VerificationRepositoryImpl
 import com.example.siyai_front_android.domain.repositories.CountryWithCitiesRepository
 import com.example.siyai_front_android.domain.repositories.CreateProfileRepository
 import com.example.siyai_front_android.domain.repositories.LoginRepository
+import com.example.siyai_front_android.domain.repositories.ProfileEditingRepository
 import com.example.siyai_front_android.domain.repositories.RecoveryPasswordRepository
 import com.example.siyai_front_android.domain.repositories.RegRepository
 import com.example.siyai_front_android.domain.repositories.VerificationRepository
@@ -43,4 +45,9 @@ interface DataModule {
     fun bindVerificationRepository(
         verificationRepository: VerificationRepositoryImpl
     ): VerificationRepository
+
+    @Binds
+    fun bindProfileEditingRepository(
+        profileEditingRepositoryImpl: ProfileEditingRepositoryImpl
+    ): ProfileEditingRepository
 }
