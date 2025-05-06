@@ -2,6 +2,8 @@ package com.example.siyai_front_android.di
 
 import com.example.siyai_front_android.domain.usecases.CreateProfileUseCase
 import com.example.siyai_front_android.domain.usecases.CreateProfileUseCaseImpl
+import com.example.siyai_front_android.domain.usecases.EditProfileUseCase
+import com.example.siyai_front_android.domain.usecases.EditProfileUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.GetCountiesWithCitiesUseCase
 import com.example.siyai_front_android.domain.usecases.GetCountiesWithCitiesUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.LoginUseCase
@@ -39,4 +41,7 @@ interface UseCaseModule {
     fun bindCountryWithCitiesUseCase(
         countryWithCitiesUseCase: GetCountiesWithCitiesUseCaseImpl
     ): GetCountiesWithCitiesUseCase
+
+    @Binds
+    fun bindEditProfileUseCase(editProfileUseCase: EditProfileUseCaseImpl): EditProfileUseCase
 }
