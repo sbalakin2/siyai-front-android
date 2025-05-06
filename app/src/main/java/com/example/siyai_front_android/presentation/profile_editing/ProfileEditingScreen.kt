@@ -1,53 +1,32 @@
 package com.example.siyai_front_android.presentation.profile_editing
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.BottomSheetScaffoldState
-import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberModalBottomSheetState
-import androidx.compose.material3.rememberStandardBottomSheetState
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,12 +36,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.example.siyai_front_android.R
 import com.example.siyai_front_android.ui.components.buttons.PrimaryButton
@@ -72,6 +53,7 @@ import com.example.siyai_front_android.ui.components.text_fields.DatePickerTextF
 import com.example.siyai_front_android.ui.components.text_fields.DropDownTextField
 import com.example.siyai_front_android.ui.icons.SiyAiIcons
 import com.example.siyai_front_android.utils.checkIsFormCompleted
+import com.example.siyai_front_android.utils.parseISODate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -80,8 +62,12 @@ import java.util.Date
 @Composable
 fun ProfileEditingScreen(
     onBackClick: () -> Unit,
-    onOnboardingClick: () -> Unit
+    onOnboardingClick: () -> Unit,
+    viewModelFactory: ViewModelProvider.Factory
 ) {
+    val viewModel: ProfileEditingViewModel = viewModel(factory = viewModelFactory)
+    val initialUserProfileData by viewModel.initialUserProfile.collectAsStateWithLifecycle()
+
     val photoSelectionSheetState = rememberModalBottomSheetState()
     var showPhotoSelectionBottomSheet by remember { mutableStateOf(false) }
 
@@ -96,6 +82,16 @@ fun ProfileEditingScreen(
     var birthday by rememberSaveable { mutableStateOf<Date?>(null) }
     var country by rememberSaveable { mutableStateOf("") }
     var city by rememberSaveable { mutableStateOf("") }
+
+    LaunchedEffect(initialUserProfileData) {
+        initialUserProfileData?.let { profile ->
+            firstName = profile.name
+            lastName = profile.surName
+            birthday = profile.birthday.parseISODate()
+            country = profile.country
+            city = profile.city
+        }
+    }
 
     Column(
         modifier = Modifier

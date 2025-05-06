@@ -49,7 +49,8 @@ fun MainNavHost(
                 },
                 onOnboardingClick = {
 
-                }
+                },
+                viewModelFactory = viewModelFactory
             )
         }
         composable<MainRoute.SignOfTheDay> {

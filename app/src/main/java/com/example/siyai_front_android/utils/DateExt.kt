@@ -8,3 +8,8 @@ fun Date.toISODateString(): String {
     return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         .format(this)
 }
+
+fun String.parseISODate(): Date {
+    return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        .parse(this)
+}

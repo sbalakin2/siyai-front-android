@@ -6,6 +6,7 @@ import com.example.siyai_front_android.data.repositories.CreateProfileRepository
 import com.example.siyai_front_android.data.repositories.LoginRepositoryImpl
 import com.example.siyai_front_android.data.repositories.RecoveryPasswordRepositoryImpl
 import com.example.siyai_front_android.data.repositories.RegRepositoryImpl
+import com.example.siyai_front_android.data.repositories.UserProfileRepositoryImpl
 import com.example.siyai_front_android.data.repositories.VerificationRepositoryImpl
 import com.example.siyai_front_android.domain.repositories.AuthStatusRepository
 import com.example.siyai_front_android.domain.repositories.CountryWithCitiesRepository
@@ -13,6 +14,7 @@ import com.example.siyai_front_android.domain.repositories.CreateProfileReposito
 import com.example.siyai_front_android.domain.repositories.LoginRepository
 import com.example.siyai_front_android.domain.repositories.RecoveryPasswordRepository
 import com.example.siyai_front_android.domain.repositories.RegRepository
+import com.example.siyai_front_android.domain.repositories.UserProfileRepository
 import com.example.siyai_front_android.domain.repositories.VerificationRepository
 import dagger.Binds
 import dagger.Module
@@ -51,4 +53,10 @@ interface DataModule {
     fun bindAuthStatusRepository(
         authStatusRepository: AuthStatusRepositoryImpl
     ): AuthStatusRepository
+
+
+    @Binds
+    fun bindUserProfileRepository(
+        userProfileRepository: UserProfileRepositoryImpl
+    ): UserProfileRepository
 }
