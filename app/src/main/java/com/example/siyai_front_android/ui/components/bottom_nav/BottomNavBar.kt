@@ -8,27 +8,32 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.siyai_front_android.presentation.main.bottom_nav_container.MainRoute
 import com.example.siyai_front_android.ui.theme.SiyaifrontandroidTheme
 
 @Composable
 fun BottomNavBar(
     modifier: Modifier = Modifier,
-    navController: NavController,
-    selectedItem: MainRoute
+    navController: NavController
 ) {
     NavigationBar(
         modifier = modifier,
         containerColor = MaterialTheme.colorScheme.secondaryContainer
     ) {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentDestination = navBackStackEntry?.destination
         navBarItems.forEach { item ->
-            val selected = item.route == selectedItem
+            val selected =
+                currentDestination?.hierarchy?.any { it.hasRoute(item.route::class) } == true
             NavigationBarItem(
                 selected = selected,
                 onClick = {
@@ -68,6 +73,6 @@ fun BottomNavBar(
 @Preview
 private fun BottomNavBar_Preview() {
     SiyaifrontandroidTheme {
-        BottomNavBar(navController = rememberNavController(), selectedItem = MainRoute.Home)
+        BottomNavBar(navController = rememberNavController())
     }
 }

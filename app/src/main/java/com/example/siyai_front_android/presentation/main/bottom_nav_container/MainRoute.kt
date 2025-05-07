@@ -18,21 +18,27 @@ sealed interface MainRoute{
     data object Profile: MainRoute
 
     @Serializable
-    data object ProfileEditing: MainRoute
+    data class ProfileEditing(
+        val email: String,
+        val firstName: String,
+        val lastName: String,
+        val birthday: String,
+        val country: String,
+        val city: String
+    ): MainRoute
 
     @Serializable
     data object SignOfTheDay: MainRoute
 }
 
-fun String.toMainRoute(): MainRoute {
+fun String.toMainRoute(): MainRoute? {
     val route = this.split(".")
     return when(route.last()){
         "Home" -> MainRoute.Home
         "Training" -> MainRoute.Training
         "Audio" -> MainRoute.Audio
         "Profile" -> MainRoute.Profile
-        "ProfileEditing" -> MainRoute.ProfileEditing
         "SignOfTheDay" -> MainRoute.SignOfTheDay
-        else -> throw IllegalArgumentException("Unknown MainRoute: $route")
+        else -> null
     }
 }

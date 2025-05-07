@@ -18,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.siyai_front_android.di.ViewModelFactory
 import com.example.siyai_front_android.presentation.model.Categories
 import com.example.siyai_front_android.presentation.model.Product
@@ -36,56 +38,73 @@ fun HomeScreen(
     navigateToArchiveScreen: () -> Unit,
     navigateToWaitingListScreen: () -> Unit
 ) {
-    var screenState by remember{ mutableStateOf(state) }
+    val viewModel: HomeViewModel = viewModel(factory = viewModelFactory)
+    val homeState by viewModel.homeState.collectAsStateWithLifecycle()
+    viewModel.getProfile("test1@mail.com")
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        item(span = { GridItemSpan(maxCurrentLineSpan) }) {
-            HeaderSection(
-                modifier = Modifier.padding(top = 16.dp),
-                user = screenState.user
-            )
+    when (homeState) {
+        is HomeState.Success -> {
+            var screenState by remember{ mutableStateOf(state) }
+
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                item(span = { GridItemSpan(maxCurrentLineSpan) }) {
+                    HeaderSection(
+                        modifier = Modifier.padding(top = 16.dp),
+                        firstName = (homeState as HomeState.Success).profile.firstName
+                    )
+                }
+
+                item(span = { GridItemSpan(maxCurrentLineSpan) }) {
+                    SignOfTheDay(onClick = navigateToSignOfTheDayScreen)
+                }
+
+                item(span = { GridItemSpan(maxCurrentLineSpan) }) {
+                    FreeLessonsCard(onClick = navigateToFreeLessonsScreen)
+                }
+
+                TrackListsBlock(
+                    trackLists = screenState.trackLists,
+                    onCheckTrack = {},
+                    onAddTrack = navigateToAddTrackScreen,
+                    goToArchive = navigateToArchiveScreen
+                )
+
+                item(span = { GridItemSpan(maxCurrentLineSpan) }) {
+                    WaitingListBanner(
+                        modifier = Modifier.padding(top = 16.dp),
+                        onClick = navigateToWaitingListScreen
+                    )
+                }
+
+                item(span = { GridItemSpan(maxCurrentLineSpan) }) {
+                    ShopTabs(
+                        modifier = Modifier.padding(vertical = 16.dp),
+                        selectedCategory = screenState.selectedCategory,
+                        onCategoryChange = { screenState = screenState.copy(selectedCategory = it) }
+                    )
+                }
+
+                items(screenState.products) { product ->
+                    ProductGridItem(item = product)
+                }
+            }
         }
+        is HomeState.Error -> {
 
-        item(span = { GridItemSpan(maxCurrentLineSpan) }) {
-            SignOfTheDay(onClick = navigateToSignOfTheDayScreen)
         }
+        is HomeState.Exception -> {
 
-        item(span = { GridItemSpan(maxCurrentLineSpan) }) {
-            FreeLessonsCard(onClick = navigateToFreeLessonsScreen)
         }
+        HomeState.Loading -> {
 
-        TrackListsBlock(
-            trackLists = screenState.trackLists,
-            onCheckTrack = {},
-            onAddTrack = navigateToAddTrackScreen,
-            goToArchive = navigateToArchiveScreen
-        )
-
-        item(span = { GridItemSpan(maxCurrentLineSpan) }) {
-            WaitingListBanner(
-                modifier = Modifier.padding(top = 16.dp),
-                onClick = navigateToWaitingListScreen
-            )
-        }
-
-        item(span = { GridItemSpan(maxCurrentLineSpan) }) {
-            ShopTabs(
-                modifier = Modifier.padding(vertical = 16.dp),
-                selectedCategory = screenState.selectedCategory,
-                onCategoryChange = { screenState = screenState.copy(selectedCategory = it) }
-            )
-        }
-
-        items(screenState.products) { product ->
-            ProductGridItem(item = product)
         }
     }
 }
