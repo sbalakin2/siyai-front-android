@@ -2,6 +2,7 @@ package com.example.siyai_front_android.data.remote
 
 import com.example.siyai_front_android.data.remote.dto.ProfileResponse
 import com.example.siyai_front_android.data.remote.dto.LoginRequest
+import com.example.siyai_front_android.data.remote.dto.ProfileRequest
 import com.example.siyai_front_android.data.remote.dto.RecoveryPasswordRequest
 import com.example.siyai_front_android.data.remote.dto.VerificationResponse
 import com.example.siyai_front_android.data.remote.dto.RegRequest
@@ -9,10 +10,8 @@ import com.example.siyai_front_android.data.remote.dto.VerificationRequest
 import com.example.siyai_front_android.data.remote.dto.UserProfileRequest
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
-import retrofit2.http.Query
 
 interface NetworkApi {
     @POST("user-service/v1/registration")
@@ -45,8 +44,8 @@ interface NetworkApi {
         @Body userProfileRequest: UserProfileRequest
     ): Response<Unit>
 
-    @GET("/user-service/v1/info")
+    @POST("/user-service/v1/info")
     suspend fun getProfile(
-        @Query ("email") email: String
+        @Body profileRequest: ProfileRequest
     ): Response<ProfileResponse>
 }
