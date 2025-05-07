@@ -21,14 +21,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.siyai_front_android.R
-import com.example.siyai_front_android.presentation.model.User
 import com.example.siyai_front_android.ui.icons.SiyAiIcons
 import com.example.siyai_front_android.ui.theme.SiyaifrontandroidTheme
 
 @Composable
 fun HeaderSection(
     modifier: Modifier = Modifier,
-    user: User
+    firstName: String
 ) {
     Row(
         modifier = modifier,
@@ -52,7 +51,7 @@ fun HeaderSection(
         Spacer(modifier = Modifier.width(16.dp))
 
         Text(
-            text = stringResource(R.string.hello_user, user.name),
+            text = stringResource(R.string.hello_user, firstName),
             color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold)
         )
@@ -63,6 +62,6 @@ fun HeaderSection(
 @Preview
 fun HeaderSection_Preview(){
     SiyaifrontandroidTheme {
-        HeaderSection(user = User("user"))
+        HeaderSection(firstName = "User")
     }
 }
