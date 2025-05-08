@@ -1,0 +1,38 @@
+package com.example.siyai_front_android.presentation.main.home_container.home
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.siyai_front_android.domain.usecases.GetProfileUseCase
+import com.example.siyai_front_android.presentation.profile.ProfileState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+class HomeViewModel @Inject constructor(
+    private val getProfileUseCase: GetProfileUseCase
+): ViewModel() {
+
+    private val _homeState = MutableStateFlow<HomeState>(HomeState.Loading)
+    val homeState: StateFlow<HomeState> = _homeState.asStateFlow()
+
+    fun getProfile(email: String) {
+        viewModelScope.launch {
+            _homeState.value = when (val result = getProfileUseCase(email)) {
+                is ProfileState.Success -> {
+                    HomeState.Success(result.profile)
+                }
+                is ProfileState.Error -> {
+                    HomeState.Error(result.code, result.message)
+                }
+                is ProfileState.Exception -> {
+                    HomeState.Exception(result.message)
+                }
+                ProfileState.Loading -> {
+                    HomeState.Loading
+                }
+            }
+        }
+    }
+}

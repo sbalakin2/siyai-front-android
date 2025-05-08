@@ -23,9 +23,9 @@ fun checkIsFormCompleted(
     firstName: String,
     lastName: String,
     birthday: Date?,
-    city: String,
-    country: String
+    cityIndex: Int,
+    countryIndex: Int
 ): Boolean {
-    return sequenceOf(firstName, lastName, city, country)
-        .all { it.isNotEmpty() } && birthday != null
+    return sequenceOf(firstName, lastName)
+        .all { it.isNotEmpty() } && birthday != null && cityIndex != -1 && countryIndex != -1
 }

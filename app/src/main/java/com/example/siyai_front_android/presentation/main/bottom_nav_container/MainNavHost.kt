@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.example.siyai_front_android.presentation.main.home_container.navigation.HomeContainer
 import com.example.siyai_front_android.presentation.profile.ProfileScreen
 import com.example.siyai_front_android.presentation.profile_editing.ProfileEditingScreen
@@ -36,14 +37,26 @@ fun MainNavHost(
         composable<MainRoute.Audio> {}
         composable<MainRoute.Profile> {
             ProfileScreen(
-                onEditClick = {
-                    navController.navigate(MainRoute.ProfileEditing)
+                onEditClick = { email, firstName, lastName, birthday, country, city ->
+                    navController.navigate(
+                        MainRoute.ProfileEditing(
+                            email = email,
+                            firstName = firstName,
+                            lastName = lastName,
+                            birthday = birthday,
+                            country = country,
+                            city = city
+                        )
+                    )
                 },
+                viewModelFactory = viewModelFactory,
                 onExitClick = exitFromApp
             )
         }
         composable<MainRoute.ProfileEditing> {
+            val profileEditing = it.toRoute<MainRoute.ProfileEditing>()
             ProfileEditingScreen(
+                email = profileEditing.email,
                 onBackClick = {
                     navController.popBackStack()
                 },

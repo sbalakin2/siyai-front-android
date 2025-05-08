@@ -8,10 +8,14 @@ import com.example.siyai_front_android.domain.usecases.ExitFromAppUseCase
 import com.example.siyai_front_android.domain.usecases.ExitFromAppUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.GetAuthStatusUseCase
 import com.example.siyai_front_android.domain.usecases.GetAuthStatusUseCaseImpl
+import com.example.siyai_front_android.domain.usecases.EditProfileUseCase
+import com.example.siyai_front_android.domain.usecases.EditProfileUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.GetCountiesWithCitiesUseCase
 import com.example.siyai_front_android.domain.usecases.GetCountiesWithCitiesUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.GetUserProfileUseCase
 import com.example.siyai_front_android.domain.usecases.GetUserProfileUseCaseImpl
+import com.example.siyai_front_android.domain.usecases.GetProfileUseCase
+import com.example.siyai_front_android.domain.usecases.GetProfileUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.LoginUseCase
 import com.example.siyai_front_android.domain.usecases.LoginUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.RecoveryPasswordUseCase
@@ -61,4 +65,10 @@ interface UseCaseModule {
 
     @Binds
     fun bindGetUserProfileUseCase(getUserProfileUseCase: GetUserProfileUseCaseImpl): GetUserProfileUseCase
+
+    @Binds
+    fun bindEditProfileUseCase(editProfileUseCase: EditProfileUseCaseImpl): EditProfileUseCase
+
+    @Binds
+    fun bindGetProfileUseCase(getProfileUseCaseImpl: GetProfileUseCaseImpl): GetProfileUseCase
 }

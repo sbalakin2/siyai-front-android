@@ -38,8 +38,7 @@ fun MainContainer(
         bottomBar = {
             if (isShowBottomBar) {
                 BottomNavBar(
-                    navController = navController,
-                    selectedItem = mainRoute ?: MainRoute.Home
+                    navController = navController
                 )
             }
         }
