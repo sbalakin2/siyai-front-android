@@ -58,6 +58,7 @@ import com.example.siyai_front_android.ui.components.text_fields.DropDownTextFie
 import com.example.siyai_front_android.ui.icons.SiyAiIcons
 import com.example.siyai_front_android.utils.checkIsFormCompleted
 import com.example.siyai_front_android.utils.parseISODate
+import com.example.siyai_front_android.utils.toISODateString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -104,8 +105,8 @@ fun ProfileEditingScreen(
             firstName = profile.name
             lastName = profile.surName
             birthday = profile.birthday.parseISODate()
-            country = profile.country
-            city = profile.city
+//            country = profile.country
+//            city = profile.city
         }
     }
 

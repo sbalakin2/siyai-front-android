@@ -3,16 +3,11 @@ package com.example.siyai_front_android.presentation.profile_editing
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.siyai_front_android.domain.dto.CountryWithCities
+import com.example.siyai_front_android.domain.dto.UserProfileData
 import com.example.siyai_front_android.domain.usecases.EditProfileUseCase
 import com.example.siyai_front_android.domain.usecases.GetCountiesWithCitiesUseCase
-import com.example.siyai_front_android.domain.usecases.GetCountiesWithCitiesUseCaseImpl
-import com.example.siyai_front_android.domain.usecases.LoginUseCase
-import com.example.siyai_front_android.presentation.auth.email_confirmation.EmailConfirmationState
-import com.example.siyai_front_android.presentation.auth.email_confirmation.RegState
-import com.example.siyai_front_android.presentation.auth.login.LoginState
-import kotlinx.coroutines.Dispatchers
-import com.example.siyai_front_android.domain.dto.UserProfileData
 import com.example.siyai_front_android.domain.usecases.GetUserProfileUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -35,12 +30,20 @@ class ProfileEditingViewModel @Inject constructor(
     val initialUserProfile: StateFlow<UserProfileData?> = _initialUserProfile.asStateFlow()
 
     init {
+        loadInitialProfileData()
         loadCountriesWithCities()
     }
 
     private fun loadCountriesWithCities() {
         viewModelScope.launch(Dispatchers.IO) {
             _countriesWithCities.value = getCountiesWithCitiesUseCase()
+        }
+    }
+
+    private fun loadInitialProfileData() {
+        viewModelScope.launch {
+            _initialUserProfile.value = getUserProfileUseCase()
+                .fold(onSuccess = { it }, onFailure = { getEmptyUserProfileData() })
         }
     }
 
@@ -61,8 +64,6 @@ class ProfileEditingViewModel @Inject constructor(
                 country = country,
                 city = city
             )
-            _initialUserProfile.value = getUserProfileUseCase()
-                .fold(onSuccess = { it }, onFailure = { getEmptyUserProfileData() })
         }
     }
 

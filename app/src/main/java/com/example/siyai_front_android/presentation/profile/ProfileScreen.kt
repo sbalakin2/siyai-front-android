@@ -1,8 +1,8 @@
 package com.example.siyai_front_android.presentation.profile
 
 import android.content.Context
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -59,7 +59,8 @@ fun ProfileScreen(
         is ProfileState.Success -> {
             ProfileStateSuccess(
                 profile = (profileState as ProfileState.Success).profile,
-                onEditClick = onEditClick
+                onEditClick = onEditClick,
+                onExitClick = onExitClick
             )
         }
         is ProfileState.Error -> {
@@ -90,7 +91,8 @@ private fun ProfileStateSuccess(
         birthday: String,
         country: String,
         city: String
-    ) -> Unit
+    ) -> Unit,
+    onExitClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
