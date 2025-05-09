@@ -51,6 +51,12 @@ class UserProfileRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun clear() {
+        dataStore.edit { preferences ->
+            preferences.clear()
+        }
+    }
+
     private fun <T> Preferences.getOrThrow(key: Preferences.Key<T>): T {
         return get(key) ?: throw IllegalArgumentException("Key $key not found")
     }

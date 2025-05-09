@@ -8,4 +8,6 @@ interface UserProfileRepository {
     suspend fun getUserProfile(): Result<Profile>
 
     suspend fun saveUserProfile(profile: CreateProfileData)
+
+    suspend fun clear()
 }
