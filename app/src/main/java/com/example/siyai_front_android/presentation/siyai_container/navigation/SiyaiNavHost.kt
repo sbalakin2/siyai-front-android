@@ -20,9 +20,9 @@ fun SiyaiNavHost(
     viewModelFactory: ViewModelProvider.Factory
 ) {
     val viewModel: SiyaiViewModel = viewModel(factory = viewModelFactory)
-    val startDestination by viewModel.startDestination.collectAsStateWithLifecycle()
+    val rootDestination by viewModel.startDestination.collectAsStateWithLifecycle()
 
-    if (startDestination != Route.Splash) {
+    rootDestination?.let { startDestination ->
         NavHost(
             navController = navController,
             startDestination = startDestination,
@@ -45,3 +45,4 @@ fun SiyaiNavHost(
         }
     }
 }
+

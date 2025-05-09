@@ -19,8 +19,8 @@ class SiyaiViewModel @Inject constructor(
     private val exitFromAppUseCase: ExitFromAppUseCase
 ) : ViewModel() {
 
-    private val _startDestination = MutableStateFlow<Route>(Route.Splash)
-    val startDestination: StateFlow<Route> = _startDestination.asStateFlow()
+    private val _startDestination = MutableStateFlow<Route?>(null)
+    val startDestination: StateFlow<Route?> = _startDestination.asStateFlow()
 
     private val _keepSplashScreen = MutableStateFlow(true)
     val keepSplashScreen: StateFlow<Boolean> = _keepSplashScreen.asStateFlow()
