@@ -5,7 +5,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.example.siyai_front_android.domain.dto.UserProfileData
+import com.example.siyai_front_android.domain.dto.CreateProfileData
+import com.example.siyai_front_android.domain.dto.Profile
 import com.example.siyai_front_android.domain.repositories.UserProfileRepository
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
@@ -19,14 +20,14 @@ class UserProfileRepositoryImpl @Inject constructor(
 
     private val dataStore = context.dataStore
 
-    override suspend fun getUserProfile(): Result<UserProfileData> {
+    override suspend fun getUserProfile(): Result<Profile> {
         val preferences =  dataStore.data.first()
 
         return try {
-            val profile = UserProfileData(
+            val profile = Profile(
                 email = preferences.getOrThrow(EMAIL),
-                name = preferences.getOrThrow(NAME),
-                surName = preferences.getOrThrow(SURNAME),
+                firstName = preferences.getOrThrow(NAME),
+                lastName = preferences.getOrThrow(SURNAME),
                 birthday = preferences.getOrThrow(BIRTHDAY),
                 country = preferences.getOrThrow(COUNTRY),
                 city = preferences.getOrThrow(CITY)
@@ -39,7 +40,7 @@ class UserProfileRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveUserProfile(profile: UserProfileData) {
+    override suspend fun saveUserProfile(profile: CreateProfileData) {
         dataStore.edit { preferences ->
             preferences[EMAIL] = profile.email
             preferences[NAME] = profile.name

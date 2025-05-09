@@ -3,7 +3,7 @@ package com.example.siyai_front_android.presentation.profile_editing
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.siyai_front_android.domain.dto.CountryWithCities
-import com.example.siyai_front_android.domain.dto.UserProfileData
+import com.example.siyai_front_android.domain.dto.Profile
 import com.example.siyai_front_android.domain.usecases.EditProfileUseCase
 import com.example.siyai_front_android.domain.usecases.GetCountiesWithCitiesUseCase
 import com.example.siyai_front_android.domain.usecases.GetUserProfileUseCase
@@ -26,8 +26,8 @@ class ProfileEditingViewModel @Inject constructor(
     private val _countriesWithCities = MutableStateFlow<List<CountryWithCities>>(emptyList())
     val countiesWithCities = _countriesWithCities.asStateFlow()
 
-    private val _initialUserProfile = MutableStateFlow<UserProfileData?>(null)
-    val initialUserProfile: StateFlow<UserProfileData?> = _initialUserProfile.asStateFlow()
+    private val _initialUserProfile = MutableStateFlow<Profile?>(null)
+    val initialUserProfile: StateFlow<Profile?> = _initialUserProfile.asStateFlow()
 
     init {
         loadInitialProfileData()
@@ -43,42 +43,24 @@ class ProfileEditingViewModel @Inject constructor(
     private fun loadInitialProfileData() {
         viewModelScope.launch {
             _initialUserProfile.value = getUserProfileUseCase()
-                .fold(onSuccess = { it }, onFailure = { getEmptyUserProfileData() })
+                .fold(onSuccess = { it }, onFailure = { null })
         }
     }
 
-    fun editProfile(
-        email: String,
-        firstName: String,
-        lastName: String,
-        birthday: String,
-        country: String,
-        city: String
-    ) {
+    fun editProfile(profile: Profile) {
         viewModelScope.launch {
             _profileEditingState.value = editProfileUseCase(
-                email = email,
-                firstName = firstName,
-                lastName = lastName,
-                birthday = birthday,
-                country = country,
-                city = city
+                email = profile.email,
+                firstName = profile.firstName,
+                lastName = profile.lastName,
+                birthday = profile.birthday,
+                country = profile.country,
+                city = profile.city
             )
         }
     }
 
     fun clearProfileEditingState() {
         _profileEditingState.value = ProfileEditingState.Idle
-    }
-
-    private fun getEmptyUserProfileData(): UserProfileData {
-        return UserProfileData(
-            email = "",
-            name = "",
-            surName = "",
-            birthday = "",
-            country = "",
-            city = ""
-        )
     }
 }

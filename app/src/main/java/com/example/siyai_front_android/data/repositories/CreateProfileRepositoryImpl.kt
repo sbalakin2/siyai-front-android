@@ -2,7 +2,7 @@ package com.example.siyai_front_android.data.repositories
 
 import com.example.siyai_front_android.data.mappers.toCreateProfileRequest
 import com.example.siyai_front_android.data.remote.NetworkApi
-import com.example.siyai_front_android.domain.dto.UserProfileData
+import com.example.siyai_front_android.domain.dto.CreateProfileData
 import com.example.siyai_front_android.domain.repositories.CreateProfileRepository
 import com.example.siyai_front_android.utils.NetworkResult
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +12,7 @@ import javax.inject.Inject
 class CreateProfileRepositoryImpl @Inject constructor(
     private val networkApi: NetworkApi
 ) : CreateProfileRepository {
-    override suspend fun createUserProfile(data: UserProfileData): NetworkResult<Unit> =
+    override suspend fun createUserProfile(data: CreateProfileData): NetworkResult<Unit> =
         withContext(Dispatchers.IO) {
             try {
                 val response = networkApi.createUserProfile(

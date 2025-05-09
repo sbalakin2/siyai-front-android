@@ -32,7 +32,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.siyai_front_android.R
-import com.example.siyai_front_android.domain.dto.UserProfileData
+import com.example.siyai_front_android.domain.dto.CreateProfileData
 import com.example.siyai_front_android.ui.components.buttons.SecondaryLoadingButton
 import com.example.siyai_front_android.ui.components.text_fields.BaseTextField
 import com.example.siyai_front_android.ui.components.text_fields.DatePickerTextField
@@ -211,12 +211,12 @@ private fun createUserProfileData(
     userBirthday: Date?,
     userCountry: String?,
     userCity: String?
-): UserProfileData? {
+): CreateProfileData? {
     if (userBirthday == null || userCountry == null || userCity == null) {
         return null
     }
 
-    val data = UserProfileData(
+    val data = CreateProfileData(
         email = userEmail,
         name = userName,
         surName = userSurname,
