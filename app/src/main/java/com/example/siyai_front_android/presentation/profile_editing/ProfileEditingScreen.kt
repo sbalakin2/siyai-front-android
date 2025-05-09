@@ -269,6 +269,7 @@ fun ProfileEditingScreen(
             text = stringResource(R.string.apply),
             onClick = {
                 val profile = getCurrentProfile(profileState, countiesAndCitiesState)
+                    .copy(email = email)
                 viewModel.editProfile(profile)
             },
             modifier = Modifier
