@@ -14,6 +14,8 @@ import com.example.siyai_front_android.domain.usecases.RecoveryPasswordUseCase
 import com.example.siyai_front_android.domain.usecases.RecoveryPasswordUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.RegUseCase
 import com.example.siyai_front_android.domain.usecases.RegUseCaseImpl
+import com.example.siyai_front_android.domain.usecases.ResetPasswordUseCase
+import com.example.siyai_front_android.domain.usecases.ResetPasswordUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.VerifyUseCase
 import com.example.siyai_front_android.domain.usecases.VerifyUseCaseImpl
 import dagger.Binds
@@ -49,4 +51,9 @@ interface UseCaseModule {
 
     @Binds
     fun bindGetProfileUseCase(getProfileUseCaseImpl: GetProfileUseCaseImpl): GetProfileUseCase
+
+    @Binds
+    fun bindResetPasswordUseCase(
+        resetPasswordUseCaseImpl: ResetPasswordUseCaseImpl
+    ): ResetPasswordUseCase
 }
