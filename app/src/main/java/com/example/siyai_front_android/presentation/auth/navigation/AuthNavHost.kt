@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import com.example.siyai_front_android.presentation.auth.email_confirmation.EmailConfirmationScreen
 import com.example.siyai_front_android.presentation.auth.lets_meet.LetsMeetScreen
@@ -14,6 +15,7 @@ import com.example.siyai_front_android.presentation.auth.login.LoginScreen
 import com.example.siyai_front_android.presentation.auth.onboarding.OnboardingScreen
 import com.example.siyai_front_android.presentation.auth.password_recovery.PasswordRecovery1Screen
 import com.example.siyai_front_android.presentation.auth.password_recovery.PasswordRecovery2Screen
+import com.example.siyai_front_android.presentation.auth.password_reset.PasswordResetScreen
 import com.example.siyai_front_android.presentation.auth.reg.RegScreen
 
 @Composable
@@ -127,6 +129,24 @@ fun AuthNavHost(
             LetsMeetScreen(
                 email = letsMeetArgs.email,
                 onProfileCreated = navigateToHome,
+                viewModelFactory = viewModelFactory
+            )
+        }
+        composable<AuthRoute.PasswordReset>(
+            deepLinks = listOf(
+                navDeepLink<AuthRoute.PasswordReset>(
+                    "com.example.siyai_front_android/password_reset?token={token}"
+                )
+            )
+        ) {
+            PasswordResetScreen(
+                token = it.toRoute<AuthRoute.PasswordReset>().token,
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onSuccessPasswordReset = {
+
+                },
                 viewModelFactory = viewModelFactory
             )
         }

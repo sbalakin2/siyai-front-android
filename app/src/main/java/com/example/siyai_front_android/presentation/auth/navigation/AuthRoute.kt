@@ -25,6 +25,11 @@ sealed interface AuthRoute {
 
     @Serializable
     data class LetsMeet(val email: String): AuthRoute
+
+    @Serializable
+    data class PasswordReset(
+        val token: String
+    ): AuthRoute
 }
 
 sealed class RecoveryPasswordRoute{
