@@ -104,4 +104,10 @@
     <string name="selection_photo_bottom_sheet_confirm_two_text">Открыть камеру</string>
     <string name="remove">Удалить</string>
     <string name="apply">Применить</string>
+
+    <string name="password_reset_subtitle">Введите новый\nпароль</string>
+    <string name="password_reset_text">Пароль обязательно должен содержать минимум 8 символов, цифры, заглавные и строчные буквы</string>
+    <string name="new_password">Новый пароль</string>
+    <string name="repeat_new_password">Повторите новый пароль</string>
+    <string name="confirm">Подтвердить</string>
 </resources>
