@@ -20,11 +20,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -34,6 +38,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.example.siyai_front_android.R
 import com.example.siyai_front_android.domain.dto.Profile
+import com.example.siyai_front_android.ui.components.dialog.BasicDialog
 import com.example.siyai_front_android.ui.icons.SiyAiIcons
 
 @Composable
@@ -94,6 +99,8 @@ private fun ProfileStateSuccess(
     ) -> Unit,
     onExitClick: () -> Unit,
 ) {
+    var isExitDialogShow by rememberSaveable { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -146,7 +153,9 @@ private fun ProfileStateSuccess(
         }
 
         ProfileItem(
-            modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
             iconRes = R.drawable.statistics_image,
             titleRes = R.string.my_stats
         )
@@ -188,9 +197,20 @@ private fun ProfileStateSuccess(
         ProfileItem(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable(onClick = onExitClick),
+                .clickable(
+                    onClick = {
+                        isExitDialogShow = true
+                    }
+                ),
             iconRes = R.drawable.log_out_image,
             titleRes = R.string.log_out_of_app
+        )
+    }
+
+    if (isExitDialogShow) {
+        ExitFromAppDialog(
+            onDismissRequest = { isExitDialogShow = false },
+            onExitFromApp = onExitClick
         )
     }
 }
@@ -248,4 +268,21 @@ private fun ProfileStateLoading() {
     ) {
         CircularProgressIndicator()
     }
+}
+
+@Composable
+fun ExitFromAppDialog(
+    onDismissRequest: () -> Unit,
+    onExitFromApp: () -> Unit,
+) {
+    BasicDialog(
+        onConfirm = onExitFromApp,
+        onDismissRequest = onDismissRequest,
+        icon = painterResource(R.drawable.ic_exit),
+        title = stringResource(R.string.exit_from_app_title),
+        text = stringResource(R.string.exit_from_app_text),
+        confirmButtonText = stringResource(R.string.exit),
+        dismissButtonText = stringResource(R.string.cancel)
+
+    )
 }
