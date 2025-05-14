@@ -83,7 +83,7 @@ fun EmailConfirmationScreen(
     val focusRequesters = List(EMAIL_CONFIRMATION_CODE_SIZE) { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    var receivedCode by rememberSaveable(otp) { mutableIntStateOf(0) }
+    var receivedCode by rememberSaveable { mutableIntStateOf(otp) }
     val enteredCode = remember { mutableStateListOf("", "", "", "", "", "") }
     var inputCodeCount by rememberSaveable { mutableIntStateOf(0) }
 
