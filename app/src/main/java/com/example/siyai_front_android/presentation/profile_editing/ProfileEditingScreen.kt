@@ -63,7 +63,6 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileEditingScreen(
-    email: String,
     onBackClick: () -> Unit,
     onOnboardingClick: () -> Unit,
     viewModelFactory: ViewModelProvider.Factory
@@ -179,7 +178,7 @@ fun ProfileEditingScreen(
         }
 
         BaseTextField(
-            value = email,
+            value = profileState.email,
             onValueChange = {},
             modifier = Modifier
                 .padding(top = 12.dp)
@@ -269,7 +268,6 @@ fun ProfileEditingScreen(
             text = stringResource(R.string.apply),
             onClick = {
                 val profile = getCurrentProfile(profileState, countiesAndCitiesState)
-                    .copy(email = email)
                 viewModel.editProfile(profile)
             },
             modifier = Modifier
