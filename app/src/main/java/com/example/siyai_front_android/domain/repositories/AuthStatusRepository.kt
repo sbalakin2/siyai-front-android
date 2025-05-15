@@ -7,6 +7,8 @@ interface AuthStatusRepository {
 
     suspend fun isUserAuthorized(): Flow<Boolean>
 
+    suspend fun getUserEmail(): String?
+
     suspend fun logIn(progress: AuthProgress)
 
     suspend fun logOut()

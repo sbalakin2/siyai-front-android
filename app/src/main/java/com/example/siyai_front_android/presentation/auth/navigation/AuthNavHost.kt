@@ -50,8 +50,8 @@ fun AuthNavHost(
                 onPasswordRecoveryClick = {
                     navController.navigate(AuthRoute.RecoveryPassword)
                 },
-                onLoginSuccess = {
-                    enterToApp(AuthProgress.LogIn)
+                onLoginSuccess = { email ->
+                    enterToApp(AuthProgress.LogIn(email))
                 },
                 viewModelFactory = viewModelFactory
             )
@@ -106,7 +106,7 @@ fun AuthNavHost(
                 expDate = emailConfirmation.expDate,
                 otp = emailConfirmation.otp,
                 onEmailConfirmationClick = {
-                    enterToApp(AuthProgress.Register)
+                    enterToApp(AuthProgress.Register(emailConfirmation.email))
 
                     navController
                         .navigate(AuthRoute.LetsMeet(email = emailConfirmation.email)) {
@@ -126,7 +126,9 @@ fun AuthNavHost(
 
             LetsMeetScreen(
                 email = letsMeetArgs.email,
-                onProfileCreated = { enterToApp(AuthProgress.RegisterAndCreateProfile) },
+                onProfileCreated = {
+                    enterToApp(AuthProgress.RegisterAndCreateProfile(letsMeetArgs.email))
+                },
                 viewModelFactory = viewModelFactory
             )
         }

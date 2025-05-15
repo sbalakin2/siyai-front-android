@@ -3,6 +3,7 @@ package com.example.siyai_front_android.data.repositories
 import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.siyai_front_android.domain.dto.AuthProgress
 import com.example.siyai_front_android.domain.repositories.AuthStatusRepository
@@ -26,6 +27,11 @@ class AuthStatusRepositoryImpl @Inject constructor(
             .map { preferences -> preferences[IS_AUTH] ?: false }
     }
 
+    override suspend fun getUserEmail(): String? {
+        val preferences =  dataStore.data.first()
+        return preferences[EMAIL]
+    }
+
     /**
      * Проверяет, была ли регистрация завершена до конца или нет
      */
@@ -45,25 +51,39 @@ class AuthStatusRepositoryImpl @Inject constructor(
     override suspend fun logIn(progress: AuthProgress) {
         when (progress) {
             // завершен шаг регистрации
-            AuthProgress.Register -> {
-                dataStore.edit { preferences -> preferences[IS_REGISTER] = true }
+            is AuthProgress.Register -> {
+                dataStore.edit { preferences ->
+                    preferences[IS_REGISTER] = true
+                    preferences[EMAIL] = progress.email
+                }
             }
-            // может войти в приложение
-            AuthProgress.LogIn, AuthProgress.RegisterAndCreateProfile -> {
-                dataStore.edit { preferences -> preferences[IS_AUTH] = true }
+            // может войти в приложение (логин)
+            is AuthProgress.LogIn -> {
+                dataStore.edit { preferences ->
+                    preferences[IS_AUTH] = true
+                    preferences[EMAIL] = progress.email
+                }
+            }
+            // может войти в приложение (после регистрации)
+            is AuthProgress.RegisterAndCreateProfile -> {
+                dataStore.edit { preferences ->
+                    preferences[IS_AUTH] = true
+                    preferences[EMAIL] = progress.email
+                }
             }
         }
     }
 
     override suspend fun logOut() {
         dataStore.edit { preferences ->
-            preferences[IS_AUTH] = false
-            preferences[IS_REGISTER] = false
+            preferences.clear()
         }
     }
 
     companion object {
         private val IS_AUTH = booleanPreferencesKey("is_auth")
         private val IS_REGISTER = booleanPreferencesKey("is_register")
+
+        private val EMAIL = stringPreferencesKey("email")
     }
 }

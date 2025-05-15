@@ -23,11 +23,6 @@ class ProfileStorageRepositoryImpl @Inject constructor(
 
     private val dataStore = context.dataStore
 
-    override suspend fun getUserEmail(): Result<String> {
-        val preferences =  dataStore.data.first()
-        return runCatching { preferences.getOrThrow(EMAIL) }
-    }
-
     override suspend fun getUserProfile(): Result<CacheContainer<Profile>> {
         val preferences =  dataStore.data.first()
 
@@ -47,15 +42,10 @@ class ProfileStorageRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveUserEmail(email: String) {
-        dataStore.edit { preferences ->
-            preferences[EMAIL] = email
-        }
-    }
-
     override suspend fun saveUserProfile(profile: Profile) {
         dataStore.edit { preferences ->
             preferences[CACHE_DATE_TIME] = Date().toISODateTimeString()
+
             preferences[EMAIL] = profile.email
             preferences[NAME] = profile.firstName
             preferences[SURNAME] = profile.lastName

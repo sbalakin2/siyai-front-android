@@ -2,9 +2,9 @@ package com.example.siyai_front_android.domain.dto
 
 sealed interface AuthProgress {
 
-    data object LogIn: AuthProgress
+    data class LogIn(val email: String): AuthProgress
 
-    data object Register: AuthProgress
+    data class Register(val email: String): AuthProgress
 
-    data object RegisterAndCreateProfile: AuthProgress
+    data class RegisterAndCreateProfile(val email: String): AuthProgress
 }

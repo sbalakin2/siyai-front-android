@@ -1,5 +1,6 @@
 package com.example.siyai_front_android.domain.usecases
 
+import com.example.siyai_front_android.domain.repositories.AuthStatusRepository
 import com.example.siyai_front_android.domain.repositories.ProfileRepository
 import com.example.siyai_front_android.domain.repositories.ProfileStorageRepository
 import com.example.siyai_front_android.presentation.profile.ProfileState
@@ -8,6 +9,7 @@ import com.example.siyai_front_android.utils.isHoursPassed
 import javax.inject.Inject
 
 class GetProfileUseCaseImpl @Inject constructor(
+    private val authStatusRepository: AuthStatusRepository,
     private val profileRemoteRepository: ProfileRepository,
     private val profileStorageRepository: ProfileStorageRepository
 ) : GetProfileUseCase {
@@ -19,7 +21,7 @@ class GetProfileUseCaseImpl @Inject constructor(
             return ProfileState.Success(cachedProfile.data)
         }
 
-        val email = profileStorageRepository.getUserEmail().getOrNull()
+        val email = authStatusRepository.getUserEmail()
             ?: return ProfileState.Exception("Email not found. Please re-login")
 
         return when (val result = profileRemoteRepository.getProfile(email)) {
