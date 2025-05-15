@@ -5,12 +5,13 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.example.siyai_front_android.domain.dto.CacheContainer
 import com.example.siyai_front_android.domain.dto.Profile
 import com.example.siyai_front_android.domain.repositories.ProfileStorageRepository
 import com.example.siyai_front_android.utils.parseISODateTime
 import com.example.siyai_front_android.utils.toISODateTimeString
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import java.util.Date
 import javax.inject.Inject
 
@@ -23,23 +24,27 @@ class ProfileStorageRepositoryImpl @Inject constructor(
 
     private val dataStore = context.dataStore
 
-    override suspend fun getUserProfile(): Result<CacheContainer<Profile>> {
-        val preferences =  dataStore.data.first()
+    override suspend fun profileLastUpdateTime(): Date? {
+        val preferences = dataStore.data.first()
+        return runCatching { preferences.getOrThrow(CACHE_DATE_TIME).parseISODateTime() }
+            .getOrNull()
+    }
 
-        return runCatching {
-            val cacheDate = preferences.getOrThrow(CACHE_DATE_TIME).parseISODateTime()
+    override suspend fun getUserProfileFlow(): Flow<Profile?> {
+        return dataStore.data
+            .map { preferences -> preferences.getProfile() }
+            .map { result -> result.getOrNull() }
+    }
 
-            val profile = Profile(
-                email = preferences.getOrThrow(EMAIL),
-                firstName = preferences.getOrThrow(NAME),
-                lastName = preferences.getOrThrow(SURNAME),
-                birthday = preferences.getOrThrow(BIRTHDAY),
-                country = preferences.getOrThrow(COUNTRY),
-                city = preferences.getOrThrow(CITY)
-            )
-
-            CacheContainer(cacheDate, profile)
-        }
+    private fun Preferences.getProfile(): Result<Profile> = kotlin.runCatching {
+        Profile(
+            email = getOrThrow(EMAIL),
+            firstName = getOrThrow(NAME),
+            lastName = getOrThrow(SURNAME),
+            birthday = getOrThrow(BIRTHDAY),
+            country = getOrThrow(COUNTRY),
+            city = getOrThrow(CITY)
+        )
     }
 
     override suspend fun saveUserProfile(profile: Profile) {

@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -43,7 +44,10 @@ class ProfileEditingViewModel @Inject constructor(
 
     private fun loadInitialProfileData() {
         viewModelScope.launch {
-            _initialUserProfile.value = (getProfileUseCase() as? ProfileState.Success)?.profile
+            val saveProfileState = getProfileUseCase()
+                .firstOrNull { it is ProfileState.Success } as? ProfileState.Success
+
+            _initialUserProfile.value = saveProfileState?.profile
         }
     }
 

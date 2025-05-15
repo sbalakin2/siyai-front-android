@@ -22,7 +22,9 @@ class ProfileViewModel @Inject constructor(
 
     private fun getProfile() {
         viewModelScope.launch {
-            _profileState.value = getProfileUseCase()
+            getProfileUseCase().collect { newProfileState ->
+                _profileState.value = newProfileState
+            }
         }
     }
 }
