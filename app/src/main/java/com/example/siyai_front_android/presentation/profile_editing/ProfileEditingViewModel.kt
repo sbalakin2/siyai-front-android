@@ -6,7 +6,8 @@ import com.example.siyai_front_android.domain.dto.CountryWithCities
 import com.example.siyai_front_android.domain.dto.Profile
 import com.example.siyai_front_android.domain.usecases.EditProfileUseCase
 import com.example.siyai_front_android.domain.usecases.GetCountiesWithCitiesUseCase
-import com.example.siyai_front_android.domain.usecases.GetUserProfileUseCase
+import com.example.siyai_front_android.domain.usecases.GetProfileUseCase
+import com.example.siyai_front_android.presentation.profile.ProfileState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +18,7 @@ import javax.inject.Inject
 class ProfileEditingViewModel @Inject constructor(
     private val editProfileUseCase: EditProfileUseCase,
     private val getCountiesWithCitiesUseCase: GetCountiesWithCitiesUseCase,
-    private val getUserProfileUseCase: GetUserProfileUseCase
+    private val getProfileUseCase: GetProfileUseCase
 ) : ViewModel() {
 
     private val _profileEditingState = MutableStateFlow<ProfileEditingState>(ProfileEditingState.Idle)
@@ -42,8 +43,7 @@ class ProfileEditingViewModel @Inject constructor(
 
     private fun loadInitialProfileData() {
         viewModelScope.launch {
-            _initialUserProfile.value = getUserProfileUseCase()
-                .fold(onSuccess = { it }, onFailure = { null })
+            _initialUserProfile.value = (getProfileUseCase() as? ProfileState.Success)?.profile
         }
     }
 

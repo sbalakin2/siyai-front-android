@@ -17,9 +17,13 @@ class HomeViewModel @Inject constructor(
     private val _homeState = MutableStateFlow<HomeState>(HomeState.Loading)
     val homeState: StateFlow<HomeState> = _homeState.asStateFlow()
 
-    fun getProfile(email: String) {
+    init {
+        getProfile()
+    }
+
+    private fun getProfile() {
         viewModelScope.launch {
-            _homeState.value = when (val result = getProfileUseCase(email)) {
+            _homeState.value = when (val result = getProfileUseCase()) {
                 is ProfileState.Success -> {
                     HomeState.Success(result.profile)
                 }

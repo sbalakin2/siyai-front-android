@@ -5,25 +5,35 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.example.siyai_front_android.domain.dto.CreateProfileData
+import com.example.siyai_front_android.domain.dto.CacheContainer
 import com.example.siyai_front_android.domain.dto.Profile
-import com.example.siyai_front_android.domain.repositories.UserProfileRepository
+import com.example.siyai_front_android.domain.repositories.ProfileStorageRepository
+import com.example.siyai_front_android.utils.parseISODateTime
+import com.example.siyai_front_android.utils.toISODateTimeString
 import kotlinx.coroutines.flow.first
+import java.util.Date
 import javax.inject.Inject
 
 
 private val Context.dataStore by preferencesDataStore(name = "user_profile")
 
-class UserProfileRepositoryImpl @Inject constructor(
+class ProfileStorageRepositoryImpl @Inject constructor(
     context: Context
-) : UserProfileRepository {
+) : ProfileStorageRepository {
 
     private val dataStore = context.dataStore
 
-    override suspend fun getUserProfile(): Result<Profile> {
+    override suspend fun getUserEmail(): Result<String> {
+        val preferences =  dataStore.data.first()
+        return runCatching { preferences.getOrThrow(EMAIL) }
+    }
+
+    override suspend fun getUserProfile(): Result<CacheContainer<Profile>> {
         val preferences =  dataStore.data.first()
 
-        return try {
+        return runCatching {
+            val cacheDate = preferences.getOrThrow(CACHE_DATE_TIME).parseISODateTime()
+
             val profile = Profile(
                 email = preferences.getOrThrow(EMAIL),
                 firstName = preferences.getOrThrow(NAME),
@@ -33,18 +43,22 @@ class UserProfileRepositoryImpl @Inject constructor(
                 city = preferences.getOrThrow(CITY)
             )
 
-            Result.success(profile)
-
-        } catch (e: Exception) {
-            Result.failure(e)
+            CacheContainer(cacheDate, profile)
         }
     }
 
-    override suspend fun saveUserProfile(profile: CreateProfileData) {
+    override suspend fun saveUserEmail(email: String) {
         dataStore.edit { preferences ->
+            preferences[EMAIL] = email
+        }
+    }
+
+    override suspend fun saveUserProfile(profile: Profile) {
+        dataStore.edit { preferences ->
+            preferences[CACHE_DATE_TIME] = Date().toISODateTimeString()
             preferences[EMAIL] = profile.email
-            preferences[NAME] = profile.name
-            preferences[SURNAME] = profile.surName
+            preferences[NAME] = profile.firstName
+            preferences[SURNAME] = profile.lastName
             preferences[BIRTHDAY] = profile.birthday
             preferences[COUNTRY] = profile.country
             preferences[CITY] = profile.city
@@ -62,6 +76,8 @@ class UserProfileRepositoryImpl @Inject constructor(
     }
 
     companion object {
+        private val CACHE_DATE_TIME = stringPreferencesKey("cache_date_time")
+
         private val EMAIL = stringPreferencesKey("email")
         private val NAME = stringPreferencesKey("name")
         private val SURNAME = stringPreferencesKey("surName")

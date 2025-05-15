@@ -318,19 +318,19 @@ fun ProfileEditingScreen(
 }
 
 private fun getCurrentProfile(
-    profileState: ProfileState,
+    profileEditState: ProfileEditState,
     countriesAndCitiesState: CountriesAndCitiesState
 ): Profile {
     return Profile(
-        email = profileState.email,
-        firstName = profileState.firstName,
-        lastName = profileState.lastName,
-        birthday = runCatching { profileState.birthday?.toISODateString().orEmpty() }
+        email = profileEditState.email,
+        firstName = profileEditState.firstName,
+        lastName = profileEditState.lastName,
+        birthday = runCatching { profileEditState.birthday?.toISODateString().orEmpty() }
             .getOrDefault(""),
         country = countriesAndCitiesState.countries
-            .getOrNull(profileState.countryIndex)?.name.orEmpty(),
+            .getOrNull(profileEditState.countryIndex)?.name.orEmpty(),
         city = countriesAndCitiesState.cities
-            .getOrNull(profileState.cityIndex).orEmpty()
+            .getOrNull(profileEditState.cityIndex).orEmpty()
     )
 }
 
@@ -365,12 +365,12 @@ private fun getProfileEditingState(
     }
 }
 
-private fun checkIsFormCompleted(profileState: ProfileState): Boolean {
-    return sequenceOf(profileState.firstName, profileState.lastName)
+private fun checkIsFormCompleted(profileEditState: ProfileEditState): Boolean {
+    return sequenceOf(profileEditState.firstName, profileEditState.lastName)
         .all { it.isNotEmpty() }
-            && profileState.birthday != null
-            && profileState.cityIndex != -1
-            && profileState.countryIndex != -1
+            && profileEditState.birthday != null
+            && profileEditState.cityIndex != -1
+            && profileEditState.countryIndex != -1
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

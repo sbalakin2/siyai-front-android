@@ -56,7 +56,6 @@ fun ProfileScreen(
 ) {
     val viewModel: ProfileViewModel = viewModel(factory = viewModelFactory)
     val profileState by viewModel.profileState.collectAsStateWithLifecycle()
-    viewModel.getProfile("test1@mail.com")
 
     val context = LocalContext.current
 

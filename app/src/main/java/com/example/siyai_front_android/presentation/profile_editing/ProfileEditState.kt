@@ -16,7 +16,7 @@ import com.example.siyai_front_android.utils.parseISODate
 import java.util.Date
 
 @Stable
-class ProfileState {
+class ProfileEditState {
     var email by mutableStateOf("")
     var firstName by mutableStateOf("")
     var lastName by mutableStateOf("")
@@ -42,7 +42,7 @@ class ProfileState {
     }
 
     companion object {
-        fun Saver(): Saver<ProfileState, *> = listSaver(
+        fun Saver(): Saver<ProfileEditState, *> = listSaver(
             save = {
                 listOf(
                     it.email,
@@ -54,7 +54,7 @@ class ProfileState {
                 )
             },
             restore = {
-                ProfileState().apply {
+                ProfileEditState().apply {
                     email = it[0] as String
                     firstName = it[1] as String
                     lastName = it[2] as String
@@ -72,9 +72,9 @@ class ProfileState {
 fun rememberProfileState(
     initialProfile: Profile?,
     countryWithCities: List<CountryWithCities>
-): ProfileState {
+): ProfileEditState {
     var isInitialized by rememberSaveable { mutableStateOf(false) }
-    val state = rememberSaveable(saver = ProfileState.Saver()) { ProfileState() }
+    val state = rememberSaveable(saver = ProfileEditState.Saver()) { ProfileEditState() }
 
     LaunchedEffect(initialProfile, countryWithCities) {
         if (isInitialized) return@LaunchedEffect

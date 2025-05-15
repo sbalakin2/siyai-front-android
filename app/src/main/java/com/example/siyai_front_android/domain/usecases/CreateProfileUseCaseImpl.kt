@@ -2,20 +2,16 @@ package com.example.siyai_front_android.domain.usecases
 
 import com.example.siyai_front_android.domain.dto.CreateProfileData
 import com.example.siyai_front_android.domain.repositories.CreateProfileRepository
-import com.example.siyai_front_android.domain.repositories.UserProfileRepository
 import com.example.siyai_front_android.presentation.auth.lets_meet.LetsMeetState
 import com.example.siyai_front_android.utils.NetworkResult
 import javax.inject.Inject
 
 class CreateProfileUseCaseImpl @Inject constructor(
-    private val createProfileRepository: CreateProfileRepository,
-    private val userProfileRepository: UserProfileRepository
+    private val createProfileRepository: CreateProfileRepository
 ) : CreateProfileUseCase {
     override suspend fun invoke(data: CreateProfileData): LetsMeetState {
         return when (val result = createProfileRepository.createUserProfile(data)) {
             is NetworkResult.Success -> {
-                // сохраняем локально
-                userProfileRepository.saveUserProfile(data)
                 LetsMeetState.Success
             }
 

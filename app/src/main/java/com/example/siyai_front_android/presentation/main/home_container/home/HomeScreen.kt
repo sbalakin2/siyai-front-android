@@ -40,7 +40,6 @@ fun HomeScreen(
 ) {
     val viewModel: HomeViewModel = viewModel(factory = viewModelFactory)
     val homeState by viewModel.homeState.collectAsStateWithLifecycle()
-    viewModel.getProfile("test1@mail.com")
 
     when (homeState) {
         is HomeState.Success -> {
