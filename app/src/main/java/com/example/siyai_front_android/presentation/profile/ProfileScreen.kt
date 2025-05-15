@@ -209,7 +209,7 @@ private fun ProfileStateSuccess(
     if (isExitDialogShow) {
         ExitFromAppDialog(
             onDismissRequest = { isExitDialogShow = false },
-            onExitFromApp = onExitClick
+            onExitFromApp = { onExitClick(); isExitDialogShow = false }
         )
     }
 }
@@ -282,6 +282,5 @@ fun ExitFromAppDialog(
         text = stringResource(R.string.exit_from_app_text),
         confirmButtonText = stringResource(R.string.exit),
         dismissButtonText = stringResource(R.string.cancel)
-
     )
 }
