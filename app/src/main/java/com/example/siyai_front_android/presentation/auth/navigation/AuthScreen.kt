@@ -5,12 +5,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
+import com.example.siyai_front_android.domain.dto.AuthProgress
 
 @Composable
 fun AuthScreen(
     modifier: Modifier = Modifier,
     viewModelFactory: ViewModelProvider.Factory,
-    navigateToHome: () -> Unit
+    enterToApp: (progress: AuthProgress) -> Unit
 ) {
     val navController = rememberNavController()
 
@@ -18,6 +19,6 @@ fun AuthScreen(
         navController = navController,
         modifier = modifier,
         viewModelFactory = viewModelFactory,
-        navigateToHome = navigateToHome
+        enterToApp = enterToApp
     )
 }

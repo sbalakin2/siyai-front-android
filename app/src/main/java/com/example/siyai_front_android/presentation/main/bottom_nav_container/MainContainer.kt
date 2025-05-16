@@ -16,7 +16,8 @@ import com.example.siyai_front_android.ui.theme.SiyaifrontandroidTheme
 @Composable
 fun MainContainer(
     modifier: Modifier = Modifier,
-    viewModelFactory: ViewModelProvider.Factory
+    exitFromApp: () -> Unit,
+    viewModelFactory: ViewModelProvider.Factory,
 ) {
     val navController = rememberNavController()
     val navState by navController.currentBackStackEntryAsState()
@@ -45,7 +46,8 @@ fun MainContainer(
         MainNavHost(
             navController = navController,
             modifier = Modifier.padding(innerPadding),
-            viewModelFactory = viewModelFactory
+            viewModelFactory = viewModelFactory,
+            exitFromApp = exitFromApp
         )
     }
 }
@@ -54,6 +56,6 @@ fun MainContainer(
 @Preview
 private fun MainContainer_Preview(){
     SiyaifrontandroidTheme {
-        MainContainer(viewModelFactory = ViewModelFactory(mapOf()))
+        MainContainer(viewModelFactory = ViewModelFactory(mapOf()), exitFromApp = {})
     }
 }

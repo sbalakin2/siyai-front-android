@@ -17,21 +17,30 @@ class HomeViewModel @Inject constructor(
     private val _homeState = MutableStateFlow<HomeState>(HomeState.Loading)
     val homeState: StateFlow<HomeState> = _homeState.asStateFlow()
 
-    fun getProfile(email: String) {
+    init {
+        getProfile()
+    }
+
+    private fun getProfile() {
         viewModelScope.launch {
-            _homeState.value = when (val result = getProfileUseCase(email)) {
-                is ProfileState.Success -> {
-                    HomeState.Success(result.profile)
-                }
-                is ProfileState.Error -> {
-                    HomeState.Error(result.code, result.message)
-                }
-                is ProfileState.Exception -> {
-                    HomeState.Exception(result.message)
-                }
-                ProfileState.Loading -> {
-                    HomeState.Loading
-                }
+            getProfileUseCase()
+                .collect(::updateHomeState)
+        }
+    }
+
+    private fun updateHomeState(state:  ProfileState) {
+        _homeState.value = when (state) {
+            is ProfileState.Success -> {
+                HomeState.Success(state.profile)
+            }
+            is ProfileState.Error -> {
+                HomeState.Error(state.code, state.message)
+            }
+            is ProfileState.Exception -> {
+                HomeState.Exception(state.message)
+            }
+            ProfileState.Loading -> {
+                HomeState.Loading
             }
         }
     }

@@ -3,7 +3,7 @@ package com.example.siyai_front_android.presentation.auth.lets_meet
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.siyai_front_android.domain.dto.CountryWithCities
-import com.example.siyai_front_android.domain.dto.UserProfileData
+import com.example.siyai_front_android.domain.dto.CreateProfileData
 import com.example.siyai_front_android.domain.usecases.CreateProfileUseCase
 import com.example.siyai_front_android.domain.usecases.GetCountiesWithCitiesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,7 +33,7 @@ class LetsMeetViewModel @Inject constructor(
         }
     }
 
-    fun createUserProfile(data: UserProfileData) {
+    fun createUserProfile(data: CreateProfileData) {
         viewModelScope.launch {
             _letsMeetState.value = LetsMeetState.Loading
             _letsMeetState.value = runCatching { createProfileUseCase(data) }

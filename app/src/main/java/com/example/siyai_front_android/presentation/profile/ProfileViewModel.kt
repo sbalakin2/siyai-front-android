@@ -11,14 +11,20 @@ import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(
     private val getProfileUseCase: GetProfileUseCase
-): ViewModel() {
+) : ViewModel() {
 
     private val _profileState = MutableStateFlow<ProfileState>(ProfileState.Loading)
     val profileState: StateFlow<ProfileState> = _profileState.asStateFlow()
 
-    fun getProfile(email: String) {
+    init {
+        getProfile()
+    }
+
+    private fun getProfile() {
         viewModelScope.launch {
-            _profileState.value = getProfileUseCase(email)
+            getProfileUseCase().collect { newProfileState ->
+                _profileState.value = newProfileState
+            }
         }
     }
 }

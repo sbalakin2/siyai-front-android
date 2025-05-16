@@ -1,6 +1,7 @@
 package com.example.siyai_front_android.presentation.profile
 
 import android.content.Context
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,11 +20,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,10 +38,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.example.siyai_front_android.R
 import com.example.siyai_front_android.domain.dto.Profile
+import com.example.siyai_front_android.ui.components.dialog.BasicDialog
 import com.example.siyai_front_android.ui.icons.SiyAiIcons
 
 @Composable
 fun ProfileScreen(
+    onExitClick: () -> Unit,
     onEditClick: (
         email: String,
         firstName: String,
@@ -49,7 +56,6 @@ fun ProfileScreen(
 ) {
     val viewModel: ProfileViewModel = viewModel(factory = viewModelFactory)
     val profileState by viewModel.profileState.collectAsStateWithLifecycle()
-    viewModel.getProfile("test1@mail.com")
 
     val context = LocalContext.current
 
@@ -57,7 +63,8 @@ fun ProfileScreen(
         is ProfileState.Success -> {
             ProfileStateSuccess(
                 profile = (profileState as ProfileState.Success).profile,
-                onEditClick = onEditClick
+                onEditClick = onEditClick,
+                onExitClick = onExitClick
             )
         }
         is ProfileState.Error -> {
@@ -88,8 +95,11 @@ private fun ProfileStateSuccess(
         birthday: String,
         country: String,
         city: String
-    ) -> Unit
+    ) -> Unit,
+    onExitClick: () -> Unit,
 ) {
+    var isExitDialogShow by rememberSaveable { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -142,7 +152,9 @@ private fun ProfileStateSuccess(
         }
 
         ProfileItem(
-            modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
             iconRes = R.drawable.statistics_image,
             titleRes = R.string.my_stats
         )
@@ -182,9 +194,22 @@ private fun ProfileStateSuccess(
         Divider()
 
         ProfileItem(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(
+                    onClick = {
+                        isExitDialogShow = true
+                    }
+                ),
             iconRes = R.drawable.log_out_image,
             titleRes = R.string.log_out_of_app
+        )
+    }
+
+    if (isExitDialogShow) {
+        ExitFromAppDialog(
+            onDismissRequest = { isExitDialogShow = false },
+            onExitFromApp = { onExitClick(); isExitDialogShow = false }
         )
     }
 }
@@ -242,4 +267,20 @@ private fun ProfileStateLoading() {
     ) {
         CircularProgressIndicator()
     }
+}
+
+@Composable
+fun ExitFromAppDialog(
+    onDismissRequest: () -> Unit,
+    onExitFromApp: () -> Unit,
+) {
+    BasicDialog(
+        onConfirm = onExitFromApp,
+        onDismissRequest = onDismissRequest,
+        icon = painterResource(R.drawable.ic_exit),
+        title = stringResource(R.string.exit_from_app_title),
+        text = stringResource(R.string.exit_from_app_text),
+        confirmButtonText = stringResource(R.string.exit),
+        dismissButtonText = stringResource(R.string.cancel)
+    )
 }

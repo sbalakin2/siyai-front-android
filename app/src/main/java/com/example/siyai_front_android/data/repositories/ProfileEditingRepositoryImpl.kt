@@ -1,10 +1,7 @@
 package com.example.siyai_front_android.data.repositories
 
-import com.example.siyai_front_android.data.mappers.toCreateProfileRequest
 import com.example.siyai_front_android.data.remote.NetworkApi
 import com.example.siyai_front_android.data.remote.dto.UserProfileRequest
-import com.example.siyai_front_android.domain.dto.UserProfileData
-import com.example.siyai_front_android.domain.repositories.CreateProfileRepository
 import com.example.siyai_front_android.domain.repositories.ProfileEditingRepository
 import com.example.siyai_front_android.utils.NetworkResult
 import kotlinx.coroutines.Dispatchers
