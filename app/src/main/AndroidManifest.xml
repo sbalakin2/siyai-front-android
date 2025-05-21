@@ -35,7 +35,7 @@
 
                 <data
                     android:scheme="https"
-                    android:host="com.example.siyai_front_android" />
+                    android:host="api.effectivemobileshine.ru" />
             </intent-filter>
         </activity>
     </application>
