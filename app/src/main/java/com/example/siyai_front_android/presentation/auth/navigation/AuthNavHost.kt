@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
+import com.example.siyai_front_android.domain.dto.AuthProgress
 import com.example.siyai_front_android.di.BASE_URL
 import com.example.siyai_front_android.presentation.auth.email_confirmation.EmailConfirmationScreen
 import com.example.siyai_front_android.presentation.auth.lets_meet.LetsMeetScreen
@@ -24,7 +25,7 @@ fun AuthNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     viewModelFactory: ViewModelProvider.Factory,
-    navigateToHome: () -> Unit
+    enterToApp: (progress: AuthProgress) -> Unit,
 ) {
     NavHost(
         navController = navController,
@@ -52,8 +53,8 @@ fun AuthNavHost(
                 onPasswordRecoveryClick = {
                     navController.navigate(AuthRoute.RecoveryPassword)
                 },
-                onLoginSuccess = {
-                    navigateToHome.invoke()
+                onLoginSuccess = { email ->
+                    enterToApp(AuthProgress.LogIn(email))
                 },
                 viewModelFactory = viewModelFactory
             )
@@ -108,15 +109,14 @@ fun AuthNavHost(
                 expDate = emailConfirmation.expDate,
                 otp = emailConfirmation.otp,
                 onEmailConfirmationClick = {
-                    navController.navigate(
-                        AuthRoute.LetsMeet(
-                            email = emailConfirmation.email
-                        )
-                    ) {
-                        popUpTo(AuthRoute.Reg) {
-                            inclusive = false
+                    enterToApp(AuthProgress.Register(emailConfirmation.email))
+
+                    navController
+                        .navigate(AuthRoute.LetsMeet(email = emailConfirmation.email)) {
+                            popUpTo(AuthRoute.Reg) {
+                                inclusive = false
+                            }
                         }
-                    }
                 },
                 onResendingCodeClick = {
 
@@ -129,7 +129,9 @@ fun AuthNavHost(
 
             LetsMeetScreen(
                 email = letsMeetArgs.email,
-                onProfileCreated = navigateToHome,
+                onProfileCreated = {
+                    enterToApp(AuthProgress.RegisterAndCreateProfile(letsMeetArgs.email))
+                },
                 viewModelFactory = viewModelFactory
             )
         }

@@ -92,6 +92,9 @@
     <string name="rate_app">Оценить приложение</string>
     <string name="about_app">О приложении</string>
     <string name="log_out_of_app">Выйти из приложения</string>
+    <string name="exit_from_app_title">Вы действительно хотите выйти?</string>
+    <string name="exit_from_app_text">Убедитесь, что в вашем профиле указан корректный email</string>
+    <string name="exit">Выйти</string>
 
     <string name="choose_another_photo">Выбрать другое фото</string>
     <string name="remove_photo">X Удалить фото</string>

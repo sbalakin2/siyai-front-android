@@ -46,7 +46,7 @@ fun LoginScreen(
     onBackClick: () -> Unit,
     onRegClick: () -> Unit,
     onPasswordRecoveryClick: () -> Unit,
-    onLoginSuccess: () -> Unit,
+    onLoginSuccess: (email: String) -> Unit,
     viewModelFactory: ViewModelProvider.Factory
 ) {
     val viewModel: LoginViewModel = viewModel(factory = viewModelFactory)
@@ -169,7 +169,7 @@ fun LoginScreen(
             LaunchedEffect(loginState) {
                 when (loginState) {
                     is LoginState.Success -> {
-                        onLoginSuccess()
+                        onLoginSuccess(email)
                         Toast.makeText(context, "sign in success", Toast.LENGTH_SHORT).show()
                         viewModel.resetState()
                     }

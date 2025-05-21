@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
 import com.example.siyai_front_android.presentation.main.home_container.navigation.HomeContainer
 import com.example.siyai_front_android.presentation.profile.ProfileScreen
 import com.example.siyai_front_android.presentation.profile_editing.ProfileEditingScreen
@@ -17,7 +16,8 @@ import com.example.siyai_front_android.presentation.sign_day.SignOfTheDayScreen
 fun MainNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    viewModelFactory: ViewModelProvider.Factory
+    viewModelFactory: ViewModelProvider.Factory,
+    exitFromApp: () -> Unit,
 ) {
     NavHost(
         navController = navController,
@@ -48,13 +48,12 @@ fun MainNavHost(
                         )
                     )
                 },
-                viewModelFactory = viewModelFactory
+                viewModelFactory = viewModelFactory,
+                onExitClick = exitFromApp
             )
         }
         composable<MainRoute.ProfileEditing> {
-            val profileEditing = it.toRoute<MainRoute.ProfileEditing>()
             ProfileEditingScreen(
-                email = profileEditing.email,
                 onBackClick = {
                     navController.popBackStack()
                 },

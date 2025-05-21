@@ -1,6 +1,6 @@
 package com.example.siyai_front_android.domain.dto
 
-data class UserProfileData(
+data class CreateProfileData(
     val email: String,
     val name: String,
     val surName: String,

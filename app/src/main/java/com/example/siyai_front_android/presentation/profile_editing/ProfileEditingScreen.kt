@@ -30,7 +30,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -50,35 +49,38 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.example.siyai_front_android.R
+import com.example.siyai_front_android.domain.dto.Profile
 import com.example.siyai_front_android.ui.components.buttons.PrimaryButton
 import com.example.siyai_front_android.ui.components.buttons.SecondaryButton
 import com.example.siyai_front_android.ui.components.text_fields.BaseTextField
 import com.example.siyai_front_android.ui.components.text_fields.DatePickerTextField
 import com.example.siyai_front_android.ui.components.text_fields.DropDownTextField
 import com.example.siyai_front_android.ui.icons.SiyAiIcons
-import com.example.siyai_front_android.utils.checkIsFormCompleted
 import com.example.siyai_front_android.utils.toISODateString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileEditingScreen(
-    email: String,
     onBackClick: () -> Unit,
     onOnboardingClick: () -> Unit,
     viewModelFactory: ViewModelProvider.Factory
 ) {
+    // User data states
     val viewModel: ProfileEditingViewModel = viewModel(factory = viewModelFactory)
+    val initialUserProfileData by viewModel.initialUserProfile.collectAsStateWithLifecycle()
     val profileEditingState by viewModel.profileEditingState.collectAsStateWithLifecycle()
 
     val countiesWithCities by viewModel.countiesWithCities.collectAsStateWithLifecycle()
-    var cities by remember { mutableStateOf<List<String>>(emptyList()) }
+    val countiesAndCitiesState = rememberCountryAndCitiesState(countiesWithCities)
 
-    var countryIndex by rememberSaveable { mutableIntStateOf(-1) }
-    var cityIndex by rememberSaveable { mutableIntStateOf(-1) }
+    val profileState = rememberProfileState(initialUserProfileData, countiesWithCities)
+    LaunchedEffect(profileState.countryIndex) {
+        countiesAndCitiesState.setCitiesFromCountry(profileState.countryIndex)
+    }
 
+    // UI states
     val context = LocalContext.current
 
     val photoSelectionSheetState = rememberModalBottomSheetState()
@@ -90,13 +92,6 @@ fun ProfileEditingScreen(
     val coroutineScope = rememberCoroutineScope()
 
     var checkedPush by rememberSaveable { mutableStateOf(false) }
-    var firstName by rememberSaveable { mutableStateOf("") }
-    var lastName by rememberSaveable { mutableStateOf("") }
-    var birthday by rememberSaveable { mutableStateOf<Date?>(null) }
-
-    LaunchedEffect(countryIndex) {
-        cities = countiesWithCities.getOrNull(countryIndex)?.cities ?: emptyList()
-    }
 
     Column(
         modifier = Modifier
@@ -183,7 +178,7 @@ fun ProfileEditingScreen(
         }
 
         BaseTextField(
-            value = email,
+            value = profileState.email,
             onValueChange = {},
             modifier = Modifier
                 .padding(top = 12.dp)
@@ -194,8 +189,8 @@ fun ProfileEditingScreen(
         )
 
         BaseTextField(
-            value = firstName,
-            onValueChange = { firstName = it },
+            value = profileState.firstName,
+            onValueChange = { profileState.firstName = it },
             modifier = Modifier
                 .padding(top = 12.dp)
                 .fillMaxWidth(),
@@ -204,8 +199,8 @@ fun ProfileEditingScreen(
         )
 
         BaseTextField(
-            value = lastName,
-            onValueChange = { lastName = it },
+            value = profileState.lastName,
+            onValueChange = { profileState.lastName = it },
             modifier = Modifier
                 .padding(top = 12.dp)
                 .fillMaxWidth(),
@@ -214,8 +209,8 @@ fun ProfileEditingScreen(
         )
 
         DatePickerTextField(
-            value = birthday,
-            onValueChange = { birthday = it },
+            value = profileState.birthday,
+            onValueChange = { profileState.birthday = it },
             modifier = Modifier
                 .padding(top = 12.dp)
                 .fillMaxWidth(),
@@ -223,11 +218,11 @@ fun ProfileEditingScreen(
         )
 
         DropDownTextField(
-            index = countryIndex,
-            onIndexChange = { index -> countryIndex = index; cityIndex = -1 },
+            index = profileState.countryIndex,
+            onIndexChange = profileState::updateCountryIndex,
             label = stringResource(R.string.lets_meet_country),
             itemLabel = { it.name },
-            items = countiesWithCities,
+            items = countiesAndCitiesState.countries,
             fullScreen = true,
             modifier = Modifier
                 .padding(top = 12.dp)
@@ -235,12 +230,12 @@ fun ProfileEditingScreen(
         )
 
         DropDownTextField(
-            index = cityIndex,
-            onIndexChange = { index -> cityIndex = index },
+            index = profileState.cityIndex,
+            onIndexChange = profileState::updateCityIndex,
             label = stringResource(R.string.lets_meet_city),
             itemLabel = { it },
-            items = cities,
-            enabled = cities.isNotEmpty(),
+            items = countiesAndCitiesState.cities,
+            enabled = countiesAndCitiesState.cities.isNotEmpty(),
             fullScreen = true,
             modifier = Modifier
                 .padding(top = 12.dp)
@@ -272,19 +267,13 @@ fun ProfileEditingScreen(
         PrimaryButton(
             text = stringResource(R.string.apply),
             onClick = {
-                viewModel.editProfile(
-                    email = email,
-                    firstName = firstName,
-                    lastName = lastName,
-                    birthday = birthday?.toISODateString().orEmpty(),
-                    country = countiesWithCities.getOrNull(countryIndex)?.name.orEmpty(),
-                    city = cities.getOrNull(cityIndex).orEmpty()
-                )
+                val profile = getCurrentProfile(profileState, countiesAndCitiesState)
+                viewModel.editProfile(profile)
             },
             modifier = Modifier
                 .padding(top = 16.dp, bottom = 32.dp)
                 .fillMaxWidth(),
-            enabled = checkIsFormCompleted(firstName, lastName, birthday, countryIndex, cityIndex)
+            enabled = checkIsFormCompleted(profileState)
         )
     }
 
@@ -328,6 +317,23 @@ fun ProfileEditingScreen(
     }
 }
 
+private fun getCurrentProfile(
+    profileEditState: ProfileEditState,
+    countriesAndCitiesState: CountriesAndCitiesState
+): Profile {
+    return Profile(
+        email = profileEditState.email,
+        firstName = profileEditState.firstName,
+        lastName = profileEditState.lastName,
+        birthday = runCatching { profileEditState.birthday?.toISODateString().orEmpty() }
+            .getOrDefault(""),
+        country = countriesAndCitiesState.countries
+            .getOrNull(profileEditState.countryIndex)?.name.orEmpty(),
+        city = countriesAndCitiesState.cities
+            .getOrNull(profileEditState.cityIndex).orEmpty()
+    )
+}
+
 private fun getProfileEditingState(
     profileEditingState: ProfileEditingState,
     context: Context,
@@ -339,6 +345,7 @@ private fun getProfileEditingState(
             onBackClick()
             clearProfileEditingState()
         }
+
         is ProfileEditingState.Error -> {
             val errorMessage = when (profileEditingState.code) {
                 in 500..599 -> context.getString(R.string.server_error)
@@ -347,13 +354,23 @@ private fun getProfileEditingState(
             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
             clearProfileEditingState()
         }
+
         is ProfileEditingState.Exception -> {
             Toast.makeText(context, profileEditingState.message, Toast.LENGTH_SHORT).show()
             clearProfileEditingState()
         }
+
         ProfileEditingState.Idle -> {
         }
     }
+}
+
+private fun checkIsFormCompleted(profileEditState: ProfileEditState): Boolean {
+    return sequenceOf(profileEditState.firstName, profileEditState.lastName)
+        .all { it.isNotEmpty() }
+            && profileEditState.birthday != null
+            && profileEditState.cityIndex != -1
+            && profileEditState.countryIndex != -1
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
