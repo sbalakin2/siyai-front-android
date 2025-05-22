@@ -27,7 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <intent-filter android:autoVerify="true">
+            <intent-filter >
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -35,7 +35,8 @@
 
                 <data
                     android:scheme="https"
-                    android:host="api.effectivemobileshine.ru" />
+                    android:host="api.effectivemobileshine.ru"
+                    android:pathPrefix="/user-service/v1/reset-password" />
             </intent-filter>
         </activity>
     </application>

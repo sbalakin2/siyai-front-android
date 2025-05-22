@@ -1,5 +1,6 @@
 package com.example.siyai_front_android.presentation.auth.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
@@ -26,10 +27,11 @@ fun AuthNavHost(
     modifier: Modifier = Modifier,
     viewModelFactory: ViewModelProvider.Factory,
     enterToApp: (progress: AuthProgress) -> Unit,
+    startDestination: AuthRoute
 ) {
     NavHost(
         navController = navController,
-        startDestination = AuthRoute.Onboarding,
+        startDestination = startDestination,
         modifier = modifier,
     ) {
         composable<AuthRoute.Onboarding> {
@@ -137,13 +139,16 @@ fun AuthNavHost(
         }
         composable<AuthRoute.PasswordReset>(
             deepLinks = listOf(
-                navDeepLink<AuthRoute.PasswordReset>(
-                    basePath = "$BASE_URL/user-service/v1/reset-password"
-                )
+                navDeepLink {
+                    uriPattern = "https://api.effectivemobileshine.ru/user-service/v1/reset-password/{token}"
+                }
             )
         ) {
+
+            val token = it.toRoute<AuthRoute.PasswordReset>().token
+            Log.d("MyLog","Navigated to PasswordResetScreen, token= $token")
             PasswordResetScreen(
-                token = it.toRoute<AuthRoute.PasswordReset>().token,
+                token = token,
                 onBackClick = {
                     navController.popBackStack()
                 },

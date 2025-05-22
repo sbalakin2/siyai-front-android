@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.siyai_front_android.SiyaiViewModel
+import com.example.siyai_front_android.presentation.auth.navigation.AuthRoute
 import com.example.siyai_front_android.presentation.auth.navigation.AuthScreen
 import com.example.siyai_front_android.presentation.main.bottom_nav_container.MainContainer
 
@@ -17,22 +18,26 @@ import com.example.siyai_front_android.presentation.main.bottom_nav_container.Ma
 fun SiyaiNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    viewModelFactory: ViewModelProvider.Factory
+    viewModelFactory: ViewModelProvider.Factory,
+    startDestination: AuthRoute
 ) {
     val viewModel: SiyaiViewModel = viewModel(factory = viewModelFactory)
     val rootDestination by viewModel.startDestination.collectAsStateWithLifecycle()
 
-    rootDestination?.let { startDestination ->
+    rootDestination?.let { startDestinatio ->
         NavHost(
             navController = navController,
-            startDestination = startDestination,
+            startDestination = Route.Auth,
             modifier = modifier,
+
         ) {
             // Онбоардинг и авторизация/регистрация
             composable<Route.Auth> {
                 AuthScreen(
                     enterToApp = viewModel::setAuthProgress,
-                    viewModelFactory = viewModelFactory
+                    viewModelFactory = viewModelFactory,
+                    startDestination = startDestination
+
                 )
             }
             // Основное приложение

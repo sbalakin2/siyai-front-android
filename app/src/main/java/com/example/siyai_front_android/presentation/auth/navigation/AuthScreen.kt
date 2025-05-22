@@ -11,7 +11,8 @@ import com.example.siyai_front_android.domain.dto.AuthProgress
 fun AuthScreen(
     modifier: Modifier = Modifier,
     viewModelFactory: ViewModelProvider.Factory,
-    enterToApp: (progress: AuthProgress) -> Unit
+    enterToApp: (progress: AuthProgress) -> Unit,
+    startDestination: AuthRoute
 ) {
     val navController = rememberNavController()
 
@@ -19,6 +20,7 @@ fun AuthScreen(
         navController = navController,
         modifier = modifier,
         viewModelFactory = viewModelFactory,
-        enterToApp = enterToApp
+        enterToApp = enterToApp,
+        startDestination = startDestination
     )
 }

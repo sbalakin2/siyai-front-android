@@ -1,6 +1,7 @@
 package com.example.siyai_front_android.presentation.auth.password_reset
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -46,6 +47,7 @@ fun PasswordResetScreen(
     onSuccessPasswordReset: () -> Unit,
     viewModelFactory: ViewModelProvider.Factory
 ) {
+    Log.d("MyLog","PasswordResetScreen opened with token: $token")
     val viewModel: PasswordResetViewModel = viewModel(factory = viewModelFactory)
     val passwordResetState by viewModel.passwordResetState.collectAsStateWithLifecycle()
 
