@@ -24,10 +24,10 @@ fun SiyaiNavHost(
     val viewModel: SiyaiViewModel = viewModel(factory = viewModelFactory)
     val rootDestination by viewModel.startDestination.collectAsStateWithLifecycle()
 
-    rootDestination?.let { startDestinatio ->
+    rootDestination?.let { root ->
         NavHost(
             navController = navController,
-            startDestination = Route.Auth,
+            startDestination = root,
             modifier = modifier,
 
         ) {
