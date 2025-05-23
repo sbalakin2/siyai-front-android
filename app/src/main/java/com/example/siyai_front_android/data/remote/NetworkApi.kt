@@ -25,7 +25,7 @@ interface NetworkApi {
         @Body loginRequest: LoginRequest
     ): Response<Unit>
 
-    @POST("/user-service/v1/recovery-password")
+    @POST("/user-service/v2/forgot-password")
     suspend fun recoveryPassword(
         @Body recoveryPasswordRequest: RecoveryPasswordRequest
     ): Response<Unit>
