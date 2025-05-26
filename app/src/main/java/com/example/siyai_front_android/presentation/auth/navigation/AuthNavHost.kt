@@ -11,7 +11,6 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import com.example.siyai_front_android.domain.dto.AuthProgress
-import com.example.siyai_front_android.di.BASE_URL
 import com.example.siyai_front_android.presentation.auth.email_confirmation.EmailConfirmationScreen
 import com.example.siyai_front_android.presentation.auth.lets_meet.LetsMeetScreen
 import com.example.siyai_front_android.presentation.auth.login.LoginScreen
@@ -140,7 +139,7 @@ fun AuthNavHost(
         composable<AuthRoute.PasswordReset>(
             deepLinks = listOf(
                 navDeepLink {
-                    uriPattern = "https://api.effectivemobileshine.ru/user-service/v1/reset-password/{token}"
+                    uriPattern = "https://com.example.siyai_front_android/password_reset?token={token}"
                 }
             )
         ) {

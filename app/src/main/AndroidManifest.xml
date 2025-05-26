@@ -35,8 +35,8 @@
 
                 <data
                     android:scheme="https"
-                    android:host="api.effectivemobileshine.ru"
-                    android:pathPrefix="/user-service/v1/reset-password" />
+                    android:host="com.example.siyai_front_android"
+                    android:pathPrefix="/password_reset" />
             </intent-filter>
         </activity>
     </application>
