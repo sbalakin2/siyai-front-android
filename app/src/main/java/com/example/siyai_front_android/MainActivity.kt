@@ -28,10 +28,14 @@ class MainActivity : ComponentActivity() {
 
         splashScreen.setKeepOnScreenCondition { viewModel.keepSplashScreen.value }
 
-        val startRoute = intent?.data?.toString()?.let { deepLink ->
-            if (deepLink.contains("/password_reset")) {
-                val token = deepLink.substringAfterLast("/")
-                AuthRoute.PasswordReset(token)
+        val startRoute = intent?.data?.let { uri ->
+            if (uri.toString().contains("/password_reset")) {
+                val token = uri.getQueryParameter("token")
+                if (token != null) {
+                    AuthRoute.PasswordReset(token)
+                } else {
+                    AuthRoute.Onboarding
+                }
             } else {
                 AuthRoute.Onboarding
             }
