@@ -6,7 +6,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.example.siyai_front_android.presentation.main.home_container.navigation.HomeContainer
+import com.example.siyai_front_android.presentation.model.Product
+import com.example.siyai_front_android.presentation.product_detail.ProductDetailScreen
 import com.example.siyai_front_android.presentation.profile.ProfileScreen
 import com.example.siyai_front_android.presentation.profile_editing.ProfileEditingScreen
 import com.example.siyai_front_android.presentation.sign_day.SignOfTheDayScreen
@@ -29,6 +32,11 @@ fun MainNavHost(
                 viewModelFactory = viewModelFactory,
                 navigateToSignOfTheDayScreen = {
                     navController.navigate(MainRoute.SignOfTheDay)
+                },
+                navigateToProductDetailScreen = { product ->
+                    navController.navigate(
+                        MainRoute.ProductDetail(product.imageId, product.name, product.price)
+                    )
                 }
             )
         }
@@ -65,6 +73,15 @@ fun MainNavHost(
         }
         composable<MainRoute.SignOfTheDay> {
             SignOfTheDayScreen(
+                onBackClicked = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable<MainRoute.ProductDetail> {
+            val item = it.toRoute<MainRoute.ProductDetail>()
+            ProductDetailScreen(
+                product = Product(item.imageId, item.name, item.price),
                 onBackClicked = {
                     navController.popBackStack()
                 }

@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.siyai_front_android.presentation.main.home_container.home.HomeScreen
+import com.example.siyai_front_android.presentation.model.Product
 
 
 @Composable
@@ -15,6 +16,7 @@ fun HomeNavHost(
     modifier: Modifier = Modifier,
     viewModelFactory: ViewModelProvider.Factory,
     navigateToSignOfTheDayScreen: () -> Unit,
+    navigateToProductDetailScreen: (Product) -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -28,7 +30,10 @@ fun HomeNavHost(
                 navigateToArchiveScreen = {},
                 navigateToAddTrackScreen = {},
                 navigateToFreeLessonsScreen = {},
-                navigateToWaitingListScreen = {}
+                navigateToWaitingListScreen = {},
+                navigateToProductDetailScreen = { product ->
+                    navigateToProductDetailScreen(product)
+                }
             )
         }
     }

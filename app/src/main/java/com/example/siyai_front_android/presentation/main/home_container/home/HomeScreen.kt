@@ -2,8 +2,14 @@ package com.example.siyai_front_android.presentation.main.home_container.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -20,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.siyai_front_android.R
 import com.example.siyai_front_android.di.ViewModelFactory
 import com.example.siyai_front_android.presentation.model.Categories
 import com.example.siyai_front_android.presentation.model.Product
@@ -36,14 +43,15 @@ fun HomeScreen(
     navigateToFreeLessonsScreen: () -> Unit,
     navigateToAddTrackScreen: () -> Unit,
     navigateToArchiveScreen: () -> Unit,
-    navigateToWaitingListScreen: () -> Unit
+    navigateToWaitingListScreen: () -> Unit,
+    navigateToProductDetailScreen: (Product) -> Unit
 ) {
     val viewModel: HomeViewModel = viewModel(factory = viewModelFactory)
     val homeState by viewModel.homeState.collectAsStateWithLifecycle()
 
     when (homeState) {
         is HomeState.Success -> {
-            var screenState by remember{ mutableStateOf(state) }
+            var screenState by remember { mutableStateOf(state) }
 
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
@@ -52,7 +60,8 @@ fun HomeScreen(
                     .background(MaterialTheme.colorScheme.background)
                     .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(bottom = 16.dp)
             ) {
                 item(span = { GridItemSpan(maxCurrentLineSpan) }) {
                     HeaderSection(
@@ -92,7 +101,10 @@ fun HomeScreen(
                 }
 
                 items(screenState.products) { product ->
-                    ProductGridItem(item = product)
+                    ProductGridItem(
+                        item = product,
+                        onClick = { navigateToProductDetailScreen(product) }
+                    )
                 }
             }
         }
@@ -117,19 +129,19 @@ private data class HomeScreenState(
 
 private val state = HomeScreenState(
     user = User(name = "username"),
-    selectedCategory = Categories.PURCHASED,
+    selectedCategory = Categories.ALL,
     trackLists = listOf(
         TrackList(1, "спать", Regularity.EVERY_DAY, 89, false),
         TrackList(2, "бегать", Regularity.EVERY_DAY, 7, true, progress = 1)
     ),
     products = listOf(
-        Product(image = "", price = 39990, name = "SIYAI New Year"),
-        Product(image = "", price = 990, name = "Вебинары"),
-        Product(image = "", price = 9990, name = "Дом Сияй онлайн"),
-        Product(image = "", price = 18990, name = "Практики SIYAI"),
-        Product(image = "", price = 99900, name = "SIYAI Premium"),
-        Product(image = "", price = 44999, name = "SIYAI 11.Любовь"),
-        Product(image = "", price = 99999, name = "SIYAI New Level")
+        Product(imageId = R.drawable.product_1, price = 39990, name = "SIYAI New Year"),
+        Product(imageId = R.drawable.product_2, price = 990, name = "Вебинары"),
+        Product(imageId = R.drawable.product_3, price = 9990, name = "Дом Сияй онлайн"),
+        Product(imageId = R.drawable.product_4, price = 18990, name = "Практики SIYAI"),
+        Product(imageId = R.drawable.product_5, price = 99900, name = "SIYAI Premium"),
+        Product(imageId = R.drawable.product_6, price = 44999, name = "SIYAI 11.Любовь"),
+        Product(imageId = R.drawable.product_7, price = 99999, name = "SIYAI New Level")
     )
 )
 
@@ -142,7 +154,9 @@ private fun HomeScreen_Preview() {
             navigateToSignOfTheDayScreen = { /*TODO*/ },
             navigateToFreeLessonsScreen = { /*TODO*/ },
             navigateToAddTrackScreen = { /*TODO*/ },
-            navigateToArchiveScreen = { /*TODO*/ }) {
-        }
+            navigateToArchiveScreen = { /*TODO*/ },
+            navigateToWaitingListScreen = { /*TODO*/ },
+            navigateToProductDetailScreen = { /*TODO*/ }
+        )
     }
 }

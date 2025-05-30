@@ -1,9 +1,11 @@
 package com.example.siyai_front_android.presentation.main.bottom_nav_container
 
 
+import androidx.annotation.DrawableRes
+import com.example.siyai_front_android.presentation.main.home_container.navigation.HomeRoute
 import kotlinx.serialization.Serializable
 
-sealed interface MainRoute{
+sealed interface MainRoute {
 
     @Serializable
     data object Home: MainRoute
@@ -29,6 +31,13 @@ sealed interface MainRoute{
 
     @Serializable
     data object SignOfTheDay: MainRoute
+
+    @Serializable
+    data class ProductDetail(
+        @DrawableRes val imageId: Int,
+        val name: String,
+        val price: Long
+    ): MainRoute
 }
 
 fun String.toMainRoute(): MainRoute? {

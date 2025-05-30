@@ -1,17 +1,19 @@
 package com.example.siyai_front_android.presentation.main.home_container.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,22 +26,23 @@ import com.example.siyai_front_android.ui.theme.SiyaifrontandroidTheme
 @Composable
 fun ProductGridItem(
     modifier: Modifier = Modifier,
-    item: Product
+    item: Product,
+    onClick: (Product) -> Unit
 ) {
-    Column(modifier = modifier) {
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp)
-        ) {
-            Image(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f),
-                painter = painterResource(id = R.drawable.onboarding_image_one),
-                contentDescription = null,
-                contentScale = androidx.compose.ui.layout.ContentScale.Crop
-            )
-        }
+    Column (
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(interactionSource = null, indication = null) { onClick(item) },
+    ) {
+        Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(16.dp))
+                .aspectRatio(1f),
+            painter = painterResource(id = item.imageId),
+            contentDescription = null,
+            contentScale = ContentScale.Crop
+        )
         Spacer(modifier = Modifier.size(4.dp))
         Text(
             stringResource(R.string.price, item.price),
@@ -58,6 +61,6 @@ fun ProductGridItem(
 @Preview
 private fun ProductGridItem_Preview() {
     SiyaifrontandroidTheme {
-        ProductGridItem(item = Product("kjfkjeskf", "SIYAI Premium", 99000))
+        ProductGridItem(item = Product(0, "SIYAI Premium", 99000)) {}
     }
 }
