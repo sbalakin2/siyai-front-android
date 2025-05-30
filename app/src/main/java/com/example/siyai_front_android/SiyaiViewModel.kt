@@ -36,10 +36,16 @@ class SiyaiViewModel @Inject constructor(
     }
 
     fun setAuthProgress(progress: AuthProgress) {
-        viewModelScope.launch { enterToAppUseCase(progress) }
+        viewModelScope.launch {
+            enterToAppUseCase(progress)
+            _startDestination.value = Route.Main
+        }
     }
 
     fun exitFromApp() {
-        viewModelScope.launch { exitFromAppUseCase() }
+        viewModelScope.launch {
+            exitFromAppUseCase()
+            _startDestination.value = Route.Auth
+        }
     }
 }

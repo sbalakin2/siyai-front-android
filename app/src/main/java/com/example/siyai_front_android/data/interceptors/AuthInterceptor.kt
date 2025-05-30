@@ -11,6 +11,7 @@ class AuthInterceptor : Interceptor {
                 "Authorization",
                 "Basic c2hpbmVfYWRtaW46cDdVUFgwfX474oCTTEpyP18="
             )
+            .header("Platform", "android")
             .build()
         return chain.proceed(modifiedRequest)
     }

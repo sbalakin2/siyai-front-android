@@ -2,6 +2,7 @@ package com.example.siyai_front_android.data.remote
 
 import com.example.siyai_front_android.data.remote.dto.ProfileResponse
 import com.example.siyai_front_android.data.remote.dto.LoginRequest
+import com.example.siyai_front_android.data.remote.dto.PasswordResetRequest
 import com.example.siyai_front_android.data.remote.dto.ProfileRequest
 import com.example.siyai_front_android.data.remote.dto.RecoveryPasswordRequest
 import com.example.siyai_front_android.data.remote.dto.VerificationResponse
@@ -24,7 +25,7 @@ interface NetworkApi {
         @Body loginRequest: LoginRequest
     ): Response<Unit>
 
-    @POST("/user-service/v1/recovery-password")
+    @POST("/user-service/v2/forgot-password")
     suspend fun recoveryPassword(
         @Body recoveryPasswordRequest: RecoveryPasswordRequest
     ): Response<Unit>
@@ -48,4 +49,9 @@ interface NetworkApi {
     suspend fun getProfile(
         @Body profileRequest: ProfileRequest
     ): Response<ProfileResponse>
+
+    @POST("/user-service/v2/reset-password")
+    suspend fun resetPassword(
+        @Body passwordResetRequest: PasswordResetRequest
+    ): Response<Unit>
 }

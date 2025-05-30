@@ -7,6 +7,7 @@ import com.example.siyai_front_android.presentation.auth.email_confirmation.Emai
 import com.example.siyai_front_android.presentation.auth.lets_meet.LetsMeetViewModel
 import com.example.siyai_front_android.presentation.auth.login.LoginViewModel
 import com.example.siyai_front_android.presentation.auth.password_recovery.RecoveryPasswordViewModel
+import com.example.siyai_front_android.presentation.auth.password_reset.PasswordResetViewModel
 import com.example.siyai_front_android.presentation.auth.reg.RegViewModel
 import com.example.siyai_front_android.presentation.main.home_container.home.HomeViewModel
 import com.example.siyai_front_android.presentation.profile.ProfileViewModel
@@ -71,5 +72,12 @@ abstract class ViewModelModule {
     @ViewModelKey(HomeViewModel::class)
     abstract fun bindHomeViewModel(
         homeViewModel: HomeViewModel
+    ): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PasswordResetViewModel::class)
+    abstract fun bindPasswordResetViewModel(
+        passwordResetViewModel: PasswordResetViewModel
     ): ViewModel
 }
