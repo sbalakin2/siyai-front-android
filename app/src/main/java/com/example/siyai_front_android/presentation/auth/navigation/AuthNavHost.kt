@@ -18,6 +18,7 @@ import com.example.siyai_front_android.presentation.auth.onboarding.OnboardingSc
 import com.example.siyai_front_android.presentation.auth.password_recovery.PasswordRecovery1Screen
 import com.example.siyai_front_android.presentation.auth.password_recovery.PasswordRecovery2Screen
 import com.example.siyai_front_android.presentation.auth.password_reset.PasswordResetScreen
+import com.example.siyai_front_android.presentation.auth.password_reset.SuccessPasswordResetScreen
 import com.example.siyai_front_android.presentation.auth.reg.RegScreen
 
 @Composable
@@ -34,13 +35,18 @@ fun AuthNavHost(
         modifier = modifier,
     ) {
         composable<AuthRoute.Onboarding> {
+
+            val initialPage =
+                it.toRoute<AuthRoute.Onboarding>().initialPage
+
             OnboardingScreen(
                 onLoginClick = {
                     navController.navigate(AuthRoute.Login)
                 },
                 onRegClick = {
                     navController.navigate(AuthRoute.Reg)
-                }
+                },
+                initialPage = initialPage
             )
         }
         composable<AuthRoute.Login> {
@@ -152,9 +158,30 @@ fun AuthNavHost(
                     navController.popBackStack()
                 },
                 onSuccessPasswordReset = {
-
+                    navController.navigate(AuthRoute.SuccessPasswordReset) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
                 },
                 viewModelFactory = viewModelFactory
+            )
+        }
+
+        composable<AuthRoute.SuccessPasswordReset> {
+            SuccessPasswordResetScreen(
+                onLoginClick = { fromSuccessPasswordReset ->
+                    navController.navigate(
+                        AuthRoute.Onboarding(
+                            initialPage = fromSuccessPasswordReset
+                        )
+                    ) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
+                    navController.navigate(AuthRoute.Login)
+                }
             )
         }
     }
