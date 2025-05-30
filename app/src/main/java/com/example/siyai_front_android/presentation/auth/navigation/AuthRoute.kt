@@ -30,6 +30,9 @@ sealed interface AuthRoute {
     data class PasswordReset(
         val token: String
     ): AuthRoute
+
+    @Serializable
+    data object SuccessPasswordReset: AuthRoute
 }
 
 sealed class RecoveryPasswordRoute{
