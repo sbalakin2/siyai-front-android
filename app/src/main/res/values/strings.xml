@@ -107,4 +107,5 @@
     <string name="selection_photo_bottom_sheet_confirm_two_text">Открыть камеру</string>
     <string name="remove">Удалить</string>
     <string name="apply">Применить</string>
+    <string name="product_price">Купить за %1$s руб</string>
 </resources>
