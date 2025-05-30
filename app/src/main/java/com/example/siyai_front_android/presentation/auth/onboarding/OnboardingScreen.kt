@@ -33,13 +33,16 @@ import coil3.compose.AsyncImage
 import com.example.siyai_front_android.R
 import com.example.siyai_front_android.ui.components.buttons.PrimaryButton
 import com.example.siyai_front_android.ui.components.buttons.SecondaryButton
+import com.example.siyai_front_android.utils.ONBOARDING_PAGE_ONE
+import com.example.siyai_front_android.utils.ONBOARDING_PAGE_TWO
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OnboardingScreen(
     onLoginClick: () -> Unit,
-    onRegClick: () -> Unit
+    onRegClick: () -> Unit,
+    initialPage: Int
 ) {
     val onboardingImages = listOf(
         Triple(
@@ -59,7 +62,10 @@ fun OnboardingScreen(
         )
     )
 
-    val pagerState = rememberPagerState(initialPage = 0, pageCount = { onboardingImages.size })
+    val pagerState = rememberPagerState(
+        initialPage = initialPage,
+        pageCount = { onboardingImages.size }
+    )
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -155,7 +161,10 @@ fun OnboardingScreen(
                         .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 32.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    if (pagerState.currentPage == 0 || pagerState.currentPage == 1) {
+                    if (
+                        pagerState.currentPage == ONBOARDING_PAGE_ONE ||
+                        pagerState.currentPage == ONBOARDING_PAGE_TWO
+                        ) {
                         PrimaryButton(
                             onClick = {
                                 coroutineScope.launch {

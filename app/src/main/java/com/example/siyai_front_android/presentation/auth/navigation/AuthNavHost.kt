@@ -1,5 +1,6 @@
 package com.example.siyai_front_android.presentation.auth.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
@@ -7,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import com.example.siyai_front_android.domain.dto.AuthProgress
 import com.example.siyai_front_android.presentation.auth.email_confirmation.EmailConfirmationScreen
@@ -15,6 +17,8 @@ import com.example.siyai_front_android.presentation.auth.login.LoginScreen
 import com.example.siyai_front_android.presentation.auth.onboarding.OnboardingScreen
 import com.example.siyai_front_android.presentation.auth.password_recovery.PasswordRecovery1Screen
 import com.example.siyai_front_android.presentation.auth.password_recovery.PasswordRecovery2Screen
+import com.example.siyai_front_android.presentation.auth.password_reset.PasswordResetScreen
+import com.example.siyai_front_android.presentation.auth.password_reset.SuccessPasswordResetScreen
 import com.example.siyai_front_android.presentation.auth.reg.RegScreen
 
 @Composable
@@ -23,20 +27,26 @@ fun AuthNavHost(
     modifier: Modifier = Modifier,
     viewModelFactory: ViewModelProvider.Factory,
     enterToApp: (progress: AuthProgress) -> Unit,
+    startDestination: AuthRoute
 ) {
     NavHost(
         navController = navController,
-        startDestination = AuthRoute.Onboarding,
+        startDestination = startDestination,
         modifier = modifier,
     ) {
         composable<AuthRoute.Onboarding> {
+
+            val initialPage =
+                it.toRoute<AuthRoute.Onboarding>().initialPage
+
             OnboardingScreen(
                 onLoginClick = {
                     navController.navigate(AuthRoute.Login)
                 },
                 onRegClick = {
                     navController.navigate(AuthRoute.Reg)
-                }
+                },
+                initialPage = initialPage
             )
         }
         composable<AuthRoute.Login> {
@@ -130,6 +140,48 @@ fun AuthNavHost(
                     enterToApp(AuthProgress.RegisterAndCreateProfile(letsMeetArgs.email))
                 },
                 viewModelFactory = viewModelFactory
+            )
+        }
+        composable<AuthRoute.PasswordReset>(
+            deepLinks = listOf(
+                navDeepLink {
+                    uriPattern = "https://com.example.siyai_front_android/password_reset?token={token}"
+                }
+            )
+        ) {
+
+            val token = it.toRoute<AuthRoute.PasswordReset>().token
+            Log.d("MyLog","Navigated to PasswordResetScreen, token= $token")
+            PasswordResetScreen(
+                token = token,
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onSuccessPasswordReset = {
+                    navController.navigate(AuthRoute.SuccessPasswordReset) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
+                },
+                viewModelFactory = viewModelFactory
+            )
+        }
+
+        composable<AuthRoute.SuccessPasswordReset> {
+            SuccessPasswordResetScreen(
+                onLoginClick = { fromSuccessPasswordReset ->
+                    navController.navigate(
+                        AuthRoute.Onboarding(
+                            initialPage = fromSuccessPasswordReset
+                        )
+                    ) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
+                    navController.navigate(AuthRoute.Login)
+                }
             )
         }
     }

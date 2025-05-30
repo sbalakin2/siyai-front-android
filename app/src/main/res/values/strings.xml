@@ -35,6 +35,8 @@
     <string name="empty_fields">Заполните все поля</string>
     <string name="server_error">Что-то пошло не так, повторите запрос позже</string>
     <string name="user_is_already_registered">Пользователь с указанными данными уже зарегистрирован</string>
+    <string name="success_password_reset_title">Успех!</string>
+    <string name="success_password_reset_text">Ваш пароль успешно изменен. Нажмите кнопку "Войти" для входа в личный кабинет</string>
 
     <string name="confirmation_code_has_been_sent">На Ваш email отправлен\nкод подтверждения</string>
     <string name="please_check_your_email">Пожалуйста, проверьте Вашу почту\nи введите код подтверждения</string>
@@ -108,4 +110,9 @@
     <string name="remove">Удалить</string>
     <string name="apply">Применить</string>
     <string name="product_price">Купить за %1$s руб</string>
+    <string name="password_reset_subtitle">Введите новый\nпароль</string>
+    <string name="password_reset_text">Пароль обязательно должен содержать минимум 8 символов, цифры, заглавные и строчные буквы</string>
+    <string name="new_password">Новый пароль</string>
+    <string name="repeat_new_password">Повторите новый пароль</string>
+    <string name="confirm">Подтвердить</string>
 </resources>

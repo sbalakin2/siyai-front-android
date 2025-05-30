@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
+import com.example.siyai_front_android.presentation.auth.navigation.AuthRoute
 import com.example.siyai_front_android.presentation.siyai_container.SiyaiContainer
 import com.example.siyai_front_android.ui.theme.SiyaifrontandroidTheme
 import javax.inject.Inject
@@ -27,10 +28,24 @@ class MainActivity : ComponentActivity() {
 
         splashScreen.setKeepOnScreenCondition { viewModel.keepSplashScreen.value }
 
+        val startRoute = intent?.data?.let { uri ->
+            if (uri.toString().contains("/password_reset")) {
+                val token = uri.getQueryParameter("token")
+                if (token != null) {
+                    AuthRoute.PasswordReset(token)
+                } else {
+                    AuthRoute.Onboarding()
+                }
+            } else {
+                AuthRoute.Onboarding()
+            }
+        } ?: AuthRoute.Onboarding()
+
         setContent {
             SiyaifrontandroidTheme {
                 SiyaiContainer(
-                    viewModelFactory = viewModelFactory
+                    viewModelFactory = viewModelFactory,
+                    startDestination = startRoute
                 )
             }
         }
