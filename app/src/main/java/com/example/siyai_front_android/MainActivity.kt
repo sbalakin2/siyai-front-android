@@ -34,12 +34,12 @@ class MainActivity : ComponentActivity() {
                 if (token != null) {
                     AuthRoute.PasswordReset(token)
                 } else {
-                    AuthRoute.Onboarding
+                    AuthRoute.Onboarding()
                 }
             } else {
-                AuthRoute.Onboarding
+                AuthRoute.Onboarding()
             }
-        } ?: AuthRoute.Onboarding
+        } ?: AuthRoute.Onboarding()
 
         setContent {
             SiyaifrontandroidTheme {
