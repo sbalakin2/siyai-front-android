@@ -3,6 +3,7 @@ package com.example.siyai_front_android.di
 import com.example.siyai_front_android.data.repositories.AuthStatusRepositoryImpl
 import com.example.siyai_front_android.data.repositories.CountryWithCitiesRepositoryImpl
 import com.example.siyai_front_android.data.repositories.CreateProfileRepositoryImpl
+import com.example.siyai_front_android.data.repositories.DeleteProfileRepositoryImpl
 import com.example.siyai_front_android.data.repositories.LoginRepositoryImpl
 import com.example.siyai_front_android.data.repositories.PasswordResetRepositoryImpl
 import com.example.siyai_front_android.data.repositories.ProfileEditingRepositoryImpl
@@ -14,6 +15,7 @@ import com.example.siyai_front_android.data.repositories.VerificationRepositoryI
 import com.example.siyai_front_android.domain.repositories.AuthStatusRepository
 import com.example.siyai_front_android.domain.repositories.CountryWithCitiesRepository
 import com.example.siyai_front_android.domain.repositories.CreateProfileRepository
+import com.example.siyai_front_android.domain.repositories.DeleteProfileRepository
 import com.example.siyai_front_android.domain.repositories.LoginRepository
 import com.example.siyai_front_android.domain.repositories.PasswordResetRepository
 import com.example.siyai_front_android.domain.repositories.ProfileEditingRepository
@@ -80,4 +82,9 @@ interface DataModule {
     fun bindPasswordResetRepository(
         passwordResetRepositoryImpl: PasswordResetRepositoryImpl
     ): PasswordResetRepository
+
+    @Binds
+    fun bindDeleteProfileRepository(
+        deleteProfileRepositoryImpl: DeleteProfileRepositoryImpl
+    ): DeleteProfileRepository
 }

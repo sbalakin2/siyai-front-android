@@ -38,7 +38,6 @@ fun MainContainer(
         modifier = modifier,
         bottomBar = {
             if (isShowBottomBar) {
-                Log.d("MyTag", "MainContainer: $screensWithBottomBar")
                 BottomNavBar(
                     navController = navController
                 )

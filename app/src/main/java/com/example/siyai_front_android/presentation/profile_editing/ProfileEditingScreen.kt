@@ -1,6 +1,7 @@
 package com.example.siyai_front_android.presentation.profile_editing
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -65,6 +67,7 @@ import kotlinx.coroutines.launch
 fun ProfileEditingScreen(
     onBackClick: () -> Unit,
     onOnboardingClick: () -> Unit,
+    onDeleteProfile: () -> Unit,
     viewModelFactory: ViewModelProvider.Factory
 ) {
     // User data states
@@ -76,6 +79,8 @@ fun ProfileEditingScreen(
     val countiesAndCitiesState = rememberCountryAndCitiesState(countiesWithCities)
 
     val profileState = rememberProfileState(initialUserProfileData, countiesWithCities)
+    val deleteProfileState by viewModel.deleteProfileState.collectAsStateWithLifecycle()
+
     LaunchedEffect(profileState.countryIndex) {
         countiesAndCitiesState.setCitiesFromCountry(profileState.countryIndex)
     }
@@ -286,6 +291,15 @@ fun ProfileEditingScreen(
         )
     }
 
+    LaunchedEffect(deleteProfileState) {
+        getDeleteProfileState(
+            deleteProfileState = deleteProfileState,
+            context = context,
+            onDeleteProfile = onDeleteProfile,
+            clearProfileEditingState = viewModel::clearProfileEditingState
+        )
+    }
+
     if (showPhotoSelectionBottomSheet) {
         PhotoSelectionBottomSheet(
             openGalery = {
@@ -306,7 +320,7 @@ fun ProfileEditingScreen(
         RemovingAccountBottomSheet(
             onOnboardingClick = onOnboardingClick,
             removeAccount = {
-
+                viewModel.deleteProfile()
             },
             onDismissRequest = {
                 showRemovingAccountBottomSheet = false
@@ -332,6 +346,27 @@ private fun getCurrentProfile(
         city = countriesAndCitiesState.cities
             .getOrNull(profileEditState.cityIndex).orEmpty()
     )
+}
+
+private fun getDeleteProfileState(
+    deleteProfileState: DeleteProfileState,
+    context: Context,
+    onDeleteProfile: () -> Unit,
+    clearProfileEditingState: () -> Unit
+) {
+    if (deleteProfileState is DeleteProfileState.Success) {
+        Toast.makeText(context, deleteProfileState.message, Toast.LENGTH_SHORT).show()
+        onDeleteProfile()
+    }
+
+    if (deleteProfileState is DeleteProfileState.Error) {
+        Toast.makeText(
+            context,
+            "${context.getString(R.string.server_error)}: ${deleteProfileState.message}",
+            Toast.LENGTH_SHORT
+        ).show()
+        clearProfileEditingState()
+    }
 }
 
 private fun getProfileEditingState(

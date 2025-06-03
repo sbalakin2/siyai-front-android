@@ -65,9 +65,8 @@ fun MainNavHost(
                 onBackClick = {
                     navController.popBackStack()
                 },
-                onOnboardingClick = {
-
-                },
+                onOnboardingClick = {},
+                onDeleteProfile = exitFromApp,
                 viewModelFactory = viewModelFactory
             )
         }

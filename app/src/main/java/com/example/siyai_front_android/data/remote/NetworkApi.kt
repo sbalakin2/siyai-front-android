@@ -1,5 +1,7 @@
 package com.example.siyai_front_android.data.remote
 
+import com.example.siyai_front_android.data.remote.dto.DeleteRequest
+import com.example.siyai_front_android.data.remote.dto.DeleteResponse
 import com.example.siyai_front_android.data.remote.dto.ProfileResponse
 import com.example.siyai_front_android.data.remote.dto.LoginRequest
 import com.example.siyai_front_android.data.remote.dto.PasswordResetRequest
@@ -11,6 +13,7 @@ import com.example.siyai_front_android.data.remote.dto.VerificationRequest
 import com.example.siyai_front_android.data.remote.dto.UserProfileRequest
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.HTTP
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 
@@ -54,4 +57,13 @@ interface NetworkApi {
     suspend fun resetPassword(
         @Body passwordResetRequest: PasswordResetRequest
     ): Response<Unit>
+
+    @HTTP(
+        method = "DELETE",
+        path = "user-service/test/delete/full",
+        hasBody = true
+    )
+    suspend fun deleteProfile(
+        @Body deleteRequest: DeleteRequest
+    ): Response<DeleteResponse>
 }
