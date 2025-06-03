@@ -2,6 +2,8 @@ package com.example.siyai_front_android.di
 
 import com.example.siyai_front_android.domain.usecases.CreateProfileUseCase
 import com.example.siyai_front_android.domain.usecases.CreateProfileUseCaseImpl
+import com.example.siyai_front_android.domain.usecases.DeleteProfileUseCase
+import com.example.siyai_front_android.domain.usecases.DeleteProfileUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.EditProfileUseCase
 import com.example.siyai_front_android.domain.usecases.EditProfileUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.EnterToAppUseCase
@@ -73,4 +75,9 @@ interface UseCaseModule {
     fun bindResetPasswordUseCase(
         resetPasswordUseCaseImpl: ResetPasswordUseCaseImpl
     ): ResetPasswordUseCase
+
+    @Binds
+    fun bindDeleteProfileUseCase(
+        deleteProfileUseCaseImpl: DeleteProfileUseCaseImpl
+    ): DeleteProfileUseCase
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.siyai_front_android.domain.dto.CountryWithCities
 import com.example.siyai_front_android.domain.dto.Profile
+import com.example.siyai_front_android.domain.usecases.DeleteProfileUseCase
 import com.example.siyai_front_android.domain.usecases.EditProfileUseCase
 import com.example.siyai_front_android.domain.usecases.GetCountiesWithCitiesUseCase
 import com.example.siyai_front_android.domain.usecases.GetProfileUseCase
@@ -19,7 +20,8 @@ import javax.inject.Inject
 class ProfileEditingViewModel @Inject constructor(
     private val editProfileUseCase: EditProfileUseCase,
     private val getCountiesWithCitiesUseCase: GetCountiesWithCitiesUseCase,
-    private val getProfileUseCase: GetProfileUseCase
+    private val getProfileUseCase: GetProfileUseCase,
+    private val deleteProfileUseCase: DeleteProfileUseCase
 ) : ViewModel() {
 
     private val _profileEditingState = MutableStateFlow<ProfileEditingState>(ProfileEditingState.Idle)
@@ -30,6 +32,9 @@ class ProfileEditingViewModel @Inject constructor(
 
     private val _initialUserProfile = MutableStateFlow<Profile?>(null)
     val initialUserProfile: StateFlow<Profile?> = _initialUserProfile.asStateFlow()
+
+    private val _deleteProfileState = MutableStateFlow<DeleteProfileState>(DeleteProfileState.Idle)
+    val deleteProfileState: StateFlow<DeleteProfileState> = _deleteProfileState.asStateFlow()
 
     init {
         loadInitialProfileData()
@@ -66,5 +71,14 @@ class ProfileEditingViewModel @Inject constructor(
 
     fun clearProfileEditingState() {
         _profileEditingState.value = ProfileEditingState.Idle
+        _deleteProfileState.value = DeleteProfileState.Idle
+    }
+
+    fun deleteProfile() {
+        viewModelScope.launch {
+            initialUserProfile.value?.let {
+                _deleteProfileState.value = deleteProfileUseCase(it.email)
+            }
+        }
     }
 }
