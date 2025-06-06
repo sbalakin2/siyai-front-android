@@ -1,5 +1,8 @@
 package com.example.siyai_front_android.ui.icons
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
+
 object SiyAiIcons {
     val ArrowBack = ArrowBackIcon
     val EyeHide = EyeHideIcon
@@ -21,4 +24,5 @@ object SiyAiIcons {
     val Edit = EditIcon
     val Forward = ForwardIcon
     val Trash = TrashIcon
+    val PlayArrow = Icons.Default.PlayArrow
 }
