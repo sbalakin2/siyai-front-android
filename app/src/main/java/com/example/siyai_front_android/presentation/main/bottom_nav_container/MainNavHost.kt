@@ -7,6 +7,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.example.siyai_front_android.presentation.free_lesson_detail.FreeLessonDetailScreen
+import com.example.siyai_front_android.presentation.free_lessons.FreeLessonsScreen
 import com.example.siyai_front_android.presentation.main.home_container.navigation.HomeContainer
 import com.example.siyai_front_android.presentation.model.Product
 import com.example.siyai_front_android.presentation.product_detail.ProductDetailScreen
@@ -37,6 +39,9 @@ fun MainNavHost(
                     navController.navigate(
                         MainRoute.ProductDetail(product.imageId, product.name, product.price)
                     )
+                },
+                navigateToFreeLessonsScreen = {
+                     navController.navigate(MainRoute.FreeLessons)
                 }
             )
         }
@@ -81,6 +86,25 @@ fun MainNavHost(
             val item = it.toRoute<MainRoute.ProductDetail>()
             ProductDetailScreen(
                 product = Product(item.imageId, item.name, item.price),
+                onBackClicked = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable<MainRoute.FreeLessons> {
+            FreeLessonsScreen(
+                onBackClicked = {
+                    navController.popBackStack()
+                },
+                navigateToFreeLessonDetail = {
+                    navController.navigate(
+                        MainRoute.FreeLessonDetail
+                    )
+                }
+            )
+        }
+        composable<MainRoute.FreeLessonDetail> {
+            FreeLessonDetailScreen(
                 onBackClicked = {
                     navController.popBackStack()
                 }

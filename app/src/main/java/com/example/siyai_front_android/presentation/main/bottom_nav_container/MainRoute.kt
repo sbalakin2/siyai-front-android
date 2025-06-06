@@ -38,6 +38,12 @@ sealed interface MainRoute {
         val name: String,
         val price: Long
     ): MainRoute
+
+    @Serializable
+    data object FreeLessons: MainRoute
+
+    @Serializable
+    data object FreeLessonDetail: MainRoute
 }
 
 fun String.toMainRoute(): MainRoute? {
