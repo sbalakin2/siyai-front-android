@@ -9,5 +9,6 @@ fun ProfileResponse.toProfileInfo() = Profile(
     birthday = birthday.orEmpty(),
     email = email.orEmpty(),
     country = country.orEmpty(),
-    city = city.orEmpty()
+    city = city.orEmpty(),
+    photo = ""
 )

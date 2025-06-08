@@ -108,8 +108,10 @@ private fun ProfileStateSuccess(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AsyncImage(
-            model = R.drawable.avatar_image,
+            model = profile.photo,
             contentDescription = null,
+            error = painterResource(R.drawable.avatar_image),
+            placeholder = painterResource(R.drawable.avatar_image),
             modifier = Modifier
                 .padding(top = 64.dp)
                 .size(160.dp)

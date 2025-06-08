@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -16,10 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.example.siyai_front_android.R
 import com.example.siyai_front_android.ui.icons.SiyAiIcons
 import com.example.siyai_front_android.ui.theme.SiyaifrontandroidTheme
@@ -27,7 +30,8 @@ import com.example.siyai_front_android.ui.theme.SiyaifrontandroidTheme
 @Composable
 fun HeaderSection(
     modifier: Modifier = Modifier,
-    firstName: String
+    firstName: String,
+    profilePhoto: String
 ) {
     Row(
         modifier = modifier,
@@ -38,14 +42,24 @@ fun HeaderSection(
             modifier = Modifier
                 .clip(RoundedCornerShape(64.dp))
                 .background(MaterialTheme.colorScheme.secondaryContainer)
-                .padding(8.dp)
         ) {
-            Icon(
-                imageVector = SiyAiIcons.ProfileUnselected,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(24.dp)
-            )
+            if (profilePhoto.isBlank()) {
+                Icon(
+                    imageVector = SiyAiIcons.ProfileUnselected,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(8.dp).size(24.dp)
+                )
+            } else {
+                AsyncImage(
+                    model = profilePhoto,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(36.dp)
+                        .clip(CircleShape),
+                    contentScale = ContentScale.Crop
+                )
+            }
         }
 
         Spacer(modifier = Modifier.width(16.dp))
@@ -62,6 +76,6 @@ fun HeaderSection(
 @Preview
 fun HeaderSection_Preview(){
     SiyaifrontandroidTheme {
-        HeaderSection(firstName = "User")
+        HeaderSection(firstName = "User", profilePhoto = "")
     }
 }

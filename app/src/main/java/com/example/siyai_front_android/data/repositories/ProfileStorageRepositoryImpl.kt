@@ -43,7 +43,8 @@ class ProfileStorageRepositoryImpl @Inject constructor(
             lastName = getOrThrow(SURNAME),
             birthday = getOrThrow(BIRTHDAY),
             country = getOrThrow(COUNTRY),
-            city = getOrThrow(CITY)
+            city = getOrThrow(CITY),
+            photo = getOrThrow(USER_PHOTO)
         )
     }
 
@@ -57,6 +58,7 @@ class ProfileStorageRepositoryImpl @Inject constructor(
             preferences[BIRTHDAY] = profile.birthday
             preferences[COUNTRY] = profile.country
             preferences[CITY] = profile.city
+            preferences[USER_PHOTO] = profile.photo
         }
     }
 
@@ -79,5 +81,6 @@ class ProfileStorageRepositoryImpl @Inject constructor(
         private val BIRTHDAY = stringPreferencesKey("birthday")
         private val COUNTRY = stringPreferencesKey("country")
         private val CITY = stringPreferencesKey("city")
+        private val USER_PHOTO = stringPreferencesKey("photo")
     }
 }

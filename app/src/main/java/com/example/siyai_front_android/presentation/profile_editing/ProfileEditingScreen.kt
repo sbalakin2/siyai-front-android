@@ -1,8 +1,12 @@
 package com.example.siyai_front_android.presentation.profile_editing
 
 import android.content.Context
-import android.util.Log
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,7 +34,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,6 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -98,6 +102,26 @@ fun ProfileEditingScreen(
 
     var checkedPush by rememberSaveable { mutableStateOf(false) }
 
+    val photoUri = remember { viewModel.provideTempPhotoUri(context) }
+    val photoState = rememberSaveable {
+        mutableStateOf(Pair(false, ""))
+    }
+
+    val cameraLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.TakePicture()
+    ) { success ->
+        if (success) profileState.photo = photoUri.toString()
+    }
+
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let {
+            context.takePersistablePermissionIfSupported(it)
+            profileState.photo = it.toString()
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -117,8 +141,10 @@ fun ProfileEditingScreen(
         }
 
         AsyncImage(
-            model = R.drawable.avatar_image,
+            model = profileState.photo,
             contentDescription = null,
+            error = painterResource(R.drawable.avatar_image),
+            placeholder = painterResource(R.drawable.avatar_image),
             modifier = Modifier
                 .padding(top = 16.dp)
                 .size(160.dp)
@@ -152,7 +178,8 @@ fun ProfileEditingScreen(
                 .padding(top = 12.dp)
                 .clickable(
                     onClick = {
-
+                        photoState.value = true to profileState.photo
+                        profileState.photo = ""
                     }
                 ),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -273,7 +300,9 @@ fun ProfileEditingScreen(
             text = stringResource(R.string.apply),
             onClick = {
                 val profile = getCurrentProfile(profileState, countiesAndCitiesState)
+                val (isDeletedPhoto, photoPath) = photoState.value
                 viewModel.editProfile(profile)
+                if (isDeletedPhoto) viewModel.deletePhotoByUri(context, photoPath)
             },
             modifier = Modifier
                 .padding(top = 16.dp, bottom = 32.dp)
@@ -303,10 +332,10 @@ fun ProfileEditingScreen(
     if (showPhotoSelectionBottomSheet) {
         PhotoSelectionBottomSheet(
             openGalery = {
-
+                galleryLauncher.launch(context.getString(R.string.mime_image))
             },
             openCamera = {
-
+                cameraLauncher.launch(photoUri)
             },
             onDismissRequest = {
                 showPhotoSelectionBottomSheet = false
@@ -344,7 +373,8 @@ private fun getCurrentProfile(
         country = countriesAndCitiesState.countries
             .getOrNull(profileEditState.countryIndex)?.name.orEmpty(),
         city = countriesAndCitiesState.cities
-            .getOrNull(profileEditState.cityIndex).orEmpty()
+            .getOrNull(profileEditState.cityIndex).orEmpty(),
+        photo = profileEditState.photo
     )
 }
 
@@ -406,6 +436,15 @@ private fun checkIsFormCompleted(profileEditState: ProfileEditState): Boolean {
             && profileEditState.birthday != null
             && profileEditState.cityIndex != -1
             && profileEditState.countryIndex != -1
+}
+
+private fun Context.takePersistablePermissionIfSupported(uri: Uri) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        contentResolver.takePersistableUriPermission(
+            uri,
+            Intent.FLAG_GRANT_READ_URI_PERMISSION
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
