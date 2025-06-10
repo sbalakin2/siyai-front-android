@@ -17,7 +17,8 @@ class EditProfileUseCaseImpl @Inject constructor(
         lastName: String,
         birthday: String,
         country: String,
-        city: String
+        city: String,
+        photo: String
     ): ProfileEditingState {
         val result = profileEditingRepository.editProfile(
             email = email,
@@ -30,7 +31,7 @@ class EditProfileUseCaseImpl @Inject constructor(
         return when (result) {
             is NetworkResult.Success -> {
                 // save local
-                val profile = Profile(firstName, lastName, birthday, email, country, city)
+                val profile = Profile(firstName, lastName, birthday, email, country, city, photo)
                 profileStorageRepository.saveUserProfile(profile)
 
                 ProfileEditingState.Success

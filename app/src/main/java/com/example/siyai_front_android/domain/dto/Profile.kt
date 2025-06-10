@@ -6,5 +6,6 @@ data class Profile(
     val birthday: String,
     val email: String,
     val country: String,
-    val city: String
+    val city: String,
+    val photo: String
 )

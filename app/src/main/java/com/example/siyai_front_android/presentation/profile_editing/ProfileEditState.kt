@@ -21,6 +21,7 @@ class ProfileEditState {
     var firstName by mutableStateOf("")
     var lastName by mutableStateOf("")
     var birthday by mutableStateOf<Date?>(null)
+    var photo by mutableStateOf("")
 
     var countryIndex by mutableIntStateOf(-1)
         private set
@@ -38,7 +39,7 @@ class ProfileEditState {
     }
 
     override fun toString(): String {
-        return "ProfileState(firstName='$firstName', lastName='$lastName', birthday=$birthday, countyIndex=$countryIndex, cityIndex=$cityIndex)"
+        return "ProfileState(firstName='$firstName', lastName='$lastName', birthday=$birthday, countyIndex=$countryIndex, cityIndex=$cityIndex, photo=$photo)"
     }
 
     companion object {
@@ -49,6 +50,7 @@ class ProfileEditState {
                     it.firstName,
                     it.lastName,
                     it.birthday,
+                    it.photo,
                     it.countryIndex,
                     it.cityIndex
                 )
@@ -59,8 +61,9 @@ class ProfileEditState {
                     firstName = it[1] as String
                     lastName = it[2] as String
                     birthday = it[3] as Date?
-                    countryIndex = it[4] as Int
-                    cityIndex = it[5] as Int
+                    photo = it[4] as String
+                    countryIndex = it[5] as Int
+                    cityIndex = it[6] as Int
                 }
             }
         )
@@ -84,6 +87,7 @@ fun rememberProfileState(
         state.firstName = initialProfile.firstName
         state.lastName = initialProfile.lastName
         state.birthday = runCatching { initialProfile.birthday.parseISODate() }.getOrNull()
+        state.photo = initialProfile.photo
 
         val country = countryWithCities.indexOfFirst { it.name == initialProfile.country }
         state.updateCountryIndex(country)
