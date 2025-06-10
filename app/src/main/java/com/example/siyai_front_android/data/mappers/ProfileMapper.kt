@@ -10,5 +10,5 @@ fun ProfileResponse.toProfileInfo() = Profile(
     email = email.orEmpty(),
     country = country.orEmpty(),
     city = city.orEmpty(),
-    photo = ""
+    photo = "photoFromResponse" //временное решение
 )

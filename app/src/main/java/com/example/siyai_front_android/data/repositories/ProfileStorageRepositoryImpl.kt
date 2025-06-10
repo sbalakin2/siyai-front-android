@@ -58,13 +58,20 @@ class ProfileStorageRepositoryImpl @Inject constructor(
             preferences[BIRTHDAY] = profile.birthday
             preferences[COUNTRY] = profile.country
             preferences[CITY] = profile.city
-            preferences[USER_PHOTO] = profile.photo
+
+            if (profile.photo == "photoFromResponse") {
+                if (preferences[USER_PHOTO].isNullOrEmpty()) preferences[USER_PHOTO] = ""
+            } else {
+                preferences[USER_PHOTO] = profile.photo
+            }
         }
     }
 
     override suspend fun clear() {
         dataStore.edit { preferences ->
+            val userPhoto = preferences[USER_PHOTO]
             preferences.clear()
+            userPhoto?.let { preferences[USER_PHOTO] = it }
         }
     }
 
