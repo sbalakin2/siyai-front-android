@@ -2,7 +2,6 @@ package com.example.siyai_front_android.presentation.main.bottom_nav_container
 
 
 import androidx.annotation.DrawableRes
-import com.example.siyai_front_android.presentation.main.home_container.navigation.HomeRoute
 import kotlinx.serialization.Serializable
 
 sealed interface MainRoute {
@@ -15,6 +14,12 @@ sealed interface MainRoute {
 
     @Serializable
     data object Audio: MainRoute
+
+    @Serializable
+    data object MyState: MainRoute
+
+    @Serializable
+    data object Calendar: MainRoute
 
     @Serializable
     data object Profile: MainRoute
@@ -46,6 +51,7 @@ fun String.toMainRoute(): MainRoute? {
         "Home" -> MainRoute.Home
         "Training" -> MainRoute.Training
         "Audio" -> MainRoute.Audio
+        "MyState" -> MainRoute.MyState
         "Profile" -> MainRoute.Profile
         "SignOfTheDay" -> MainRoute.SignOfTheDay
         else -> null

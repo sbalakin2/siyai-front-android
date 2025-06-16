@@ -9,6 +9,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.siyai_front_android.presentation.main.home_container.navigation.HomeContainer
 import com.example.siyai_front_android.presentation.model.Product
+import com.example.siyai_front_android.presentation.my_state.CalendarMyStateScreen
+import com.example.siyai_front_android.presentation.my_state.MyStateScreen
 import com.example.siyai_front_android.presentation.product_detail.ProductDetailScreen
 import com.example.siyai_front_android.presentation.profile.ProfileScreen
 import com.example.siyai_front_android.presentation.profile_editing.ProfileEditingScreen
@@ -42,6 +44,19 @@ fun MainNavHost(
         }
         composable<MainRoute.Training> {}
         composable<MainRoute.Audio> {}
+        composable<MainRoute.MyState>{
+            MyStateScreen(
+                onContinueClick = {
+                    navController.navigate(MainRoute.Calendar)
+                }
+            )
+        }
+        composable<MainRoute.Calendar> {
+            CalendarMyStateScreen(
+                onBackClick = { navController.popBackStack() },
+                onContinueClick = {}
+            )
+        }
         composable<MainRoute.Profile> {
             ProfileScreen(
                 onEditClick = { email, firstName, lastName, birthday, country, city ->

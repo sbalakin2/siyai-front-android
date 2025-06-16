@@ -64,6 +64,7 @@
     <string name="home">Главная</string>
     <string name="training">Обучение</string>
     <string name="audio">Аудио</string>
+    <string name="my_state">Мое состояние</string>
     <string name="profile">Профиль</string>
 
     <string name="hello_user">Привет, %1$s!</string>
@@ -116,4 +117,22 @@
     <string name="repeat_new_password">Повторите новый пароль</string>
     <string name="confirm">Подтвердить</string>
     <string name="mime_image">image/*</string>
+
+    <string name="state_my_way">Мой путь</string>
+    <string name="state_onboarding_title">Женский календарь</string>
+    <string name="state_onboarding_description">Чтобы начать, введите данные\nо 3 последних циклах</string>
+    <string name="state_onboarding_start_button">Начать</string>
+    <string name="state_calendar_title">Выберите 3 последних цикла</string>
+    <string name="сhoose_more_cycle">Выберите еще %1$s</string>
+    <string name="calendar_btn_next">Продолжить</string>
+    <string name="calendar_btn_skip">Пропустить</string>
+    <string name="save">Сохранить</string>
+    <string name="delete_cycle">Вы уверены, что хотите\nудалить этот цикл?</string>
+
+    <plurals name="cycles">
+        <item quantity="one">%d цикл</item>
+        <item quantity="few">%d цикла</item>
+        <item quantity="many">%d циклов</item>
+        <item quantity="other">%d циклов</item>
+    </plurals>
 </resources>
