@@ -25,4 +25,5 @@ object SiyAiIcons {
     val Forward = ForwardIcon
     val Trash = TrashIcon
     val PlayArrow = Icons.Default.PlayArrow
+    val Stop = StopIcon
 }
