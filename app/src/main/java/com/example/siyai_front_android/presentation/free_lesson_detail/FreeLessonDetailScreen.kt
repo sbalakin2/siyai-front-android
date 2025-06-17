@@ -32,6 +32,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,9 +44,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.media3.common.MediaItem
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.ui.PlayerView
 import com.example.siyai_front_android.R
 import com.example.siyai_front_android.ui.icons.SiyAiIcons
+import androidx.core.net.toUri
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.ui.AspectRatioFrameLayout
 
+@androidx.annotation.OptIn(UnstableApi::class)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FreeLessonDetailScreen(
@@ -54,7 +63,9 @@ fun FreeLessonDetailScreen(
     val context = LocalContext.current
 
     val mediaPlayer = remember { MediaPlayer() }
-    var isPlaying by remember { mutableStateOf(false) }
+    var isPlaying by rememberSaveable { mutableStateOf(false) }
+
+    var showVideo by rememberSaveable { mutableStateOf(false) }
 
     DisposableEffect(Unit) {
         onDispose {
@@ -192,7 +203,7 @@ fun FreeLessonDetailScreen(
 
             Card(
                 onClick = {
-                    // play video
+                    showVideo = true
                 },
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
@@ -200,36 +211,43 @@ fun FreeLessonDetailScreen(
                     .height(200.dp)
                     .padding(top = 8.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    getVideoThumbnailFromAssets(
-                        context,
-                        stringResource(R.string.lesson_one_video_path)
-                    )?.let { bitmap ->
-                        Image(
-                            bitmap = bitmap.asImageBitmap(),
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
+                if (showVideo) {
+                    VideoPlayerLaunch(
+                        context = context,
+                        setShowVideo = { showVideo = false }
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        getVideoThumbnailFromAssets(
+                            context,
+                            stringResource(R.string.lesson_one_video_path)
+                        )?.let { bitmap ->
+                            Image(
+                                bitmap = bitmap.asImageBitmap(),
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                            )
+                        }
+
+                        Icon(
+                            imageVector = SiyAiIcons.PlayArrow,
+                            contentDescription = "Play",
+                            tint = Color.White,
                             modifier = Modifier
-                                .fillMaxSize()
+                                .align(Alignment.Center)
+                                .size(64.dp)
+                                .background(
+                                    color = Color.Black.copy(alpha = 0.6F),
+                                    shape = CircleShape
+                                )
+                                .padding(8.dp)
                         )
                     }
-
-                    Icon(
-                        imageVector = SiyAiIcons.PlayArrow,
-                        contentDescription = "Play",
-                        tint = Color.White,
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .size(64.dp)
-                            .background(
-                                color = Color.Black.copy(alpha = 0.6F),
-                                shape = CircleShape
-                            )
-                            .padding(8.dp)
-                    )
                 }
             }
 
@@ -257,5 +275,61 @@ fun getVideoThumbnailFromAssets(context: Context, fileName: String): Bitmap? {
         frame
     } catch (e: Exception) {
         null
+    }
+}
+
+@androidx.annotation.OptIn(UnstableApi::class)
+@Composable
+fun VideoPlayerLaunch(
+    context: Context,
+    setShowVideo: () -> Unit
+) {
+    val exoPlayer = remember(context) {
+        ExoPlayer.Builder(context).build().apply {
+            val uri = "asset:///".plus(context.getString(R.string.lesson_one_video_path)).toUri()
+            setMediaItem(MediaItem.fromUri(uri))
+            prepare()
+            playWhenReady = true
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            exoPlayer.release()
+        }
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        AndroidView(
+            factory = { context ->
+                PlayerView(context).apply {
+                    player = exoPlayer
+                    useController = false
+                    resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+                }
+            }
+        )
+
+        IconButton(
+            onClick = setShowVideo,
+            modifier = Modifier
+                .padding(8.dp)
+                .size(32.dp)
+                .align(Alignment.TopEnd)
+                .background(
+                    color = Color.Black.copy(alpha = 0.6F),
+                    shape = CircleShape
+                )
+                .padding(8.dp)
+        ) {
+            Icon(
+                imageVector = SiyAiIcons.Close,
+                contentDescription = null,
+                tint = Color.White
+            )
+        }
     }
 }
