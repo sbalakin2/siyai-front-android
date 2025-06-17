@@ -127,4 +127,5 @@
     <string name="lesson_one_audio_path">free_lessons/lesson_one/Дрейфующие платформы в Арктике.mp3</string>
     <string name="lesson_one_video_title">Почему одни растут в IT, а другие застревают</string>
     <string name="lesson_one_video_path">free_lessons/lesson_one/Почему одни растут в IT, а другие застревают.mp4</string>
+    <string name="music_is_playing">Воспроизводится</string>
 </resources>
