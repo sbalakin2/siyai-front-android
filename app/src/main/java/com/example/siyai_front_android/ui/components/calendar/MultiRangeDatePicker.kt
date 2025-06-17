@@ -1,6 +1,5 @@
 package com.example.siyai_front_android.ui.components.calendar
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -34,6 +33,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -45,13 +45,12 @@ fun MultiRangeDatePicker(
     selectedRanges: List<DateRange>,
     maxRangesCycle: Int,
     monthsCount: Int,
-    onSelectedRangesChange: (List<DateRange>) -> Unit,
+    onAddDateRange: (DateRange) -> Unit,
+    onClickSelectedRange: (Int) -> Unit,
     onShowWarning: (String) -> Unit,
-    onShowDialog: (DateRange) -> Unit
 ) {
     Column(modifier = modifier) {
         var tempStartDate by remember { mutableStateOf<Long?>(null) }
-        val today = remember { getTodayTimeInMillis() }
         val monthsData = remember { getMonthsData(monthsCount) }
 
         RowDays(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp))
@@ -67,16 +66,15 @@ fun MultiRangeDatePicker(
                     monthData = monthData,
                     selectedRanges = selectedRanges,
                     tempStartDate = tempStartDate,
-                    today = today,
                     onDateClick = { date ->
                         tempStartDate = processHandleClick(
                             date = date,
                             selectedRanges = selectedRanges,
                             tempStartDate = tempStartDate,
                             maxRangesCycle = maxRangesCycle,
-                            onSelectedRangesChange = onSelectedRangesChange,
+                            onAddDateRange = { onAddDateRange(it) },
                             onShowWarning = onShowWarning,
-                            onShowDialog = onShowDialog
+                            onClickSelectedRange = onClickSelectedRange
                         )
                     }
                 )
@@ -91,15 +89,14 @@ private fun MonthCalendar(
     monthData: MonthData,
     selectedRanges: List<DateRange>,
     tempStartDate: Long?,
-    today: Long,
     onDateClick: (Long) -> Unit
 ) {
     val dateToRangeMap = remember(selectedRanges) {
         getDateToRangeMap(selectedRanges)
     }
 
-    val daysStates = remember(monthData, selectedRanges, tempStartDate, today) {
-        getDaysStates(monthData, dateToRangeMap, tempStartDate, today)
+    val daysStates = remember(monthData, selectedRanges, tempStartDate) {
+        getDaysStates(monthData, dateToRangeMap, tempStartDate)
     }
 
     Column(modifier = modifier) {
@@ -250,10 +247,12 @@ private fun handleDateClick(
     tempStartDate: Long?,
     maxRangesCycle: Int
 ): DateClickResult {
-    val existingRange = selectedRanges.findRangeByDate(date)
+    val existingRangeIndex = selectedRanges.indexOfFirst { range ->
+        date >= range.start && date <= range.end
+    }
 
-    if (existingRange != null)
-        return DateClickResult.ShowDialog(existingRange.second)
+    if (existingRangeIndex != -1)
+        return DateClickResult.ShowDialog(existingRangeIndex)
 
     if (selectedRanges.size >= maxRangesCycle)
         return DateClickResult.Error("${ValidationError.MAX_RANGES_REACHED.message}: $maxRangesCycle")
@@ -279,10 +278,11 @@ private fun processHandleClick(
     selectedRanges: List<DateRange>,
     tempStartDate: Long?,
     maxRangesCycle: Int,
-    onSelectedRangesChange: (List<DateRange>) -> Unit,
+    onAddDateRange: (DateRange) -> Unit,
     onShowWarning: (String) -> Unit,
-    onShowDialog: (DateRange) -> Unit
+    onClickSelectedRange: (Int) -> Unit
 ): Long? {
+
     val result = handleDateClick(
         date = date,
         selectedRanges = selectedRanges,
@@ -299,7 +299,8 @@ private fun processHandleClick(
                     start = minOf(tempStartDate, date),
                     end = maxOf(tempStartDate, date)
                 )
-                onSelectedRangesChange(selectedRanges + newRange)
+
+                onAddDateRange(newRange)
                 return null
             }
         }
@@ -308,7 +309,7 @@ private fun processHandleClick(
             return null
         }
         is DateClickResult.ShowDialog -> {
-            onShowDialog(result.range)
+            onClickSelectedRange(result.index)
             return null
         }
     }
@@ -372,9 +373,10 @@ private fun getCellStyles(
 private fun getDaysStates(
     monthData: MonthData,
     dateToRangeMap: Map<Long, Pair<Int, DateRange>>,
-    tempStartDate: Long?,
-    today: Long
+    tempStartDate: Long?
 ): List<DayState> {
+    val today = getTodayTimeInMillis()
+
     return (1..monthData.daysInMonth).map { day ->
         val dateMillis = monthData.firstDayMillis + (day - 1) * 24 * 60 * 60 * 1000L
         val rangeInfo = dateToRangeMap[dateMillis]
@@ -385,7 +387,6 @@ private fun getDaysStates(
         val isToday = dateMillis == today
 
         val rangePosition = when {
-            isRangeStart && isRangeEnd -> RangePosition.Single
             isRangeStart -> RangePosition.Start
             isRangeEnd -> RangePosition.End
             isInRange -> RangePosition.Middle
@@ -415,15 +416,6 @@ private fun getDateToRangeMap(selectedRanges: List<DateRange>): Map<Long, Pair<I
             }
         }
     }
-
-private fun List<DateRange>.findRangeByDate(date: Long): Pair<Int, DateRange>? {
-    this.forEachIndexed { index, range ->
-        if (date >= range.start && date <= range.end) {
-            return index to range
-        }
-    }
-    return null
-}
 
 private fun getMonthsData(monthsCount: Int): List<MonthData> {
     val currentMonth = Calendar.getInstance().apply {
@@ -518,7 +510,7 @@ data class DayState(
     val rangeIndex: Int = -1
 )
 
-enum class RangePosition { None, Single, Start, Middle, End }
+enum class RangePosition { None, Start, Middle, End }
 
 enum class ValidationError(val message: String) {
     SINGLE_DAY_NOT_ALLOWED("Нельзя выбрать один день. Выберите диапазон дат"),
@@ -531,5 +523,18 @@ enum class ValidationError(val message: String) {
 sealed class DateClickResult {
     data object Success : DateClickResult()
     data class Error(val message: String) : DateClickResult()
-    data class ShowDialog(val range: DateRange) : DateClickResult()
+    data class ShowDialog(val index: Int) : DateClickResult()
+}
+
+@Preview
+@Composable
+private fun PreviewMultiRangeDatePicker() {
+    MultiRangeDatePicker(
+        selectedRanges = emptyList(),
+        maxRangesCycle = 0,
+        monthsCount = 3,
+        onAddDateRange = {},
+        onClickSelectedRange = {},
+        onShowWarning = {}
+    )
 }

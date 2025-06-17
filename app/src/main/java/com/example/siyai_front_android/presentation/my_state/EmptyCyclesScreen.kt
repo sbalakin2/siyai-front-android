@@ -24,7 +24,7 @@ import com.example.siyai_front_android.R
 import com.example.siyai_front_android.ui.components.buttons.GradientButton
 
 @Composable
-fun OnboardingMyStateScreen(
+fun EmptyCyclesScreen(
     modifier: Modifier = Modifier,
     onContinueClick: () -> Unit
 ) {
@@ -87,5 +87,5 @@ fun OnboardingMyStateScreen(
 @Preview
 @Composable
 private fun PreviewOnboardingMyStateScreen() {
-    OnboardingMyStateScreen { }
+    EmptyCyclesScreen { }
 }

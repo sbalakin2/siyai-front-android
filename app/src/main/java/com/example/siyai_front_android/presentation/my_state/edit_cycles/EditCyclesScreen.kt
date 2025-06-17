@@ -1,4 +1,4 @@
-package com.example.siyai_front_android.presentation.my_state
+package com.example.siyai_front_android.presentation.my_state.edit_cycles
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,36 +39,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.siyai_front_android.R
 import com.example.siyai_front_android.ui.components.buttons.GradientButton
-import com.example.siyai_front_android.ui.components.calendar.DateRange
 import com.example.siyai_front_android.ui.components.calendar.MultiRangeDatePicker
 import com.example.siyai_front_android.ui.components.dialog.MyStateDialog
 import kotlinx.coroutines.delay
 
 @Composable
-fun CalendarMyStateScreen(
+fun EditCyclesScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    onContinueClick: () -> Unit
+    onContinueClick: () -> Unit,
+    viewmodelFactory: ViewModelProvider.Factory,
+    viewModel: EditCyclesViewModel = viewModel(factory = viewmodelFactory)
 ) {
-    CalendarMyStateContent(
-        onBackClick = onBackClick,
-        onContinueClick = onContinueClick
-    )
-}
-
-@Composable
-private fun CalendarMyStateContent(
-    modifier: Modifier = Modifier,
-    onBackClick: () -> Unit,
-    onContinueClick: () -> Unit
-) {
-    var selectedRanges by rememberSaveable { mutableStateOf(listOf<DateRange>()) }
+    val selectedRanges by viewModel.cycles.collectAsState(emptyList())
     var warningMessage by remember { mutableStateOf<String?>(null) }
-    val deleteDialogState = rememberSaveable {
-        mutableStateOf<Pair<Boolean, DateRange?>>(false to null)
-    }
+    val deleteDialogState = rememberSaveable { mutableStateOf(false to -1) }
 
     LaunchedEffect(warningMessage) {
         warningMessage?.let {
@@ -90,13 +80,11 @@ private fun CalendarMyStateContent(
                 monthsCount = 5,
                 selectedRanges = selectedRanges,
                 onShowWarning = { msg -> warningMessage = msg },
-                onSelectedRangesChange = { selectedRanges = it },
-                onShowDialog = { deleteDialogState.value = true to it }
+                onAddDateRange = { viewModel.addCycle(it) },
+                onClickSelectedRange = { deleteDialogState.value = true to it }
             )
             CalendarButton(
-                modifier = Modifier
-                    .padding(top = 8.dp, bottom = 36.dp, start = 16.dp, end = 16.dp),
-                maxRangesCycle = 3,
+                modifier = Modifier.padding(top = 8.dp, bottom = 36.dp, start = 16.dp, end = 16.dp),
                 selectedRangesCount = selectedRanges.size,
                 onContinueClick = onContinueClick
             )
@@ -107,10 +95,10 @@ private fun CalendarMyStateContent(
             MyStateDialog(
                 title = stringResource(R.string.delete_cycle),
                 onConfirm = {
-                    selectedRanges = selectedRanges.filter { it != deleteDialogState.value.second }
-                    deleteDialogState.value = false to null
+                    viewModel.deleteCycle(deleteDialogState.value.second)
+                    deleteDialogState.value = false to -1
                 },
-                onCancel = { deleteDialogState.value = false to null }
+                onCancel = { deleteDialogState.value = false to -1 }
             )
         }
     }
@@ -145,11 +133,10 @@ private fun CalendarHeader(
 @Composable
 private fun CalendarButton(
     modifier: Modifier = Modifier,
-    maxRangesCycle: Int,
     selectedRangesCount: Int,
     onContinueClick: () -> Unit
 ) {
-    val remaining = maxRangesCycle - selectedRangesCount
+    val remaining = 3 - selectedRangesCount
 
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -167,7 +154,7 @@ private fun CalendarButton(
             )
             Spacer(modifier = Modifier.height(22.dp))
         }
-        if (selectedRangesCount == maxRangesCycle) {
+        if (selectedRangesCount == 3) {
             GradientButton(
                 modifier = Modifier.height(56.dp),
                 text = stringResource(R.string.save),
@@ -231,8 +218,9 @@ private fun BoxScope.WarningToast(
 @Preview
 @Composable
 private fun PreviewCalendarMyStateScreen() {
-    CalendarMyStateScreen(
+    EditCyclesScreen(
         onContinueClick = {},
-        onBackClick = {}
+        onBackClick = {},
+        viewmodelFactory = ViewModelProvider.NewInstanceFactory()
     )
 }

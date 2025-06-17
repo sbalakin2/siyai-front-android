@@ -9,7 +9,7 @@ fun MyStateScreen(
     modifier: Modifier = Modifier,
     onContinueClick: () -> Unit
 ) {
-    OnboardingMyStateScreen(
+    EmptyCyclesScreen(
         onContinueClick = onContinueClick
     )
 }

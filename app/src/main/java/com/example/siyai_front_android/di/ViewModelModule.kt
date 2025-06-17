@@ -10,6 +10,7 @@ import com.example.siyai_front_android.presentation.auth.password_recovery.Recov
 import com.example.siyai_front_android.presentation.auth.password_reset.PasswordResetViewModel
 import com.example.siyai_front_android.presentation.auth.reg.RegViewModel
 import com.example.siyai_front_android.presentation.main.home_container.home.HomeViewModel
+import com.example.siyai_front_android.presentation.my_state.edit_cycles.EditCyclesViewModel
 import com.example.siyai_front_android.presentation.profile.ProfileViewModel
 import com.example.siyai_front_android.presentation.profile_editing.ProfileEditingViewModel
 import dagger.Binds
@@ -79,5 +80,12 @@ abstract class ViewModelModule {
     @ViewModelKey(PasswordResetViewModel::class)
     abstract fun bindPasswordResetViewModel(
         passwordResetViewModel: PasswordResetViewModel
+    ): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EditCyclesViewModel::class)
+    abstract fun bindEditCyclesViewModel(
+        editCyclesViewModel: EditCyclesViewModel
     ): ViewModel
 }
