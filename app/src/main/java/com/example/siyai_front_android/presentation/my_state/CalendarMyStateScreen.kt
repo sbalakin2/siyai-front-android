@@ -27,6 +27,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -62,9 +63,9 @@ private fun CalendarMyStateContent(
     onBackClick: () -> Unit,
     onContinueClick: () -> Unit
 ) {
-    var selectedRanges by remember { mutableStateOf(listOf<DateRange>()) }
+    var selectedRanges by rememberSaveable { mutableStateOf(listOf<DateRange>()) }
     var warningMessage by remember { mutableStateOf<String?>(null) }
-    val deleteDialogState = remember {
+    val deleteDialogState = rememberSaveable {
         mutableStateOf<Pair<Boolean, DateRange?>>(false to null)
     }
 
