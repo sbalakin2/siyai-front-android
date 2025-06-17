@@ -3,6 +3,7 @@ package com.example.siyai_front_android.presentation.free_lesson_detail
 import android.content.Context
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
+import android.media.MediaPlayer
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,9 +28,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -38,7 +43,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import com.example.siyai_front_android.R
 import com.example.siyai_front_android.ui.icons.SiyAiIcons
 
@@ -48,6 +52,18 @@ fun FreeLessonDetailScreen(
     onBackClicked: () -> Unit
 ) {
     val context = LocalContext.current
+
+    val mediaPlayer = remember { MediaPlayer() }
+    var isPlaying by remember { mutableStateOf(false) }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            if (mediaPlayer.isPlaying) {
+                mediaPlayer.stop()
+            }
+            mediaPlayer.release()
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -103,7 +119,26 @@ fun FreeLessonDetailScreen(
 
             Card(
                 onClick = {
-                    // play audio
+                    try {
+                        if (mediaPlayer.isPlaying) {
+                            mediaPlayer.pause()
+                            isPlaying = false
+                        } else {
+                            mediaPlayer.reset()
+                            val assetFile =
+                                context.assets.openFd(context.getString(R.string.lesson_one_audio_path))
+                            mediaPlayer.setDataSource(
+                                assetFile.fileDescriptor,
+                                assetFile.startOffset,
+                                assetFile.length
+                            )
+                            mediaPlayer.prepare()
+                            mediaPlayer.start()
+                            isPlaying = true
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 },
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
@@ -117,17 +152,25 @@ fun FreeLessonDetailScreen(
                         .fillMaxWidth()
                         .padding(16.dp)
                 ) {
-                    AsyncImage(
-                        model = R.drawable.free_lessons_image,
+                    Icon(
+                        imageVector = if (isPlaying) SiyAiIcons.Stop else SiyAiIcons.PlayArrow,
                         contentDescription = null,
-                        contentScale = ContentScale.Crop,
+                        tint = Color.White,
                         modifier = Modifier
                             .size(48.dp)
-                            .clip(RoundedCornerShape(12.dp))
+                            .background(
+                                color = Color.DarkGray,
+                                shape = CircleShape
+                            )
+                            .padding(if (isPlaying) 12.dp else 8.dp)
                     )
 
                     Text(
-                        text = stringResource(R.string.lesson_one_audio),
+                        text = if (isPlaying) {
+                            stringResource(R.string.music_is_playing)
+                        } else {
+                            stringResource(R.string.lesson_one_audio)
+                        },
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 2,
@@ -135,12 +178,6 @@ fun FreeLessonDetailScreen(
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
                             .weight(1f),
-                    )
-
-                    Icon(
-                        imageVector = SiyAiIcons.Forward,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
