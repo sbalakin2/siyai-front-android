@@ -5,6 +5,7 @@ import com.example.siyai_front_android.data.repositories.CountryWithCitiesReposi
 import com.example.siyai_front_android.data.repositories.CreateProfileRepositoryImpl
 import com.example.siyai_front_android.data.repositories.DeleteProfileRepositoryImpl
 import com.example.siyai_front_android.data.repositories.LoginRepositoryImpl
+import com.example.siyai_front_android.data.repositories.MyStateRepositoryImpl
 import com.example.siyai_front_android.data.repositories.PasswordResetRepositoryImpl
 import com.example.siyai_front_android.data.repositories.ProfileEditingRepositoryImpl
 import com.example.siyai_front_android.data.repositories.ProfileRepositoryImpl
@@ -17,6 +18,7 @@ import com.example.siyai_front_android.domain.repositories.CountryWithCitiesRepo
 import com.example.siyai_front_android.domain.repositories.CreateProfileRepository
 import com.example.siyai_front_android.domain.repositories.DeleteProfileRepository
 import com.example.siyai_front_android.domain.repositories.LoginRepository
+import com.example.siyai_front_android.domain.repositories.MyStateRepository
 import com.example.siyai_front_android.domain.repositories.PasswordResetRepository
 import com.example.siyai_front_android.domain.repositories.ProfileEditingRepository
 import com.example.siyai_front_android.domain.repositories.ProfileRepository
@@ -26,6 +28,7 @@ import com.example.siyai_front_android.domain.repositories.RegRepository
 import com.example.siyai_front_android.domain.repositories.VerificationRepository
 import dagger.Binds
 import dagger.Module
+import javax.inject.Singleton
 
 @Module(includes = [RetrofitModule::class])
 interface DataModule {
@@ -87,4 +90,10 @@ interface DataModule {
     fun bindDeleteProfileRepository(
         deleteProfileRepositoryImpl: DeleteProfileRepositoryImpl
     ): DeleteProfileRepository
+
+    @Binds
+    @Singleton
+    fun bindMyStateRepository(
+        myStateRepository: MyStateRepositoryImpl
+    ): MyStateRepository
 }

@@ -12,6 +12,8 @@ object SiyAiIcons {
     val TrainingSelected = TrainingSelectedIcon
     val AudioUnselected = AudioUnselectedIcon
     val AudioSelected = AudioSelectedIcon
+    val MyStateSelected = MyStateSelectedIcon
+    val MyStateUnselected = MyStateUnselectedIcon
     val ProfileUnselected = ProfileUnselectedIcon
     val ProfileSelected = ProfileSelectedIcon
     val Instagram = InstagramIcon
