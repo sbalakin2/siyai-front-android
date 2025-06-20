@@ -7,7 +7,7 @@ class MyStateDeleteCycleUseCaseImpl @Inject constructor(
     private val myStateRepository: MyStateRepository
 ) : MyStateDeleteCycleUseCase {
 
-    override suspend fun invoke(index: Int) {
-        myStateRepository.removeCycle(index)
+    override suspend fun invoke(id: Int) {
+        myStateRepository.removeCycle(id)
     }
 }

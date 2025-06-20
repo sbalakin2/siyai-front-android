@@ -13,16 +13,16 @@ class MyStateRepositoryImpl @Inject constructor() : MyStateRepository {
     private val _cycles = MutableStateFlow<List<Cycle>>(emptyList())
     override val cycles: StateFlow<List<Cycle>> = _cycles.asStateFlow()
 
+    private var currentId = 0
+
     override suspend fun addCycle(cycle: Cycle) {
-        _cycles.update { it + cycle }
+        val newCycle = cycle.copy(id = ++currentId)
+        _cycles.update { it + newCycle }
     }
 
-    override suspend fun removeCycle(index: Int) {
+    override suspend fun removeCycle(id: Int) {
         _cycles.update { currentList ->
-            if (index in currentList.indices)
-                currentList.filterIndexed { i, _ -> i != index }
-              else
-                currentList
+            currentList.filter { it.id != id }
         }
     }
 }

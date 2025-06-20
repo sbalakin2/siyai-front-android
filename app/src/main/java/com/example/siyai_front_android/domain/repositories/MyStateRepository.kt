@@ -9,5 +9,5 @@ interface MyStateRepository {
 
     suspend fun addCycle(cycle: Cycle)
 
-    suspend fun removeCycle(index: Int)
+    suspend fun removeCycle(id: Int)
 }

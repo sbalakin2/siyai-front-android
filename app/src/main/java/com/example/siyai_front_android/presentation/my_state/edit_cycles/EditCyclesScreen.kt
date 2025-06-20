@@ -47,6 +47,9 @@ import com.example.siyai_front_android.ui.components.calendar.MultiRangeDatePick
 import com.example.siyai_front_android.ui.components.dialog.MyStateDialog
 import kotlinx.coroutines.delay
 
+private const val MAX_RANGES_CYCLE = 3
+private const val MONTH_COUNT = 5
+
 @Composable
 fun EditCyclesScreen(
     modifier: Modifier = Modifier,
@@ -76,11 +79,11 @@ fun EditCyclesScreen(
             )
             MultiRangeDatePicker(
                 modifier = Modifier.weight(1f),
-                maxRangesCycle = 3,
-                monthsCount = 5,
+                maxRangesCycle = MAX_RANGES_CYCLE,
+                monthsCount = MONTH_COUNT,
                 selectedRanges = selectedRanges,
                 onShowWarning = { msg -> warningMessage = msg },
-                onAddDateRange = { viewModel.addCycle(it) },
+                onAddDateRange = { start, end -> viewModel.addCycle(start, end) },
                 onClickSelectedRange = { deleteDialogState.value = true to it }
             )
             CalendarButton(
@@ -136,7 +139,7 @@ private fun CalendarButton(
     selectedRangesCount: Int,
     onContinueClick: () -> Unit
 ) {
-    val remaining = 3 - selectedRangesCount
+    val remaining = MAX_RANGES_CYCLE - selectedRangesCount
 
     Column(
         modifier = modifier.fillMaxWidth(),

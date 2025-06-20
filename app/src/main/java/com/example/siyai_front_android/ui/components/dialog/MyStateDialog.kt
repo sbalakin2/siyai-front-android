@@ -28,11 +28,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
+import com.example.siyai_front_android.R
 import com.example.siyai_front_android.ui.theme.backgroundDark
 import com.example.siyai_front_android.ui.theme.inverseOnSurfaceDark
 
@@ -114,7 +116,7 @@ fun MyStateDialog(
                     shape = RoundedCornerShape(30.dp)
                 ) {
                     Text(
-                        text = "Удалить",
+                        text = stringResource(R.string.remove),
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.Medium
                         ),
@@ -133,7 +135,7 @@ fun MyStateDialog(
                     shape = RoundedCornerShape(30.dp)
                 ) {
                     Text(
-                        text = "Отмена",
+                        text = stringResource(R.string.cancel),
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.Medium
                         ),
@@ -156,7 +158,7 @@ fun MyStateDialog(
             ) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Закрыть",
+                    contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(32.dp)
                 )

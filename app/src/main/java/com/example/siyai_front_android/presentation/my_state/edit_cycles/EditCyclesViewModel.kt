@@ -6,8 +6,6 @@ import com.example.siyai_front_android.domain.dto.Cycle
 import com.example.siyai_front_android.domain.usecases.MyStateAddCycleUseCase
 import com.example.siyai_front_android.domain.usecases.MyStateDeleteCycleUseCase
 import com.example.siyai_front_android.domain.usecases.MyStateGetCyclesUseCase
-import com.example.siyai_front_android.ui.components.calendar.DateRange
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,21 +15,27 @@ class EditCyclesViewModel @Inject constructor(
     private val removeCyclesUseCase: MyStateDeleteCycleUseCase
 ) : ViewModel() {
 
-    val cycles = getCyclesUseCase().map { list ->
-        list.map { DateRange(it.start, it.end) }
-    }
+    private var lastAddTime = 0L
+    private val addCycleThrottleMs = 200L
 
-    fun addCycle(dateRange: DateRange) {
+    val cycles = getCyclesUseCase()
+
+    fun addCycle(startRange: Long, endRange: Long) {
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - lastAddTime < addCycleThrottleMs) return
+
+        lastAddTime = currentTime
+
         viewModelScope.launch {
             addCycleUseCase(
-                Cycle(dateRange.start, dateRange.end)
+                Cycle(start = startRange, end = endRange)
             )
         }
     }
 
-    fun deleteCycle(index: Int) {
+    fun deleteCycle(id: Int) {
         viewModelScope.launch {
-            removeCyclesUseCase(index)
+            removeCyclesUseCase(id)
         }
     }
 }
