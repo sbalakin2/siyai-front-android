@@ -1,5 +1,8 @@
 package com.example.siyai_front_android.presentation.profile_editing
 
+import android.content.Context
+import android.net.Uri
+import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.siyai_front_android.domain.dto.CountryWithCities
@@ -15,6 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 class ProfileEditingViewModel @Inject constructor(
@@ -64,7 +68,8 @@ class ProfileEditingViewModel @Inject constructor(
                 lastName = profile.lastName,
                 birthday = profile.birthday,
                 country = profile.country,
-                city = profile.city
+                city = profile.city,
+                photo = profile.photo
             )
         }
     }
@@ -80,5 +85,29 @@ class ProfileEditingViewModel @Inject constructor(
                 _deleteProfileState.value = deleteProfileUseCase(it.email)
             }
         }
+    }
+
+    fun provideTempPhotoUri(context: Context): Uri {
+        val file = File.createTempFile(PREFIX, SUFFIX, context.externalCacheDir)
+            .apply { createNewFile() }
+        return FileProvider.getUriForFile(
+            context, "${context.packageName}$FILEPROVIDER", file
+        )
+    }
+
+    fun deletePhotoByUri(context: Context, uriString: String) {
+        try {
+            val fileName = Uri.parse(uriString).pathSegments.last()
+            val file = File(context.externalCacheDir, fileName)
+            if (file.exists()) file.delete()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    companion object {
+        private const val PREFIX = "photo_"
+        private const val SUFFIX = ".jpg"
+        private const val FILEPROVIDER = ".fileprovider"
     }
 }

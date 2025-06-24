@@ -9,6 +9,7 @@ interface EditProfileUseCase {
         lastName: String,
         birthday: String,
         country: String,
-        city: String
+        city: String,
+        photo: String
     ): ProfileEditingState
 }

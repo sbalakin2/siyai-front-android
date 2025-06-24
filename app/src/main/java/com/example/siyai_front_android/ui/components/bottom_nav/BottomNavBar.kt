@@ -1,5 +1,6 @@
 package com.example.siyai_front_android.ui.components.bottom_nav
 
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -11,13 +12,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.siyai_front_android.R
 import com.example.siyai_front_android.ui.theme.SiyaifrontandroidTheme
 
 @Composable
@@ -56,7 +60,13 @@ fun BottomNavBar(
                     )
                 },
                 label = {
-                    Text(stringResource(item.label))
+                    val offset = if (item.label == R.string.my_state) 8.dp else 0.dp
+                    Text(
+                        modifier = Modifier.offset(y = offset),
+                        text = stringResource(item.label),
+                        textAlign = TextAlign.Center,
+                        lineHeight = 14.sp
+                    )
                 },
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = MaterialTheme.colorScheme.primary,

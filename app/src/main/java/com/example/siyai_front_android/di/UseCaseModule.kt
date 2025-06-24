@@ -18,6 +18,12 @@ import com.example.siyai_front_android.domain.usecases.GetProfileUseCase
 import com.example.siyai_front_android.domain.usecases.GetProfileUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.LoginUseCase
 import com.example.siyai_front_android.domain.usecases.LoginUseCaseImpl
+import com.example.siyai_front_android.domain.usecases.MyStateAddCycleUseCase
+import com.example.siyai_front_android.domain.usecases.MyStateAddCycleUseCaseImpl
+import com.example.siyai_front_android.domain.usecases.MyStateDeleteCycleUseCase
+import com.example.siyai_front_android.domain.usecases.MyStateDeleteCycleUseCaseImpl
+import com.example.siyai_front_android.domain.usecases.MyStateGetCyclesUseCase
+import com.example.siyai_front_android.domain.usecases.MyStateGetCyclesUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.RecoveryPasswordUseCase
 import com.example.siyai_front_android.domain.usecases.RecoveryPasswordUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.RegUseCase
@@ -28,6 +34,7 @@ import com.example.siyai_front_android.domain.usecases.VerifyUseCase
 import com.example.siyai_front_android.domain.usecases.VerifyUseCaseImpl
 import dagger.Binds
 import dagger.Module
+import javax.inject.Singleton
 
 @Module(includes = [DataModule::class])
 interface UseCaseModule {
@@ -80,4 +87,19 @@ interface UseCaseModule {
     fun bindDeleteProfileUseCase(
         deleteProfileUseCaseImpl: DeleteProfileUseCaseImpl
     ): DeleteProfileUseCase
+
+    @Binds
+    fun bindMyStateAddCycleUseCase(
+        myStateAddCycleUseCaseImpl: MyStateAddCycleUseCaseImpl
+    ): MyStateAddCycleUseCase
+
+    @Binds
+    fun bindMyStateDeleteCycleUseCase(
+        myStateDeleteCycleUseCaseImpl: MyStateDeleteCycleUseCaseImpl
+    ): MyStateDeleteCycleUseCase
+
+    @Binds
+    fun bindMyStateGetCyclesUseCase(
+        myStateGetCyclesUseCaseImpl: MyStateGetCyclesUseCaseImpl
+    ): MyStateGetCyclesUseCase
 }
