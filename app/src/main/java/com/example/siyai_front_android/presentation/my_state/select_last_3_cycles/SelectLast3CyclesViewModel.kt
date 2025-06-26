@@ -1,4 +1,4 @@
-package com.example.siyai_front_android.presentation.my_state.edit_cycles
+package com.example.siyai_front_android.presentation.my_state.select_last_3_cycles
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,7 +9,7 @@ import com.example.siyai_front_android.domain.usecases.MyStateGetCyclesUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class EditCyclesViewModel @Inject constructor(
+class SelectLast3CyclesViewModel @Inject constructor(
     private val getCyclesUseCase: MyStateGetCyclesUseCase,
     private val addCycleUseCase: MyStateAddCycleUseCase,
     private val removeCyclesUseCase: MyStateDeleteCycleUseCase

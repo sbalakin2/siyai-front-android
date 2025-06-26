@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.siyai_front_android.presentation.main.home_container.navigation.HomeContainer
 import com.example.siyai_front_android.presentation.model.Product
-import com.example.siyai_front_android.presentation.my_state.edit_cycles.EditCyclesScreen
+import com.example.siyai_front_android.presentation.my_state.select_last_3_cycles.SelectLast3CyclesScreen
 import com.example.siyai_front_android.presentation.my_state.MyStateScreen
 import com.example.siyai_front_android.presentation.product_detail.ProductDetailScreen
 import com.example.siyai_front_android.presentation.profile.ProfileScreen
@@ -52,7 +52,7 @@ fun MainNavHost(
             )
         }
         composable<MainRoute.Calendar> {
-            EditCyclesScreen(
+            SelectLast3CyclesScreen(
                 onBackClick = { navController.popBackStack() },
                 onContinueClick = {},
                 viewmodelFactory = viewModelFactory
