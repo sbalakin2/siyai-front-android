@@ -9,9 +9,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.siyai_front_android.presentation.main.home_container.navigation.HomeContainer
 import com.example.siyai_front_android.presentation.model.Product
-import com.example.siyai_front_android.presentation.my_state.select_last_3_cycles.SelectLast3CyclesScreen
 import com.example.siyai_front_android.presentation.my_state.MyStateScreen
 import com.example.siyai_front_android.presentation.my_state.calendar_with_info.CalendarWithInfoScreen
+import com.example.siyai_front_android.presentation.my_state.select_last_3_cycles.SelectLast3CyclesScreen
 import com.example.siyai_front_android.presentation.product_detail.ProductDetailScreen
 import com.example.siyai_front_android.presentation.profile.ProfileScreen
 import com.example.siyai_front_android.presentation.profile_editing.ProfileEditingScreen
@@ -47,12 +47,10 @@ fun MainNavHost(
         composable<MainRoute.Audio> {}
         composable<MainRoute.MyState>{
             MyStateScreen(
-                onContinueClick = {
-                    navController.navigate(MainRoute.Calendar)
-                }
+                onContinueClick = { navController.navigate(MainRoute.Last3Cycles) }
             )
         }
-        composable<MainRoute.Calendar> {
+        composable<MainRoute.Last3Cycles> {
             SelectLast3CyclesScreen(
                 onBackClick = { navController.popBackStack() },
                 onContinueClick = { navController.navigate(MainRoute.CalendarWithInfo) },
