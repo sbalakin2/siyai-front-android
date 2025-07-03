@@ -1,5 +1,7 @@
 package com.example.siyai_front_android.presentation.my_state.your_status_day
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -47,6 +49,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.focus.onFocusChanged
@@ -98,28 +101,17 @@ fun YourStatusDayScreen(
     ) {
         val items = YourStatus.getStatusesList()
         var selectedIndex by remember { mutableIntStateOf(0) }
-        var note by remember { mutableStateOf("") }
         val backgroundColor = YourStatus.getStatusColor(selectedIndex)
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    brush = Brush.linearGradient(
-                        colors = listOf(
-                            backgroundColor.copy(alpha = 0.2f),
-                            MaterialTheme.colorScheme.secondaryContainer,
-                            backgroundColor.copy(alpha = 0.1f)
-                        ),
-                        start = Offset(0f, Float.POSITIVE_INFINITY),
-                        end = Offset(Float.POSITIVE_INFINITY, 0f)
-                    )
-                )
+        AnimatedBackgroundBox(
+            modifier = Modifier.fillMaxWidth(),
+            currentColor = backgroundColor
         ) {
             Column(
                 modifier = Modifier.padding(horizontal = 16.dp)
             ) {
                 val bottomPadding = if (isImeVisible) 16.dp else 48.dp
+                var note by remember { mutableStateOf("") }
 
                 BottomSheetHeader(onDismiss = onDismiss)
                 WheelPicker(
@@ -162,6 +154,43 @@ fun YourStatusDayScreen(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun AnimatedBackgroundBox(
+    currentColor: Color,
+    modifier: Modifier = Modifier,
+    isBottomSheet: Boolean = true,
+    content: @Composable () -> Unit
+) {
+    val animatedColor by animateColorAsState(
+        targetValue = currentColor,
+        animationSpec = tween(durationMillis = 300),
+    )
+
+    val colors = if (isBottomSheet) {
+        listOf(animatedColor.copy(alpha = 0.2f),
+            MaterialTheme.colorScheme.secondaryContainer,
+            animatedColor.copy(alpha = 0.1f)
+        )
+    } else {
+        listOf(
+            animatedColor.copy(alpha = 0.15f),
+            Color.DarkGray.copy(alpha = 0.45f)
+        )
+    }
+
+    Box(
+        modifier = modifier.background(
+            brush = Brush.linearGradient(
+                colors = colors,
+                start = Offset(0f, Float.POSITIVE_INFINITY),
+                end = Offset(Float.POSITIVE_INFINITY, 0f)
+            )
+        )
+    ) {
+        content()
     }
 }
 
@@ -237,9 +266,12 @@ private fun WheelPicker(
                         .height(itemHeight),
                     contentAlignment = Alignment.Center
                 ) {
+                    val (rotation, scale) = getRotationX(lazyListState, globalIndex)
                     Text(
                         modifier = Modifier.graphicsLayer {
-                            this.rotationX = getRotationX(lazyListState, globalIndex)
+                            this.rotationX = rotation
+                            this.scaleX = scale
+                            this.scaleY = scale
                         },
                         text = items[globalIndex % items.size],
                         style = MaterialTheme.typography.bodyMedium,
@@ -267,42 +299,37 @@ private fun BottomSheetTextField(
 ) {
     var isFocused by remember { mutableStateOf(false) }
 
-    TextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                brush = Brush.linearGradient(
-                    colors = listOf(
-                        selectedColor.copy(alpha = 0.15f),
-                        Color.DarkGray.copy(alpha = 0.45f)
-                    ),
-                    start = Offset(0f, Float.POSITIVE_INFINITY),
-                    end = Offset(Float.POSITIVE_INFINITY, 0f)
-                ),
-                shape = RoundedCornerShape(16.dp)
-            )
-            .border(
-                width = if (isFocused) 1.dp else 0.dp,
-                color = if (isFocused) MaterialTheme.colorScheme.primary else Color.Transparent,
-                shape = RoundedCornerShape(16.dp)
-            )
-            .onFocusChanged { isFocused = it.isFocused },
-        value = note,
-        label = { Text(text = stringResource(R.string.note_label)) },
-        onValueChange = { onValueChange(it) },
-        maxLines = 4,
-        textStyle = MaterialTheme.typography.bodyLarge.copy(lineHeight = 18.sp),
-        shape = RoundedCornerShape(16.dp),
-        colors = TextFieldDefaults.colors(
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            focusedContainerColor = Color.Transparent,
-            unfocusedContainerColor = Color.Transparent,
-            focusedLabelColor = MaterialTheme.colorScheme.outline,
-            unfocusedLabelColor = MaterialTheme.colorScheme.outline,
-            focusedTextColor = MaterialTheme.colorScheme.primary
-        ),
-    )
+    AnimatedBackgroundBox(
+        modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)),
+        currentColor = selectedColor,
+        isBottomSheet = false
+    ) {
+        TextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    width = if (isFocused) 1.dp else 0.dp,
+                    color = if (isFocused) MaterialTheme.colorScheme.primary else Color.Transparent,
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .onFocusChanged { isFocused = it.isFocused },
+            value = note,
+            label = { Text(text = stringResource(R.string.note_label)) },
+            onValueChange = { onValueChange(it) },
+            maxLines = 4,
+            textStyle = MaterialTheme.typography.bodyLarge.copy(lineHeight = 18.sp),
+            shape = RoundedCornerShape(16.dp),
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                focusedLabelColor = MaterialTheme.colorScheme.outline,
+                unfocusedLabelColor = MaterialTheme.colorScheme.outline,
+                focusedTextColor = MaterialTheme.colorScheme.primary
+            ),
+        )
+    }
 }
 
 @Composable
@@ -313,17 +340,6 @@ private fun CentralOverlay(
     onSelectionChanged: (Int) -> Unit,
     itemsSize: Int = items.size
 ) {
-    val scrollInfo by remember {
-        derivedStateOf {
-            getScrollInfo(lazyListState, itemsSize)
-        }
-    }
-    val (currentSelectedIndex, scrollProgress) = scrollInfo
-
-    LaunchedEffect(currentSelectedIndex) {
-        onSelectionChanged(currentSelectedIndex)
-    }
-
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
@@ -336,6 +352,17 @@ private fun CentralOverlay(
                 .clipToBounds(),
             contentAlignment = Alignment.Center
         ) {
+            val scrollInfo by remember {
+                derivedStateOf {
+                    getScrollInfo(lazyListState, itemsSize)
+                }
+            }
+            val (currentSelectedIndex, scrollProgress) = scrollInfo
+
+            LaunchedEffect(currentSelectedIndex) {
+                onSelectionChanged(currentSelectedIndex)
+            }
+
             val selectedStatus = items[currentSelectedIndex]
             val prevStatus = items[(currentSelectedIndex - 1 + itemsSize) % itemsSize]
             val nextStatus = items[(currentSelectedIndex + 1) % itemsSize]
@@ -362,14 +389,19 @@ private fun CentralOverlayText(
     )
 }
 
-private fun getRotationX(lazyListState: LazyListState, globalIndex: Int): Float {
+private fun getRotationX(lazyListState: LazyListState, globalIndex: Int): Pair<Float, Float> {
     return lazyListState.layoutInfo.visibleItemsInfo.find {
         it.index == globalIndex
     }?.let {
         val viewportCenterY = lazyListState.layoutInfo.viewportSize.height / 2f
         val itemCenterY = it.offset + it.size / 2f
-        -40f * (itemCenterY - viewportCenterY) / viewportCenterY
-    } ?: 0f
+        val rotation = -30f * (itemCenterY - viewportCenterY) / viewportCenterY
+        val distance = abs(itemCenterY - viewportCenterY)
+        val normalizedDistance = (distance / viewportCenterY).coerceIn(0f, 1f)
+        val scale = 1f - (normalizedDistance * 0.15f)
+
+        rotation to scale
+    } ?: (0f to 0.8f)
 }
 
 private fun ContentDrawScope.cutCentralRectOverlay(itemHeight: Dp) {
