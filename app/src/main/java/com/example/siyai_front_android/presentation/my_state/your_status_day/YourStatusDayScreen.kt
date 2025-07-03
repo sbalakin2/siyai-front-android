@@ -1,7 +1,5 @@
 package com.example.siyai_front_android.presentation.my_state.your_status_day
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -101,11 +99,7 @@ fun YourStatusDayScreen(
         val items = YourStatus.getStatusesList()
         var selectedIndex by remember { mutableIntStateOf(0) }
         var note by remember { mutableStateOf("") }
-
-        val animatedColor by animateColorAsState(
-            targetValue = YourStatus.getStatusColor(selectedIndex),
-            animationSpec = tween(durationMillis = 300)
-        )
+        val backgroundColor = YourStatus.getStatusColor(selectedIndex)
 
         Box(
             modifier = Modifier
@@ -113,9 +107,9 @@ fun YourStatusDayScreen(
                 .background(
                     brush = Brush.linearGradient(
                         colors = listOf(
-                            animatedColor.copy(alpha = 0.2f),
+                            backgroundColor.copy(alpha = 0.2f),
                             MaterialTheme.colorScheme.secondaryContainer,
-                            animatedColor.copy(alpha = 0.1f)
+                            backgroundColor.copy(alpha = 0.1f)
                         ),
                         start = Offset(0f, Float.POSITIVE_INFINITY),
                         end = Offset(Float.POSITIVE_INFINITY, 0f)
@@ -142,7 +136,7 @@ fun YourStatusDayScreen(
                     thickness = 1.dp
                 )
                 BottomSheetTextField(
-                    selectedColor = animatedColor,
+                    selectedColor = backgroundColor,
                     note = note,
                     onValueChange = { note = it }
                 )
@@ -206,28 +200,17 @@ private fun WheelPicker(
     onSelectionChanged: (Int) -> Unit,
     pickerHeight: Dp = 190.dp
 ) {
-    val itemHeight = pickerHeight / 4
-    val middleIndex = (Int.MAX_VALUE / 2) - ((Int.MAX_VALUE / 2) % items.size)
-
-    val lazyListState = rememberLazyListState(
-        initialFirstVisibleItemIndex = middleIndex - 1
-    )
-
-    val scrollInfo by remember {
-        derivedStateOf {
-            getScrollInfo(lazyListState, items.size)
-        }
-    }
-    val (currentSelectedIndex, scrollProgress) = scrollInfo
-
-    LaunchedEffect(currentSelectedIndex) {
-        onSelectionChanged(currentSelectedIndex)
-    }
+    val itemHeight = remember { pickerHeight / 4 }
+    val middleIndex = remember { (Int.MAX_VALUE / 2) - ((Int.MAX_VALUE / 2) % items.size) }
 
     Box(
         modifier = modifier.height(pickerHeight),
         contentAlignment = Alignment.Center
     ) {
+        val lazyListState = rememberLazyListState(
+            initialFirstVisibleItemIndex = middleIndex - 1
+        )
+
         LaunchedEffect(Unit) {
             snapshotFlow { lazyListState.isScrollInProgress }
                 .distinctUntilChanged()
@@ -269,10 +252,9 @@ private fun WheelPicker(
         }
         CentralOverlay(
             itemHeight = itemHeight,
-            scrollProgress = scrollProgress,
-            selectedStatus = items[currentSelectedIndex],
-            prevStatus = items[(currentSelectedIndex - 1 + items.size) % items.size],
-            nextStatus = items[(currentSelectedIndex + 1) % items.size]
+            items = items,
+            lazyListState = lazyListState,
+            onSelectionChanged = onSelectionChanged
         )
     }
 }
@@ -284,6 +266,7 @@ private fun BottomSheetTextField(
     onValueChange: (String) -> Unit
 ) {
     var isFocused by remember { mutableStateOf(false) }
+
     TextField(
         modifier = Modifier
             .fillMaxWidth()
@@ -325,11 +308,22 @@ private fun BottomSheetTextField(
 @Composable
 private fun CentralOverlay(
     itemHeight: Dp,
-    scrollProgress: Float,
-    selectedStatus: String,
-    prevStatus: String,
-    nextStatus: String,
+    items: List<String>,
+    lazyListState: LazyListState,
+    onSelectionChanged: (Int) -> Unit,
+    itemsSize: Int = items.size
 ) {
+    val scrollInfo by remember {
+        derivedStateOf {
+            getScrollInfo(lazyListState, itemsSize)
+        }
+    }
+    val (currentSelectedIndex, scrollProgress) = scrollInfo
+
+    LaunchedEffect(currentSelectedIndex) {
+        onSelectionChanged(currentSelectedIndex)
+    }
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
@@ -342,6 +336,10 @@ private fun CentralOverlay(
                 .clipToBounds(),
             contentAlignment = Alignment.Center
         ) {
+            val selectedStatus = items[currentSelectedIndex]
+            val prevStatus = items[(currentSelectedIndex - 1 + itemsSize) % itemsSize]
+            val nextStatus = items[(currentSelectedIndex + 1) % itemsSize]
+
             CentralOverlayText(text = selectedStatus, offsetY = (scrollProgress * itemHeight.value).dp)
             CentralOverlayText(text = prevStatus, offsetY = ((scrollProgress - 1) * itemHeight.value).dp)
             CentralOverlayText(text = nextStatus, offsetY = ((scrollProgress + 1) * itemHeight.value).dp)
