@@ -49,6 +49,12 @@ sealed interface MainRoute {
 
     @Serializable
     data object FreeLessonDetail: MainRoute
+
+    @Serializable
+    data object AudioPlay: MainRoute
+
+    @Serializable
+    data object VideoPlay: MainRoute
 }
 
 fun String.toMainRoute(): MainRoute? {
