@@ -165,4 +165,6 @@
     <string name="lesson_one_video_title">Почему одни растут в IT, а другие застревают</string>
     <string name="lesson_one_video_path">free_lessons/lesson_one/Почему одни растут в IT, а другие застревают.mp4</string>
     <string name="music_is_playing">Воспроизводится</string>
+
+    <string name="practice">Практика</string>
 </resources>
