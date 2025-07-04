@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.example.siyai_front_android.presentation.audio_player.AudioPlayerScreen
 import com.example.siyai_front_android.presentation.free_lesson_detail.FreeLessonDetailScreen
 import com.example.siyai_front_android.presentation.free_lessons.FreeLessonsScreen
 import com.example.siyai_front_android.presentation.main.home_container.navigation.HomeContainer
@@ -17,6 +18,7 @@ import com.example.siyai_front_android.presentation.product_detail.ProductDetail
 import com.example.siyai_front_android.presentation.profile.ProfileScreen
 import com.example.siyai_front_android.presentation.profile_editing.ProfileEditingScreen
 import com.example.siyai_front_android.presentation.sign_day.SignOfTheDayScreen
+import com.example.siyai_front_android.presentation.video_player.VideoPlayerScreen
 
 
 @Composable
@@ -123,8 +125,28 @@ fun MainNavHost(
             FreeLessonDetailScreen(
                 onBackClicked = {
                     navController.popBackStack()
+                },
+                navigateToAudioPlayScreen = {
+                    navController.navigate(
+                        MainRoute.AudioPlay
+                    )
+                },
+                navigateToVideoPlayScreen = {
+                    navController.navigate(
+                        MainRoute.VideoPlay
+                    )
                 }
             )
+        }
+        composable<MainRoute.AudioPlay> {
+            AudioPlayerScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable<MainRoute.VideoPlay> {
+
         }
     }
 }
