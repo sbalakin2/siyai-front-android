@@ -14,168 +14,71 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.net.toUri
-import androidx.media3.common.MediaItem
-import androidx.media3.common.Player
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.ui.AspectRatioFrameLayout
-import androidx.media3.ui.PlayerView
 import com.example.siyai_front_android.R
 import com.example.siyai_front_android.ui.icons.SiyAiIcons
 
-@androidx.annotation.OptIn(UnstableApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VideoCard(
-    isShowVideo: Boolean,
-    setIsShowVideo: (Boolean) -> Unit,
-    setIsPlayAudio: (Boolean) -> Unit,
-    context: Context,
+    navigateToVideoPlayScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var isLoading by remember { mutableStateOf(true) }
+    val context = LocalContext.current
 
     Card(
+        onClick = navigateToVideoPlayScreen,
         shape = RoundedCornerShape(16.dp),
         modifier = modifier
             .fillMaxWidth()
             .height(200.dp)
             .padding(top = 8.dp)
     ) {
-        if (isShowVideo) {
-
-            setIsPlayAudio(false)
-
-            val exoPlayer = remember {
-                ExoPlayer.Builder(context).build().apply {
-                    val uri =
-                        "asset:///".plus(context.getString(R.string.lesson_one_video_path)).toUri()
-
-                    try {
-                        setMediaItem(MediaItem.fromUri(uri))
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        isLoading = false
-                    }
-
-                    prepare()
-
-                    playWhenReady = true
-
-                    addListener(object: Player.Listener {
-                        override fun onPlaybackStateChanged(playbackState: Int) {
-                            isLoading = playbackState == Player.STATE_BUFFERING
-                            if (playbackState == Player.STATE_READY) {
-                                isLoading = false
-                            }
-                        }
-                    })
-                }
-            }
-
-            DisposableEffect(Unit) {
-                onDispose {
-                    exoPlayer.release()
-                }
-            }
-
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                AndroidView(
-                    factory = { context ->
-                        PlayerView(context).apply {
-                            player = exoPlayer
-                            useController = false
-                            resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
-                        }
-                    }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            getVideoThumbnailFromAssets(
+                context,
+                stringResource(R.string.lesson_one_video_path)
+            )?.let { bitmap ->
+                Image(
+                    bitmap = bitmap.asImageBitmap(),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxSize()
                 )
-
-                IconButton(
-                    onClick = {
-                        setIsShowVideo(false)
-                    },
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .size(32.dp)
-                        .align(Alignment.TopEnd)
-                        .background(
-                            color = Color.Black.copy(alpha = 0.6F),
-                            shape = CircleShape
-                        )
-                        .padding(8.dp)
-                ) {
-                    Icon(
-                        imageVector = SiyAiIcons.Close,
-                        contentDescription = null,
-                        tint = Color.White
-                    )
-                }
-
-                if (isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                    )
-                }
             }
-        } else {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                getVideoThumbnailFromAssets(
-                    context,
-                    stringResource(R.string.lesson_one_video_path)
-                )?.let { bitmap ->
-                    Image(
-                        bitmap = bitmap.asImageBitmap(),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxSize()
-                    )
-                }
 
-                IconButton(
-                    onClick = {
-                        setIsShowVideo(true)
-                    },
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .size(64.dp)
-                        .background(
-                            color = Color.Black.copy(alpha = 0.6F),
-                            shape = CircleShape
-                        )
-                ) {
-                    Icon(
-                        imageVector = SiyAiIcons.PlayArrow,
-                        contentDescription = null,
-                        tint = Color.White,
-                        modifier = Modifier
-                            .size(40.dp)
+            IconButton(
+                onClick = navigateToVideoPlayScreen,
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .size(64.dp)
+                    .background(
+                        color = Color.Black.copy(alpha = 0.6F),
+                        shape = CircleShape
                     )
-                }
+            ) {
+                Icon(
+                    imageVector = SiyAiIcons.PlayArrow,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier
+                        .size(40.dp)
+                )
             }
         }
     }
