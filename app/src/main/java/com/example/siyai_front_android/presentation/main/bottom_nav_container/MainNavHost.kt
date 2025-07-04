@@ -58,7 +58,9 @@ fun MainNavHost(
             )
         }
         composable<MainRoute.CalendarWithInfo> {
-            CalendarWithInfoScreen()
+            CalendarWithInfoScreen(
+                viewmodelFactory = viewModelFactory
+            )
         }
         composable<MainRoute.Profile> {
             ProfileScreen(

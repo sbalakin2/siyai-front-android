@@ -164,4 +164,5 @@
     <string name="status_gratitude">8 - Благодарность</string>
     <string name="status_love">9 - Любовь</string>
     <string name="note_label">Напишите заметку к этому дню</string>
+    <string name="calendar_cycles">Календарь цикла</string>
 </resources>
