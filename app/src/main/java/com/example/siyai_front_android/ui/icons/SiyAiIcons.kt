@@ -33,5 +33,4 @@ object SiyAiIcons {
     val Pause = Icons.Default.Pause
     val Replay10 = Icons.Default.Replay10
     val Forward30 = Icons.Default.Forward30
-    val Stop = StopIcon
 }
