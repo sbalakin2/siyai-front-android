@@ -146,7 +146,11 @@ fun MainNavHost(
             )
         }
         composable<MainRoute.VideoPlay> {
-
+            VideoPlayerScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
