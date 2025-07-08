@@ -11,6 +11,7 @@ import com.example.siyai_front_android.presentation.main.home_container.navigati
 import com.example.siyai_front_android.presentation.model.Product
 import com.example.siyai_front_android.presentation.my_state.MyStateScreen
 import com.example.siyai_front_android.presentation.my_state.calendar_with_info.CalendarWithInfoScreen
+import com.example.siyai_front_android.presentation.my_state.edit_cycles.EditCyclesScreen
 import com.example.siyai_front_android.presentation.my_state.select_last_3_cycles.SelectLast3CyclesScreen
 import com.example.siyai_front_android.presentation.product_detail.ProductDetailScreen
 import com.example.siyai_front_android.presentation.profile.ProfileScreen
@@ -59,7 +60,18 @@ fun MainNavHost(
         }
         composable<MainRoute.CalendarWithInfo> {
             CalendarWithInfoScreen(
+                onEditClick = {
+                    navController.navigate(MainRoute.EditCycles)
+                },
+                onBackClick = { navController.popBackStack() },
                 viewmodelFactory = viewModelFactory
+            )
+        }
+        composable<MainRoute.EditCycles> {
+            EditCyclesScreen(
+                onSaveCycles = { navController.navigate(MainRoute.MyState) },
+                onBackClick = { navController.popBackStack() },
+                viewmodelFactory = viewModelFactory,
             )
         }
         composable<MainRoute.Profile> {

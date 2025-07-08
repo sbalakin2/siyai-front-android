@@ -7,7 +7,5 @@ interface MyStateRepository {
 
     val cycles: StateFlow<List<Cycle>>
 
-    suspend fun addCycle(cycle: Cycle)
-
-    suspend fun removeCycle(id: Int)
+    suspend fun changeCycles(cycles: List<Cycle>)
 }

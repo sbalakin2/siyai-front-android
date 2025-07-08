@@ -1,20 +1,30 @@
-package com.example.siyai_front_android.presentation.my_state.select_last_3_cycles
+package com.example.siyai_front_android.presentation.my_state.edit_cycles
 
 import androidx.lifecycle.viewModelScope
 import com.example.siyai_front_android.domain.usecases.MyStateChangeCyclesUseCase
+import com.example.siyai_front_android.domain.usecases.MyStateGetCyclesUseCase
 import com.example.siyai_front_android.presentation.my_state.common_cycles.BaseCyclesViewModel
 import com.example.siyai_front_android.presentation.my_state.common_cycles.SelectCyclesCommand
+import com.example.siyai_front_android.presentation.my_state.common_cycles.SelectCyclesState
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SelectLast3CyclesViewModel @Inject constructor(
+class EditCyclesViewModel @Inject constructor(
+    private val getCyclesUseCase: MyStateGetCyclesUseCase,
     changeCyclesUseCase: MyStateChangeCyclesUseCase
 ) : BaseCyclesViewModel(changeCyclesUseCase) {
 
     val uiState = _uiState.asStateFlow()
     val uiEvent = _uiEvent.asSharedFlow()
+
+    init {
+        viewModelScope.launch {
+            _uiState.update { SelectCyclesState(cycles = getCyclesUseCase().value) }
+        }
+    }
 
     fun processCommand(command: SelectCyclesCommand) {
         viewModelScope.launch {

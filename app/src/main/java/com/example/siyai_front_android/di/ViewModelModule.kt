@@ -11,6 +11,7 @@ import com.example.siyai_front_android.presentation.auth.password_reset.Password
 import com.example.siyai_front_android.presentation.auth.reg.RegViewModel
 import com.example.siyai_front_android.presentation.main.home_container.home.HomeViewModel
 import com.example.siyai_front_android.presentation.my_state.calendar_with_info.CalendarWithInfoViewModel
+import com.example.siyai_front_android.presentation.my_state.edit_cycles.EditCyclesViewModel
 import com.example.siyai_front_android.presentation.my_state.select_last_3_cycles.SelectLast3CyclesViewModel
 import com.example.siyai_front_android.presentation.profile.ProfileViewModel
 import com.example.siyai_front_android.presentation.profile_editing.ProfileEditingViewModel
@@ -86,8 +87,15 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(SelectLast3CyclesViewModel::class)
-    abstract fun bindEditCyclesViewModel(
+    abstract fun bindSelectLast3CyclesViewModel(
         selectLast3CyclesViewModel: SelectLast3CyclesViewModel
+    ): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EditCyclesViewModel::class)
+    abstract fun bindEditCyclesViewModelViewModel(
+        editCyclesViewModelViewModel: EditCyclesViewModel
     ): ViewModel
 
     @Binds

@@ -4,11 +4,11 @@ import com.example.siyai_front_android.domain.dto.Cycle
 import com.example.siyai_front_android.domain.repositories.MyStateRepository
 import javax.inject.Inject
 
-class MyStateAddCycleUseCaseImpl @Inject constructor(
+class MyStateChangeCyclesUseCaseImpl @Inject constructor(
     private val myStateRepository: MyStateRepository
-) : MyStateAddCycleUseCase {
+) : MyStateChangeCyclesUseCase {
 
-    override suspend fun invoke(cycle: Cycle) {
-        myStateRepository.addCycle(cycle)
+    override suspend operator fun invoke(cycles: List<Cycle>) {
+        myStateRepository.changeCycles(cycles)
     }
 }

@@ -191,5 +191,4 @@ data class MonthData(
     val firstDayMillis: Long
 )
 
-
 enum class RangePosition { None, Start, Middle, End }
