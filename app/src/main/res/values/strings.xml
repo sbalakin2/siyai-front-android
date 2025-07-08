@@ -161,9 +161,9 @@
     <string name="lesson_one">Урок 1</string>
     <string name="free_lesson_one_text">Доброе утро!\n\nХочу познакомить тебя с одной из любимых моих практик Сияй!</string>
     <string name="lesson_one_audio">Дрейфующие платформы в Арктике</string>
-    <string name="lesson_one_audio_path">free_lessons/lesson_one/Дрейфующие платформы в Арктике.mp3</string>
+    <string name="lesson_one_audio_path">free_lessons/lesson_one/drifting_platforms_in_arctic.mp3</string>
     <string name="lesson_one_video_title">Почему одни растут в IT, а другие застревают</string>
-    <string name="lesson_one_video_path">free_lessons/lesson_one/Почему одни растут в IT, а другие застревают.mp4</string>
+    <string name="lesson_one_video_path">free_lessons/lesson_one/why_do_some_people_grow_up.mp4</string>
     <string name="music_is_playing">Воспроизводится</string>
 
     <string name="practice">Практика</string>
