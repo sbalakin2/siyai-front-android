@@ -1,8 +1,10 @@
 package com.example.siyai_front_android.presentation.video_player
 
+import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,8 +45,12 @@ fun VideoPlayerScreen(
     onBackClick: () -> Unit
 ) {
     val context = LocalContext.current
+    val activity = LocalActivity.current
     val configuration = LocalConfiguration.current
+
     var isLoading by remember { mutableStateOf(true) }
+
+    activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
     val exoPlayer = remember {
         ExoPlayer.Builder(context).build().apply {
@@ -80,6 +86,7 @@ fun VideoPlayerScreen(
     DisposableEffect(Unit) {
         onDispose {
             exoPlayer.release()
+            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         }
     }
 
