@@ -7,6 +7,8 @@ sealed interface SelectCyclesCommand {
         val maxRangesCycle: Int
     ) : SelectCyclesCommand
 
+    data object LoadCycles : SelectCyclesCommand
+
     data object ConfirmDelete : SelectCyclesCommand
 
     data object CancelDelete : SelectCyclesCommand

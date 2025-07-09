@@ -40,7 +40,7 @@ fun EditCyclesScreen(
     onSaveCycles: () -> Unit,
     onBackClick: () -> Unit,
     viewmodelFactory: ViewModelProvider.Factory,
-    viewModel: EditCyclesViewModel = viewModel(factory = viewmodelFactory)
+    viewModel: EditSelectCyclesViewModel = viewModel(factory = viewmodelFactory)
 ) {
     val state by viewModel.uiState.collectAsState()
     val event by viewModel.uiEvent.collectAsState(initial = null)
@@ -48,6 +48,10 @@ fun EditCyclesScreen(
     LaunchedEffect(key1 = event) {
         if (event is SelectCyclesEvent.Back) onBackClick()
         if (event is SelectCyclesEvent.Continue) onSaveCycles()
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.processCommand(SelectCyclesCommand.LoadCycles)
     }
 
     Box(modifier = modifier.fillMaxSize()) {

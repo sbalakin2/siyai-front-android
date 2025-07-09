@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.example.siyai_front_android.R
 
-enum class ValidationError {
+enum class CyclesValidationError {
     SINGLE_DAY_NOT_ALLOWED,
     BACKWARD_SELECTION,
     RANGES_OVERLAP,

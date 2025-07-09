@@ -51,7 +51,7 @@ fun SelectLast3CyclesScreen(
     onBackClick: () -> Unit,
     onContinueClick: () -> Unit,
     viewmodelFactory: ViewModelProvider.Factory,
-    viewModel: SelectLast3CyclesViewModel = viewModel(factory = viewmodelFactory)
+    viewModel: SelectLast3SelectCyclesViewModel = viewModel(factory = viewmodelFactory)
 ) {
     val state by viewModel.uiState.collectAsState()
     val event by viewModel.uiEvent.collectAsState(initial = null)

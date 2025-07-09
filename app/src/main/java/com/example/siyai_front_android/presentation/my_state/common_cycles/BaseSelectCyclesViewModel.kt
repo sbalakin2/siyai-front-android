@@ -7,15 +7,20 @@ import com.example.siyai_front_android.domain.usecases.MyStateChangeCyclesUseCas
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-abstract class BaseCyclesViewModel(
+abstract class BaseSelectCyclesViewModel(
     protected val changeCyclesUseCase: MyStateChangeCyclesUseCase,
 ) : ViewModel() {
 
     protected val _uiState = MutableStateFlow(SelectCyclesState())
+    val uiState = _uiState.asStateFlow()
+
     protected val _uiEvent = MutableSharedFlow<SelectCyclesEvent?>()
+    val uiEvent = _uiEvent.asSharedFlow()
 
     protected fun handleDateSelection(date: Long, maxRangesCycle: Int) {
         val currentState = _uiState.value
@@ -102,15 +107,28 @@ abstract class BaseCyclesViewModel(
         newCycle: Cycle,
         maxRangesCycle: Int,
         currentCycles: List<Cycle>
-    ): ValidationError? {
+    ): CyclesValidationError? {
         return when {
-            newCycle.start == newCycle.end -> ValidationError.SINGLE_DAY_NOT_ALLOWED
-            newCycle.start > newCycle.end -> ValidationError.BACKWARD_SELECTION
-            currentCycles.size >= maxRangesCycle -> ValidationError.MAX_RANGES_REACHED
+            newCycle.start == newCycle.end -> CyclesValidationError.SINGLE_DAY_NOT_ALLOWED
+            newCycle.start > newCycle.end -> CyclesValidationError.BACKWARD_SELECTION
+            currentCycles.size >= maxRangesCycle -> CyclesValidationError.MAX_RANGES_REACHED
             currentCycles.any { existing ->
                 !(newCycle.end < existing.start || newCycle.start > existing.end)
-            } -> ValidationError.RANGES_OVERLAP
+            } -> CyclesValidationError.RANGES_OVERLAP
             else -> null
         }
     }
 }
+
+sealed interface SelectCyclesEvent {
+    data object Continue : SelectCyclesEvent
+    data object Back : SelectCyclesEvent
+    data class ValidateError(val error: CyclesValidationError) : SelectCyclesEvent
+}
+
+data class SelectCyclesState(
+    val cycles: List<Cycle> = emptyList(),
+    val tempStartDate: Long? = null,
+    val deleteCycleId: Int? = null,
+    val isVisibleDialog: Boolean = false
+)
