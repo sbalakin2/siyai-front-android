@@ -111,7 +111,7 @@ fun VideoPlayerScreen(
                 .padding(16.dp)
                 .size(32.dp)
                 .background(
-                    color = Color.White.copy(alpha = 0.6F),
+                    color = Color.Black.copy(alpha = 0.6F),
                     shape = CircleShape
                 )
         ) {
