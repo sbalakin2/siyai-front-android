@@ -1,4 +1,4 @@
-package com.example.siyai_front_android.presentation.my_state.edit_cycles
+package com.example.siyai_front_android.presentation.my_state.select_last_3_cycles
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
@@ -51,12 +51,12 @@ private const val MAX_RANGES_CYCLE = 3
 private const val MONTH_COUNT = 5
 
 @Composable
-fun EditCyclesScreen(
+fun SelectLast3CyclesScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     onContinueClick: () -> Unit,
     viewmodelFactory: ViewModelProvider.Factory,
-    viewModel: EditCyclesViewModel = viewModel(factory = viewmodelFactory)
+    viewModel: SelectLast3CyclesViewModel = viewModel(factory = viewmodelFactory)
 ) {
     val selectedRanges by viewModel.cycles.collectAsState(emptyList())
     var warningMessage by remember { mutableStateOf<String?>(null) }
@@ -221,7 +221,7 @@ private fun BoxScope.WarningToast(
 @Preview
 @Composable
 private fun PreviewCalendarMyStateScreen() {
-    EditCyclesScreen(
+    SelectLast3CyclesScreen(
         onContinueClick = {},
         onBackClick = {},
         viewmodelFactory = ViewModelProvider.NewInstanceFactory()
