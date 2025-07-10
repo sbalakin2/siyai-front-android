@@ -4,37 +4,50 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.siyai_front_android.presentation.main.MainScreen
+import androidx.activity.viewModels
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.ViewModelProvider
+import com.example.siyai_front_android.presentation.auth.navigation.AuthRoute
+import com.example.siyai_front_android.presentation.siyai_container.SiyaiContainer
 import com.example.siyai_front_android.ui.theme.SiyaifrontandroidTheme
+import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val viewModel: SiyaiViewModel by viewModels { viewModelFactory }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        (applicationContext as SiyAiApplication).appComponent.inject(this)
+        val splashScreen = installSplashScreen()
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        splashScreen.setKeepOnScreenCondition { viewModel.keepSplashScreen.value }
+
+        val startRoute = intent?.data?.let { uri ->
+            if (uri.toString().contains("/password_reset")) {
+                val token = uri.getQueryParameter("token")
+                if (token != null) {
+                    AuthRoute.PasswordReset(token)
+                } else {
+                    AuthRoute.Onboarding()
+                }
+            } else {
+                AuthRoute.Onboarding()
+            }
+        } ?: AuthRoute.Onboarding()
+
         setContent {
             SiyaifrontandroidTheme {
-                MainScreen()
+                SiyaiContainer(
+                    viewModelFactory = viewModelFactory,
+                    startDestination = startRoute
+                )
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SiyaifrontandroidTheme {
-        Greeting("Android")
     }
 }

@@ -1,10 +1,182 @@
 <resources>
     <string name="app_name">SIYAI</string>
 
+    <string name="welcome">Добро пожаловать!</string>
+    <string name="get_trained_and_reach_new_heights_with_us">Проходи обучение и достигай\nновых высот вместе с нами</string>
+    <string name="shine">Сияй</string>
+    <string name="with_our_course_you_will_return_to_your_real_self_in_five_weeks">С нашим курсом ты вернешься к\nсебе НАСТОЯЩЕЙ за 5 недель</string>
+    <string name="create_account_faster_and_take_training_wherever_it_suits_you">Быстрее создавай аккаунт и проходи\nобучение там, где тебе удобно</string>
+    <string name="next">Далее</string>
+
     <string name="log_in">Войти</string>
     <string name="login">Вход</string>
     <string name="there_is_no_account">Нет аккаунта?</string>
+    <string name="log_in_to_existing_account">Войдите в уже существующий\nаккаунт, если вы создавали его\nранее</string>
 
     <string name="registration">Регистрация</string>
+    <string name="registration_subtitle">Создай новый аккаунт, чтобы присоединиться к нам</string>
     <string name="there_is_account">Есть аккаунт?</string>
+    <string name="hide_password">Скрыть пароль</string>
+    <string name="show_password">Показать пароль</string>
+    <string name="email">Email</string>
+    <string name="password">Пароль</string>
+    <string name="repeat_password">Повторите пароль</string>
+    <string name="clear">Очистить</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="invalid_email">Некорректный формат email</string>
+    <string name="invalid_password">Пароль должен содержать минимум 8 символов, включать цифры, заглавные и строчные буквы</string>
+    <string name="invalid_repeat_password">Пароли не совпадают, попробуйте снова</string>
+    <string name="forgot_password">Забыли пароль?</string>
+    <string name="recovery_password1_subtitle">Восстановите его! Введите email, на который мы отправим ссылку</string>
+    <string name="recovery">Восстановить</string>
+    <string name="sent_link">Отправили ссылку на email</string>
+    <string name="recovery_password2_subtitle">Проверьте свой email и перейдите по ссылке в письме</string>
+    <string name="sent_letter">Письмо со сбросом пароля отправлено!</string>
+    <string name="empty_fields">Заполните все поля</string>
+    <string name="server_error">Что-то пошло не так, повторите запрос позже</string>
+    <string name="user_is_already_registered">Пользователь с указанными данными уже зарегистрирован</string>
+    <string name="success_password_reset_title">Успех!</string>
+    <string name="success_password_reset_text">Ваш пароль успешно изменен. Нажмите кнопку "Войти" для входа в личный кабинет</string>
+
+    <string name="confirmation_code_has_been_sent">На Ваш email отправлен\nкод подтверждения</string>
+    <string name="please_check_your_email">Пожалуйста, проверьте Вашу почту\nи введите код подтверждения</string>
+    <string name="confirm_registration">Подтвердить регистрацию</string>
+    <string name="did_not_get_code">Не получили код? Отправить повторно</string>
+    <string name="incorrect_code_format">Некорректный формат кода</string>
+    <string name="Incorrect_confirmation_code">Неправильный код подтверждения</string>
+    <string name="code_lifetime_has_expired">Время жизни кода истекло</string>
+    <string name="check_is_completed">Проверка выполнена</string>
+    <string name="number_of_input_attempts_is_exhausted">Количество попыток ввода исчерпано, пожалуйста, запросите код подтверждения повторно</string>
+
+    <string name="lets_meet">Давай знакомится!</string>
+    <string name="lets_meet_subtitle">Подстроим аккаунт под тебя и поможем, если тебе нужна будет помощь</string>
+    <string name="lets_meet_name">Имя</string>
+    <string name="lets_meet_surname">Фамилия</string>
+    <string name="lets_meet_phone">Телефон</string>
+    <string name="lets_meet_birthday">Дата рождения</string>
+    <string name="lets_meet_country">Страна</string>
+    <string name="lets_meet_city">Город</string>
+    <string name="enter_to_app">Войти</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Отмена</string>
+
+    <string name="home">Главная</string>
+    <string name="training">Обучение</string>
+    <string name="audio">Аудио</string>
+    <string name="my_state">Мое состояние</string>
+    <string name="profile">Профиль</string>
+
+    <string name="hello_user">Привет, %1$s!</string>
+    <string name="sign_of_the_day">ЗНАК ДНЯ</string>
+    <string name="sign_of_the_day_title">Выход есть всегда</string>
+    <string name="free_lessons">Бесплатные уроки</string>
+    <string name="tracklists">Треклисты</string>
+    <string name="tracklists_subtitle1">Нет ни одного трекера</string>
+    <string name="tracklists_subtitle2">Создайте его прямо сейчас</string>
+    <string name="every_day">Каждый день</string>
+    <string name="day_form1">день</string>
+    <string name="day_form2">дня</string>
+    <string name="day_form3">деней</string>
+    <string name="waiting_list">ЛИСТ ОЖИДАНИЯ</string>
+    <string name="waiting_list_subtitle">SIYAI New Year 12 поток</string>
+    <string name="shop">Магазин</string>
+    <string name="purchased">Купленные</string>
+    <string name="all">Все</string>
+    <string name="price">%1$s руб</string>
+
+    <string name="close_sign_day_screen">Закрыть экран</string>
+    <string name="sign_of_the_day_image">Знак дня</string>
+
+    <string name="edit">Редактировать</string>
+    <string name="my_stats">Моя статистика</string>
+    <string name="support">Поддержка</string>
+    <string name="restore_purchases">Восстановить покупки</string>
+    <string name="rate_app">Оценить приложение</string>
+    <string name="about_app">О приложении</string>
+    <string name="log_out_of_app">Выйти из приложения</string>
+    <string name="exit_from_app_title">Вы действительно хотите выйти?</string>
+    <string name="exit_from_app_text">Убедитесь, что в вашем профиле указан корректный email</string>
+    <string name="exit">Выйти</string>
+
+    <string name="choose_another_photo">Выбрать другое фото</string>
+    <string name="remove_photo">X Удалить фото</string>
+    <string name="push_notifications">Push уведомления</string>
+    <string name="remove_account">Удалить аккаунт</string>
+    <string name="removing_account_bottom_sheet_title">Вы действительно хотите удалить аккаунт?</string>
+    <string name="removing_account_bottom_sheet_text">Данные будут окончательно удалены в течение 14 дней</string>
+    <string name="selection_photo_bottom_sheet_title">Добавьте фотографию профиля</string>
+    <string name="selection_photo_bottom_sheet_confirm_one_text">Галерея</string>
+    <string name="selection_photo_bottom_sheet_confirm_two_text">Открыть камеру</string>
+    <string name="remove">Удалить</string>
+    <string name="apply">Применить</string>
+    <string name="product_price">Купить за %1$s руб</string>
+    <string name="password_reset_subtitle">Введите новый\nпароль</string>
+    <string name="password_reset_text">Пароль обязательно должен содержать минимум 8 символов, цифры, заглавные и строчные буквы</string>
+    <string name="new_password">Новый пароль</string>
+    <string name="repeat_new_password">Повторите новый пароль</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="mime_image">image/*</string>
+
+    <string name="state_my_way">Мой путь</string>
+    <string name="state_onboarding_title">Женский календарь</string>
+    <string name="state_onboarding_description">Чтобы начать, введите данные\nо 3 последних циклах</string>
+    <string name="state_onboarding_start_button">Начать</string>
+    <string name="state_calendar_title">Выберите 3 последних цикла</string>
+    <string name="сhoose_more_cycle">Выберите еще %1$s</string>
+    <string name="calendar_btn_next">Продолжить</string>
+    <string name="calendar_btn_skip">Пропустить</string>
+    <string name="save">Сохранить</string>
+    <string name="delete_cycle">Вы уверены, что хотите\nудалить этот цикл?</string>
+
+    <plurals name="cycles">
+        <item quantity="one">%d цикл</item>
+        <item quantity="few">%d цикла</item>
+        <item quantity="many">%d циклов</item>
+        <item quantity="other">%d циклов</item>
+    </plurals>
+
+    <string name="day_mon">ПН</string>
+    <string name="day_tue">ВТ</string>
+    <string name="day_wed">СР</string>
+    <string name="day_thu">ЧТ</string>
+    <string name="day_fri">ПТ</string>
+    <string name="day_sat">СБ</string>
+    <string name="day_sun">ВС</string>
+
+    <string name="date_header_format">LLLL yyyy г.</string>
+    <string name="locale_ru">ru</string>
+
+    <string name="error_single_day">Нельзя выбрать один день. Выберите диапазон дат</string>
+    <string name="error_backward">Нельзя выбирать даты раньше начальной даты диапазона</string>
+    <string name="error_overlap">Диапазоны дат не должны пересекаться</string>
+    <string name="error_inside">Диапазоны не должны находиться один в другом</string>
+    <string name="error_max_reached">Достигнуто максимальное количество диапазонов</string>
+
+    <string name="free_lessons_title">Бесплатные уроки</string>
+    <string name="lesson_opened">Урок открыт!</string>
+    <string name="free_lesson_detail_title">Урок</string>
+    <string name="meditation">Медитация</string>
+    <string name="enjoy_your_viewing">Приятного просмотра!</string>
+    <string name="lesson_one">Урок 1</string>
+    <string name="free_lesson_one_text">Доброе утро!\n\nХочу познакомить тебя с одной из любимых моих практик Сияй!</string>
+    <string name="lesson_one_audio">Дрейфующие платформы в Арктике</string>
+    <string name="lesson_one_audio_path">free_lessons/lesson_one/drifting_platforms_in_arctic.mp3</string>
+    <string name="lesson_one_video_title">Почему одни растут в IT, а другие застревают</string>
+    <string name="lesson_one_video_path">free_lessons/lesson_one/why_do_some_people_grow_up.mp4</string>
+    <string name="music_is_playing">Воспроизводится</string>
+
+    <string name="practice">Практика</string>
+
+    <string name="your_status_today">Твое состояние сегодня</string>"
+    <string name="status_apathy">1 - Апатия</string>
+    <string name="status_anger">2 - Злость</string>
+    <string name="status_sadness">3 - Грусть</string>
+    <string name="status_anxiety">4 - Тревожность</string>
+    <string name="status_calmness">5 - Спокойствие</string>
+    <string name="status_joy">6 - Радость</string>
+    <string name="status_happiness">7 - Счастье</string>
+    <string name="status_gratitude">8 - Благодарность</string>
+    <string name="status_love">9 - Любовь</string>
+    <string name="note_label">Напишите заметку к этому дню</string>
 </resources>
