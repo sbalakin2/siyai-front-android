@@ -7,6 +7,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.example.siyai_front_android.presentation.audio_player.AudioPlayerScreen
+import com.example.siyai_front_android.presentation.free_lesson_detail.FreeLessonDetailScreen
+import com.example.siyai_front_android.presentation.free_lessons.FreeLessonsScreen
 import com.example.siyai_front_android.presentation.main.home_container.navigation.HomeContainer
 import com.example.siyai_front_android.presentation.model.Product
 import com.example.siyai_front_android.presentation.my_state.MyStateScreen
@@ -16,6 +19,7 @@ import com.example.siyai_front_android.presentation.product_detail.ProductDetail
 import com.example.siyai_front_android.presentation.profile.ProfileScreen
 import com.example.siyai_front_android.presentation.profile_editing.ProfileEditingScreen
 import com.example.siyai_front_android.presentation.sign_day.SignOfTheDayScreen
+import com.example.siyai_front_android.presentation.video_player.VideoPlayerScreen
 
 
 @Composable
@@ -40,6 +44,9 @@ fun MainNavHost(
                     navController.navigate(
                         MainRoute.ProductDetail(product.imageId, product.name, product.price)
                     )
+                },
+                navigateToFreeLessonsScreen = {
+                     navController.navigate(MainRoute.FreeLessons)
                 }
             )
         }
@@ -100,6 +107,49 @@ fun MainNavHost(
             ProductDetailScreen(
                 product = Product(item.imageId, item.name, item.price),
                 onBackClicked = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable<MainRoute.FreeLessons> {
+            FreeLessonsScreen(
+                onBackClicked = {
+                    navController.popBackStack()
+                },
+                navigateToFreeLessonDetail = {
+                    navController.navigate(
+                        MainRoute.FreeLessonDetail
+                    )
+                }
+            )
+        }
+        composable<MainRoute.FreeLessonDetail> {
+            FreeLessonDetailScreen(
+                onBackClicked = {
+                    navController.popBackStack()
+                },
+                navigateToAudioPlayScreen = {
+                    navController.navigate(
+                        MainRoute.AudioPlay
+                    )
+                },
+                navigateToVideoPlayScreen = {
+                    navController.navigate(
+                        MainRoute.VideoPlay
+                    )
+                }
+            )
+        }
+        composable<MainRoute.AudioPlay> {
+            AudioPlayerScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable<MainRoute.VideoPlay> {
+            VideoPlayerScreen(
+                onBackClick = {
                     navController.popBackStack()
                 }
             )

@@ -11,7 +11,8 @@ fun HomeContainer(
     modifier: Modifier = Modifier,
     viewModelFactory: ViewModelProvider.Factory,
     navigateToSignOfTheDayScreen: () -> Unit,
-    navigateToProductDetailScreen: (Product) -> Unit
+    navigateToProductDetailScreen: (Product) -> Unit,
+    navigateToFreeLessonsScreen: () -> Unit
 ) {
     val navController = rememberNavController()
 
@@ -20,6 +21,7 @@ fun HomeContainer(
         modifier = modifier,
         viewModelFactory = viewModelFactory,
         navigateToSignOfTheDayScreen = navigateToSignOfTheDayScreen,
-        navigateToProductDetailScreen = navigateToProductDetailScreen
+        navigateToProductDetailScreen = navigateToProductDetailScreen,
+        navigateToFreeLessonsScreen = navigateToFreeLessonsScreen
     )
 }

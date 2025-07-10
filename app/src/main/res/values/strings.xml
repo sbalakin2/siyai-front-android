@@ -153,6 +153,21 @@
     <string name="error_inside">Диапазоны не должны находиться один в другом</string>
     <string name="error_max_reached">Достигнуто максимальное количество диапазонов</string>
 
+    <string name="free_lessons_title">Бесплатные уроки</string>
+    <string name="lesson_opened">Урок открыт!</string>
+    <string name="free_lesson_detail_title">Урок</string>
+    <string name="meditation">Медитация</string>
+    <string name="enjoy_your_viewing">Приятного просмотра!</string>
+    <string name="lesson_one">Урок 1</string>
+    <string name="free_lesson_one_text">Доброе утро!\n\nХочу познакомить тебя с одной из любимых моих практик Сияй!</string>
+    <string name="lesson_one_audio">Дрейфующие платформы в Арктике</string>
+    <string name="lesson_one_audio_path">free_lessons/lesson_one/drifting_platforms_in_arctic.mp3</string>
+    <string name="lesson_one_video_title">Почему одни растут в IT, а другие застревают</string>
+    <string name="lesson_one_video_path">free_lessons/lesson_one/why_do_some_people_grow_up.mp4</string>
+    <string name="music_is_playing">Воспроизводится</string>
+
+    <string name="practice">Практика</string>
+
     <string name="your_status_today">Твое состояние сегодня</string>"
     <string name="status_apathy">1 - Апатия</string>
     <string name="status_anger">2 - Злость</string>
