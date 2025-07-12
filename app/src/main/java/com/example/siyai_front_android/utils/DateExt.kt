@@ -37,3 +37,8 @@ fun String.parseISODateTime(): Date {
     return SimpleDateFormat(ISO_DATE_TIME, Locale.getDefault())
         .parse(this)
 }
+
+fun Long.formatDate(): String {
+    val formatter = java.text.SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+    return formatter.format(Date(this))
+}

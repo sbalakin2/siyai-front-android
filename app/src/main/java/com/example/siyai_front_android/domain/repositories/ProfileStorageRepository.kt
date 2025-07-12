@@ -10,6 +10,8 @@ interface ProfileStorageRepository {
 
     suspend fun getUserProfileFlow(): Flow<Profile?>
 
+    suspend fun getEmail(): String
+
     suspend fun saveUserProfile(profile: Profile)
 
     suspend fun clear()

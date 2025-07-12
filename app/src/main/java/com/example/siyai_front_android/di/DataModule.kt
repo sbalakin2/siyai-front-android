@@ -30,7 +30,7 @@ import dagger.Binds
 import dagger.Module
 import javax.inject.Singleton
 
-@Module(includes = [RetrofitModule::class])
+@Module(includes = [RetrofitModule::class, RoomModule::class])
 interface DataModule {
 
     @Binds

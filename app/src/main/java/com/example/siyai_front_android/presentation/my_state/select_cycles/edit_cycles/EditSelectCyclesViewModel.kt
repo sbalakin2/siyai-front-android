@@ -1,17 +1,17 @@
-package com.example.siyai_front_android.presentation.my_state.edit_cycles
+package com.example.siyai_front_android.presentation.my_state.select_cycles.edit_cycles
 
 import androidx.lifecycle.viewModelScope
 import com.example.siyai_front_android.domain.usecases.MyStateChangeCyclesUseCase
-import com.example.siyai_front_android.domain.usecases.MyStateGetCyclesUseCase
-import com.example.siyai_front_android.presentation.my_state.common_cycles.BaseSelectCyclesViewModel
-import com.example.siyai_front_android.presentation.my_state.common_cycles.SelectCyclesCommand
-import com.example.siyai_front_android.presentation.my_state.common_cycles.SelectCyclesState
+import com.example.siyai_front_android.domain.usecases.GetMyStateUseCase
+import com.example.siyai_front_android.presentation.my_state.select_cycles.BaseSelectCyclesViewModel
+import com.example.siyai_front_android.presentation.my_state.select_cycles.SelectCyclesCommand
+import com.example.siyai_front_android.presentation.my_state.select_cycles.SelectCyclesState
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class EditSelectCyclesViewModel @Inject constructor(
-    private val getCyclesUseCase: MyStateGetCyclesUseCase,
+    private val getCyclesUseCase: GetMyStateUseCase,
     changeCyclesUseCase: MyStateChangeCyclesUseCase
 ) : BaseSelectCyclesViewModel(changeCyclesUseCase) {
 
@@ -26,7 +26,11 @@ class EditSelectCyclesViewModel @Inject constructor(
                 SelectCyclesCommand.Save -> saveCycles()
                 SelectCyclesCommand.Back -> navigateToBack()
                 SelectCyclesCommand.LoadCycles -> {
-                    _uiState.update { SelectCyclesState(cycles = getCyclesUseCase().value) }
+                    _uiState.update {
+                        val myState = getCyclesUseCase()
+                        val cycles = myState?.cycles ?: emptyList()
+                        SelectCyclesState(cycles = cycles)
+                    }
                 }
             }
         }

@@ -1,9 +1,9 @@
-package com.example.siyai_front_android.presentation.my_state.select_last_3_cycles
+package com.example.siyai_front_android.presentation.my_state.select_cycles.select_last_3_cycles
 
 import androidx.lifecycle.viewModelScope
 import com.example.siyai_front_android.domain.usecases.MyStateChangeCyclesUseCase
-import com.example.siyai_front_android.presentation.my_state.common_cycles.BaseSelectCyclesViewModel
-import com.example.siyai_front_android.presentation.my_state.common_cycles.SelectCyclesCommand
+import com.example.siyai_front_android.presentation.my_state.select_cycles.BaseSelectCyclesViewModel
+import com.example.siyai_front_android.presentation.my_state.select_cycles.SelectCyclesCommand
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ class SelectLast3SelectCyclesViewModel @Inject constructor(
                 }
                 is SelectCyclesCommand.ConfirmDelete -> confirmDelete()
                 is SelectCyclesCommand.CancelDelete -> cancelDelete()
-                SelectCyclesCommand.Save -> saveCycles()
+                SelectCyclesCommand.Save -> { saveCycles() }
                 SelectCyclesCommand.Back -> navigateToBack()
                 SelectCyclesCommand.LoadCycles -> {}
             }

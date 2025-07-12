@@ -1,4 +1,4 @@
-package com.example.siyai_front_android.presentation.my_state.common_cycles
+package com.example.siyai_front_android.presentation.my_state.select_cycles
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 abstract class BaseSelectCyclesViewModel(
     protected val changeCyclesUseCase: MyStateChangeCyclesUseCase,
@@ -54,7 +55,8 @@ abstract class BaseSelectCyclesViewModel(
         viewModelScope.launch {
             val cycles = _uiState.value.cycles
             changeCyclesUseCase(cycles)
-            _uiEvent.emit(SelectCyclesEvent.Continue)
+            if (cycles.isEmpty()) _uiEvent.emit(SelectCyclesEvent.Main)
+            else _uiEvent.emit(SelectCyclesEvent.Continue)
         }
     }
 
@@ -70,11 +72,13 @@ abstract class BaseSelectCyclesViewModel(
         maxRangesCycle: Int,
         currentCycles: List<Cycle>
     ) {
-        val currentId = if (currentCycles.isNotEmpty()) currentCycles.last().id + 1 else 0
+        val todayStart = atStartOfDay(System.currentTimeMillis())
+        val endDateStart = atStartOfDay(endDate)
+
         val newCycle = Cycle(
-            id = currentId,
             start = startDate,
-            end = endDate
+            end = endDate,
+            isOnPeriod = endDateStart == todayStart
         )
 
         val validationResult = validateDateRange(newCycle, maxRangesCycle, currentCycles)
@@ -118,11 +122,22 @@ abstract class BaseSelectCyclesViewModel(
             else -> null
         }
     }
+
+    private fun atStartOfDay(millis: Long): Long {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = millis
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        return calendar.timeInMillis
+    }
 }
 
 sealed interface SelectCyclesEvent {
     data object Continue : SelectCyclesEvent
     data object Back : SelectCyclesEvent
+    data object Main : SelectCyclesEvent
     data class ValidateError(val error: CyclesValidationError) : SelectCyclesEvent
 }
 

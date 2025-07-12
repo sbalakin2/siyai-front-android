@@ -1,4 +1,4 @@
-package com.example.siyai_front_android.presentation.my_state.common_cycles
+package com.example.siyai_front_android.presentation.my_state.select_cycles
 
 sealed interface SelectCyclesCommand {
 

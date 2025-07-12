@@ -11,8 +11,9 @@ import com.example.siyai_front_android.presentation.auth.password_reset.Password
 import com.example.siyai_front_android.presentation.auth.reg.RegViewModel
 import com.example.siyai_front_android.presentation.main.home_container.home.HomeViewModel
 import com.example.siyai_front_android.presentation.my_state.calendar_with_info.CalendarWithInfoViewModel
-import com.example.siyai_front_android.presentation.my_state.edit_cycles.EditSelectCyclesViewModel
-import com.example.siyai_front_android.presentation.my_state.select_last_3_cycles.SelectLast3SelectCyclesViewModel
+import com.example.siyai_front_android.presentation.my_state.select_cycles.edit_cycles.EditSelectCyclesViewModel
+import com.example.siyai_front_android.presentation.my_state.main.MyStateViewModel
+import com.example.siyai_front_android.presentation.my_state.select_cycles.select_last_3_cycles.SelectLast3SelectCyclesViewModel
 import com.example.siyai_front_android.presentation.profile.ProfileViewModel
 import com.example.siyai_front_android.presentation.profile_editing.ProfileEditingViewModel
 import dagger.Binds
@@ -103,5 +104,12 @@ abstract class ViewModelModule {
     @ViewModelKey(CalendarWithInfoViewModel::class)
     abstract fun bindCalendarWithInfoViewModel(
         calendarWithInfoViewModel: CalendarWithInfoViewModel
+    ): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MyStateViewModel::class)
+    abstract fun bindMyStateViewModel(
+        myStateViewModel: MyStateViewModel
     ): ViewModel
 }

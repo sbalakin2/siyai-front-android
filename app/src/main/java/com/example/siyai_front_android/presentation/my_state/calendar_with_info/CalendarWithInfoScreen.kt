@@ -1,6 +1,7 @@
 package com.example.siyai_front_android.presentation.my_state.calendar_with_info
 
 import android.content.Context
+import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -41,6 +42,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -57,9 +59,9 @@ import com.example.siyai_front_android.ui.components.calendar.CalendarGrid
 import com.example.siyai_front_android.ui.components.calendar.RowDays
 import com.example.siyai_front_android.utils.MonthData
 import com.example.siyai_front_android.utils.createMonthData
+import com.example.siyai_front_android.utils.formatDate
 import com.example.siyai_front_android.utils.getDateToRangeMap
 import com.example.siyai_front_android.utils.getDaysStates
-
 
 @Composable
 fun CalendarWithInfoScreen(
@@ -69,24 +71,42 @@ fun CalendarWithInfoScreen(
     onBackClick: () -> Unit,
     viewModel: CalendarWithInfoViewModel = viewModel(factory = viewmodelFactory)
 ) {
-    val cycles = viewModel.cycles.collectAsStateWithLifecycle()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    Box(modifier = modifier.fillMaxSize()) {
-        var showBottomSheet by remember { mutableStateOf(true) }
-
-        if (showBottomSheet) {
-            YourStatusDayScreen(
-                onSelectedStatus = { status, note ->
-
-                },
-                onDismiss = { showBottomSheet = false }
-            )
+    when (val currentState = state) {
+        is CalendarWithInfoState.CycleInfo -> {
+            Box(modifier = modifier.fillMaxSize()) {
+                if (currentState.isShowDailyState) {
+                    YourStatusDayScreen(
+                        onSelectedStatus = { status, note ->
+                            viewModel.processCommand(CalendarWithInfoCommand.SaveDailyState(status.titleRes, note))
+                        },
+                        onDismiss = {
+                            viewModel.processCommand(CalendarWithInfoCommand.DismissBottomSheet)
+                        }
+                    )
+                }
+                CalendarWithInfoContent(
+                    cycles = currentState.cycles,
+                    cycleDay = currentState.cycleDay,
+                    phase = currentState.phase.getPhase(),
+                    nextPeriodStart = currentState.nextPeriodStart.formatDate(),
+                    onEditClick = onEditClick,
+                    onBackClick = onBackClick,
+                    isCycleStarted = currentState.isOnPeriod,
+                    isCycleEnd = currentState.canEndPeriod,
+                    wasEndedToday = currentState.wasEndedToday,
+                    onEditCycles = onEditClick,
+                    onCycleStart = {
+                        viewModel.processCommand(CalendarWithInfoCommand.SaveCurrentCycle)
+                    },
+                    onCycleEnd = {
+                        viewModel.processCommand(CalendarWithInfoCommand.EndCurrentPeriod)
+                    },
+                )
+            }
         }
-        CalendarWithInfoContent(
-            cycles = cycles.value,
-            onEditClick = onEditClick,
-            onBackClick = onBackClick
-        )
+        CalendarWithInfoState.Loading -> {}
     }
 }
 
@@ -94,8 +114,17 @@ fun CalendarWithInfoScreen(
 private fun CalendarWithInfoContent(
     modifier: Modifier = Modifier,
     cycles: List<Cycle>,
+    cycleDay: Int,
+    phase: String,
+    isCycleStarted: Boolean,
+    isCycleEnd: Boolean,
+    wasEndedToday: Boolean,
+    nextPeriodStart: String,
     onEditClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onEditCycles: () -> Unit,
+    onCycleStart: () -> Unit,
+    onCycleEnd: () -> Unit,
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -113,7 +142,10 @@ private fun CalendarWithInfoContent(
                 DayInfo(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    cycleDay = cycleDay,
+                    phase = phase,
+                    nextPeriodStart = nextPeriodStart
                 )
             }
         }
@@ -122,9 +154,12 @@ private fun CalendarWithInfoContent(
                 .padding(start = 16.dp, end = 16.dp, bottom = 50.dp)
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter),
-            isCycleStarted = false,
-            isCycleEnds = true,
-            onClick = {}
+            isCycleStarted = isCycleStarted,
+            isCycleEnds = isCycleEnd,
+            wasEndedToday = wasEndedToday,
+            onEditCycles = onEditCycles,
+            onCycleStart = onCycleStart,
+            onCycleEnd = onCycleEnd
         )
     }
 }
@@ -187,7 +222,7 @@ private fun SimpleDatePicker(
         val monthsData = remember(monthOffset) { getMonthData(context, monthOffset) }
         val dateToRangeMap = remember(cycles) { getDateToRangeMap(cycles) }
 
-        val daysState = remember(monthsData) {
+        val daysState = remember(monthsData, cycles) {
             getDaysStates(monthsData, dateToRangeMap, null)
         }
 
@@ -247,7 +282,10 @@ private fun HeaderSimpleDatePicker(
 
 @Composable
 private fun DayInfo(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    cycleDay: Int,
+    phase: String,
+    nextPeriodStart: String,
 ) {
     Column(
         modifier = modifier,
@@ -260,17 +298,17 @@ private fun DayInfo(
         RowDayInfo(
             icon = Icons.Default.DateRange,
             label = stringResource(R.string.day_cycle),
-            value = "1"
+            value = cycleDay.toString()
         )
         RowDayInfo(
             icon = Icons.Default.Info,
             label = stringResource(R.string.phase_cycle),
-            value = "Менструация"
+            value = phase
         )
         RowDayInfo(
             icon = Icons.Default.PlayArrow,
             label = stringResource(R.string.start_cycle),
-            value = "25.06.2025"
+            value = nextPeriodStart
         )
     }
 }
@@ -312,46 +350,35 @@ private fun CyclesButton(
     modifier: Modifier = Modifier,
     isCycleStarted: Boolean,
     isCycleEnds: Boolean,
-    onClick: () -> Unit
+    wasEndedToday: Boolean,
+    onEditCycles: () -> Unit,
+    onCycleStart: () -> Unit,
+    onCycleEnd: () -> Unit
 ) {
-    val (backgroundColor, textColor) = if (isCycleStarted) {
-        MaterialTheme.colorScheme.secondaryContainer to MaterialTheme.colorScheme.outline
-    } else {
-        MaterialTheme.colorScheme.primary to MaterialTheme.colorScheme.onPrimary
-    }
-
-    val (textButton, icon) = if (isCycleStarted) {
-        stringResource(R.string.edit_cycles) to Icons.Default.Edit
-    } else if (isCycleEnds) {
-        stringResource(R.string.cycle_ended) to Icons.Default.Clear
-    } else {
-        stringResource(R.string.cycle_started) to Icons.Default.Check
+    val buttonState = when {
+        isCycleEnds -> CycleButtonState.ENDS
+        isCycleStarted -> CycleButtonState.STARTED
+        wasEndedToday -> CycleButtonState.STARTED
+        else -> CycleButtonState.NOT_STARTED
     }
 
     Button(
         modifier = modifier.height(56.dp),
-        onClick = onClick,
+        onClick = buttonState.onClick(onCycleEnd, onEditCycles, onCycleStart),
         colors = ButtonDefaults.buttonColors(
-            containerColor = backgroundColor
+            containerColor = buttonState.backgroundColor()
         )
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-        ) {
-            Icon(
-                modifier = Modifier.size(18.dp),
-                imageVector = icon,
-                tint = textColor,
-                contentDescription = null,
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = textButton,
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                color = textColor
-            )
-        }
+        Icon(
+            imageVector = buttonState.icon,
+            contentDescription = null,
+            tint = buttonState.contentColor()
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = stringResource(buttonState.textResId),
+            color = buttonState.contentColor()
+        )
     }
 }
 
@@ -364,6 +391,36 @@ private inline fun MutableState<Boolean>.handleSingleClick(onClick: () -> Unit) 
         onClick()
         this.value = true
     }
+}
+
+private enum class CycleButtonState(
+    @StringRes val textResId: Int,
+    val icon: ImageVector,
+    val backgroundColor: @Composable () -> Color,
+    val contentColor: @Composable () -> Color,
+    val onClick: (onEnd: () -> Unit, onEdit: () -> Unit, onStart: () -> Unit) -> () -> Unit
+) {
+    ENDS(
+        textResId = R.string.cycle_ended,
+        icon = Icons.Default.Clear,
+        backgroundColor = { MaterialTheme.colorScheme.primary },
+        contentColor = { MaterialTheme.colorScheme.onPrimary },
+        onClick = { onEnd, _, _ -> onEnd }
+    ),
+    STARTED(
+        textResId = R.string.edit_cycles,
+        icon = Icons.Default.Edit,
+        backgroundColor = { MaterialTheme.colorScheme.secondaryContainer },
+        contentColor = { MaterialTheme.colorScheme.outline },
+        onClick = { _, onEdit, _ -> onEdit }
+    ),
+    NOT_STARTED(
+        textResId = R.string.cycle_started,
+        icon = Icons.Default.Check,
+        backgroundColor = { MaterialTheme.colorScheme.primary },
+        contentColor = { MaterialTheme.colorScheme.onPrimary },
+        onClick = { _, _, onStart -> onStart }
+    )
 }
 
 @Preview

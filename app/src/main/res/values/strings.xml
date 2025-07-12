@@ -171,4 +171,8 @@
     <string name="day_cycle">День цикла</string>
     <string name="phase_cycle">Фаза цикла</string>
     <string name="start_cycle">Начало цикла</string>
+    <string name="luteal">Лютеиновая фаза</string>
+    <string name="ovulation">Овуляция</string>
+    <string name="follicular">Фолликулярная фаза</string>
+    <string name="menstrual">Менструация</string>
 </resources>

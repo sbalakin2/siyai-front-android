@@ -1,4 +1,4 @@
-package com.example.siyai_front_android.presentation.my_state.edit_cycles
+package com.example.siyai_front_android.presentation.my_state.select_cycles.edit_cycles
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.siyai_front_android.R
-import com.example.siyai_front_android.presentation.my_state.common_cycles.SelectCyclesCommand
-import com.example.siyai_front_android.presentation.my_state.common_cycles.SelectCyclesEvent
+import com.example.siyai_front_android.presentation.my_state.select_cycles.SelectCyclesCommand
+import com.example.siyai_front_android.presentation.my_state.select_cycles.SelectCyclesEvent
 import com.example.siyai_front_android.ui.components.buttons.GradientButton
 import com.example.siyai_front_android.ui.components.calendar.MultiRangeDatePicker
 import com.example.siyai_front_android.ui.components.dialog.MyStateDialog
@@ -39,6 +39,7 @@ fun EditCyclesScreen(
     modifier: Modifier = Modifier,
     onSaveCycles: () -> Unit,
     onBackClick: () -> Unit,
+    onDeleteAllCycles: () -> Unit,
     viewmodelFactory: ViewModelProvider.Factory,
     viewModel: EditSelectCyclesViewModel = viewModel(factory = viewmodelFactory)
 ) {
@@ -48,6 +49,7 @@ fun EditCyclesScreen(
     LaunchedEffect(key1 = event) {
         if (event is SelectCyclesEvent.Back) onBackClick()
         if (event is SelectCyclesEvent.Continue) onSaveCycles()
+        if (event is SelectCyclesEvent.Main) onDeleteAllCycles()
     }
 
     LaunchedEffect(key1 = Unit) {

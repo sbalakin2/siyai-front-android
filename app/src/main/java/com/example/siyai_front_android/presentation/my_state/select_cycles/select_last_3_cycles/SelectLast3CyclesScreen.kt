@@ -1,4 +1,4 @@
-package com.example.siyai_front_android.presentation.my_state.select_last_3_cycles
+package com.example.siyai_front_android.presentation.my_state.select_cycles.select_last_3_cycles
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -35,8 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.siyai_front_android.R
-import com.example.siyai_front_android.presentation.my_state.common_cycles.SelectCyclesCommand
-import com.example.siyai_front_android.presentation.my_state.common_cycles.SelectCyclesEvent
+import com.example.siyai_front_android.presentation.my_state.select_cycles.SelectCyclesCommand
+import com.example.siyai_front_android.presentation.my_state.select_cycles.SelectCyclesEvent
 import com.example.siyai_front_android.ui.components.buttons.GradientButton
 import com.example.siyai_front_android.ui.components.calendar.MultiRangeDatePicker
 import com.example.siyai_front_android.ui.components.dialog.MyStateDialog

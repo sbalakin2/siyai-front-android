@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -121,15 +122,23 @@ private fun CalendarDay(
             color = textColor,
             style = MaterialTheme.typography.bodyLarge
         )
+        DayDot(dayState)
+    }
+}
 
-        if ((dayState.rangePosition != RangePosition.None || dayState.isTempStart) && dayState.isAvailable) {
-            Box(
-                modifier = Modifier
-                    .padding(bottom = 8.dp)
-                    .size(4.dp)
-                    .background(Color.White, CircleShape)
-                    .align(Alignment.BottomCenter)
-            )
-        }
+@Composable
+private fun BoxScope.DayDot(dayState: DayState) {
+    if (dayState.rangePosition != RangePosition.None || dayState.isTempStart) {
+        val color = if (dayState.isCycleStarted && !dayState.isAvailable)
+            Color.White.copy(alpha = 0.4f)
+        else Color.White
+
+        Box(
+            modifier = Modifier
+                .padding(bottom = 8.dp)
+                .size(4.dp)
+                .background(color, CircleShape)
+                .align(Alignment.BottomCenter)
+        )
     }
 }

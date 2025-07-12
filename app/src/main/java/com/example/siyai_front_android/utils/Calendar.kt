@@ -19,6 +19,7 @@ fun getCellStyles(
     daysInMonth: Int
 ): Triple<Color, Shape, Color> {
     val backgroundColor = when {
+        dayState.isCycleStarted && !dayState.isAvailable -> Color(0xFFE54E7C).copy(alpha = 0.2f)
         !dayState.isAvailable -> Color.Transparent
         dayState.isTempStart || dayState.rangePosition != RangePosition.None -> Color(0xFFE54E7C)
         else -> Color.Transparent
@@ -99,7 +100,8 @@ fun getDaysStates(
             rangePosition = rangePosition,
             isTempStart = isTempStart,
             isInSelectedRange = isInRange,
-            rangeIndex = rangeInfo?.first ?: -1
+            rangeIndex = rangeInfo?.first ?: -1,
+            isCycleStarted = rangeInfo?.second?.isOnPeriod ?: false
         )
     }
 }
@@ -178,7 +180,8 @@ data class DayState(
     val rangePosition: RangePosition,
     val isTempStart: Boolean,
     val isInSelectedRange: Boolean = false,
-    val rangeIndex: Int = -1
+    val rangeIndex: Int = -1,
+    val isCycleStarted: Boolean = false
 )
 
 data class MonthData(
