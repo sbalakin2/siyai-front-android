@@ -14,27 +14,28 @@ import com.example.siyai_front_android.domain.usecases.GetAuthStatusUseCase
 import com.example.siyai_front_android.domain.usecases.GetAuthStatusUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.GetCountiesWithCitiesUseCase
 import com.example.siyai_front_android.domain.usecases.GetCountiesWithCitiesUseCaseImpl
+import com.example.siyai_front_android.domain.usecases.GetDailyStateUseCase
+import com.example.siyai_front_android.domain.usecases.GetDailyStateUseCaseImpl
+import com.example.siyai_front_android.domain.usecases.GetMyStateUseCase
+import com.example.siyai_front_android.domain.usecases.GetMyStateUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.GetProfileUseCase
 import com.example.siyai_front_android.domain.usecases.GetProfileUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.LoginUseCase
 import com.example.siyai_front_android.domain.usecases.LoginUseCaseImpl
-import com.example.siyai_front_android.domain.usecases.MyStateAddCycleUseCase
-import com.example.siyai_front_android.domain.usecases.MyStateAddCycleUseCaseImpl
-import com.example.siyai_front_android.domain.usecases.MyStateDeleteCycleUseCase
-import com.example.siyai_front_android.domain.usecases.MyStateDeleteCycleUseCaseImpl
-import com.example.siyai_front_android.domain.usecases.MyStateGetCyclesUseCase
-import com.example.siyai_front_android.domain.usecases.MyStateGetCyclesUseCaseImpl
+import com.example.siyai_front_android.domain.usecases.MyStateChangeCyclesUseCase
+import com.example.siyai_front_android.domain.usecases.MyStateChangeCyclesUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.RecoveryPasswordUseCase
 import com.example.siyai_front_android.domain.usecases.RecoveryPasswordUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.RegUseCase
 import com.example.siyai_front_android.domain.usecases.RegUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.ResetPasswordUseCase
 import com.example.siyai_front_android.domain.usecases.ResetPasswordUseCaseImpl
+import com.example.siyai_front_android.domain.usecases.SaveDailyStateUseCase
+import com.example.siyai_front_android.domain.usecases.SaveDailyStateUseCaseImpl
 import com.example.siyai_front_android.domain.usecases.VerifyUseCase
 import com.example.siyai_front_android.domain.usecases.VerifyUseCaseImpl
 import dagger.Binds
 import dagger.Module
-import javax.inject.Singleton
 
 @Module(includes = [DataModule::class])
 interface UseCaseModule {
@@ -90,16 +91,21 @@ interface UseCaseModule {
 
     @Binds
     fun bindMyStateAddCycleUseCase(
-        myStateAddCycleUseCaseImpl: MyStateAddCycleUseCaseImpl
-    ): MyStateAddCycleUseCase
-
-    @Binds
-    fun bindMyStateDeleteCycleUseCase(
-        myStateDeleteCycleUseCaseImpl: MyStateDeleteCycleUseCaseImpl
-    ): MyStateDeleteCycleUseCase
+        myStateAddCycleUseCaseImpl: MyStateChangeCyclesUseCaseImpl
+    ): MyStateChangeCyclesUseCase
 
     @Binds
     fun bindMyStateGetCyclesUseCase(
-        myStateGetCyclesUseCaseImpl: MyStateGetCyclesUseCaseImpl
-    ): MyStateGetCyclesUseCase
+        myStateGetCyclesUseCaseImpl: GetMyStateUseCaseImpl
+    ): GetMyStateUseCase
+
+    @Binds
+    fun bindSaveDailyStateUseCase(
+        saveDailyStateUseCaseImpl: SaveDailyStateUseCaseImpl
+    ): SaveDailyStateUseCase
+
+    @Binds
+    fun bindGetDailyStateUseCase(
+        getDailyStateUseCaseImpl: GetDailyStateUseCaseImpl
+    ): GetDailyStateUseCase
 }

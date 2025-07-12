@@ -36,6 +36,11 @@ class ProfileStorageRepositoryImpl @Inject constructor(
             .map { result -> result.getOrNull() }
     }
 
+    override suspend fun getEmail(): String {
+        val preferences = dataStore.data.first()
+        return preferences.getOrThrow(EMAIL)
+    }
+
     private fun Preferences.getProfile(): Result<Profile> = kotlin.runCatching {
         Profile(
             email = getOrThrow(EMAIL),

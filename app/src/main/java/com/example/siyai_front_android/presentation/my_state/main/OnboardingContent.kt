@@ -1,4 +1,4 @@
-package com.example.siyai_front_android.presentation.my_state
+package com.example.siyai_front_android.presentation.my_state.main
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,7 +24,7 @@ import com.example.siyai_front_android.R
 import com.example.siyai_front_android.ui.components.buttons.GradientButton
 
 @Composable
-fun EmptyCyclesScreen(
+fun OnboardingContent(
     modifier: Modifier = Modifier,
     onContinueClick: () -> Unit
 ) {
@@ -87,5 +87,5 @@ fun EmptyCyclesScreen(
 @Preview
 @Composable
 private fun PreviewOnboardingMyStateScreen() {
-    EmptyCyclesScreen { }
+    OnboardingContent { }
 }

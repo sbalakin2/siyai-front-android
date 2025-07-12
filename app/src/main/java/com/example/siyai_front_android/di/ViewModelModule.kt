@@ -10,7 +10,10 @@ import com.example.siyai_front_android.presentation.auth.password_recovery.Recov
 import com.example.siyai_front_android.presentation.auth.password_reset.PasswordResetViewModel
 import com.example.siyai_front_android.presentation.auth.reg.RegViewModel
 import com.example.siyai_front_android.presentation.main.home_container.home.HomeViewModel
-import com.example.siyai_front_android.presentation.my_state.select_last_3_cycles.SelectLast3CyclesViewModel
+import com.example.siyai_front_android.presentation.my_state.calendar_with_info.CalendarWithInfoViewModel
+import com.example.siyai_front_android.presentation.my_state.select_cycles.edit_cycles.EditSelectCyclesViewModel
+import com.example.siyai_front_android.presentation.my_state.main.MyStateViewModel
+import com.example.siyai_front_android.presentation.my_state.select_cycles.select_last_3_cycles.SelectLast3SelectCyclesViewModel
 import com.example.siyai_front_android.presentation.profile.ProfileViewModel
 import com.example.siyai_front_android.presentation.profile_editing.ProfileEditingViewModel
 import dagger.Binds
@@ -84,8 +87,29 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(SelectLast3CyclesViewModel::class)
-    abstract fun bindEditCyclesViewModel(
-        selectLast3CyclesViewModel: SelectLast3CyclesViewModel
+    @ViewModelKey(SelectLast3SelectCyclesViewModel::class)
+    abstract fun bindSelectLast3CyclesViewModel(
+        selectLast3CyclesViewModel: SelectLast3SelectCyclesViewModel
+    ): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EditSelectCyclesViewModel::class)
+    abstract fun bindEditCyclesViewModelViewModel(
+        editCyclesViewModelViewModel: EditSelectCyclesViewModel
+    ): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CalendarWithInfoViewModel::class)
+    abstract fun bindCalendarWithInfoViewModel(
+        calendarWithInfoViewModel: CalendarWithInfoViewModel
+    ): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MyStateViewModel::class)
+    abstract fun bindMyStateViewModel(
+        myStateViewModel: MyStateViewModel
     ): ViewModel
 }

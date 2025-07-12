@@ -2,7 +2,7 @@ package com.example.siyai_front_android.domain.usecases
 
 import com.example.siyai_front_android.domain.dto.Cycle
 
-interface MyStateAddCycleUseCase {
+interface MyStateChangeCyclesUseCase {
 
-    suspend operator fun invoke(cycle: Cycle)
+    suspend operator fun invoke(cycles: List<Cycle>)
 }

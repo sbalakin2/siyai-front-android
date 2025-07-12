@@ -12,9 +12,10 @@ import com.example.siyai_front_android.presentation.free_lesson_detail.FreeLesso
 import com.example.siyai_front_android.presentation.free_lessons.FreeLessonsScreen
 import com.example.siyai_front_android.presentation.main.home_container.navigation.HomeContainer
 import com.example.siyai_front_android.presentation.model.Product
-import com.example.siyai_front_android.presentation.my_state.MyStateScreen
 import com.example.siyai_front_android.presentation.my_state.calendar_with_info.CalendarWithInfoScreen
-import com.example.siyai_front_android.presentation.my_state.select_last_3_cycles.SelectLast3CyclesScreen
+import com.example.siyai_front_android.presentation.my_state.select_cycles.edit_cycles.EditCyclesScreen
+import com.example.siyai_front_android.presentation.my_state.main.MyStateScreen
+import com.example.siyai_front_android.presentation.my_state.select_cycles.select_last_3_cycles.SelectLast3CyclesScreen
 import com.example.siyai_front_android.presentation.product_detail.ProductDetailScreen
 import com.example.siyai_front_android.presentation.profile.ProfileScreen
 import com.example.siyai_front_android.presentation.profile_editing.ProfileEditingScreen
@@ -54,7 +55,9 @@ fun MainNavHost(
         composable<MainRoute.Audio> {}
         composable<MainRoute.MyState>{
             MyStateScreen(
-                onContinueClick = { navController.navigate(MainRoute.Last3Cycles) }
+                onContinueClick = { navController.navigate(MainRoute.Last3Cycles) },
+                onCalendarClick = { navController.navigate(MainRoute.CalendarWithInfo) },
+                viewModelFactory = viewModelFactory
             )
         }
         composable<MainRoute.Last3Cycles> {
@@ -65,7 +68,21 @@ fun MainNavHost(
             )
         }
         composable<MainRoute.CalendarWithInfo> {
-            CalendarWithInfoScreen()
+            CalendarWithInfoScreen(
+                onEditClick = {
+                    navController.navigate(MainRoute.EditCycles)
+                },
+                onBackClick = { navController.popBackStack() },
+                viewmodelFactory = viewModelFactory
+            )
+        }
+        composable<MainRoute.EditCycles> {
+            EditCyclesScreen(
+                onSaveCycles = { navController.navigate(MainRoute.MyState) },
+                onBackClick = { navController.popBackStack() },
+                onDeleteAllCycles = { navController.navigate(MainRoute.MyState) },
+                viewmodelFactory = viewModelFactory,
+            )
         }
         composable<MainRoute.Profile> {
             ProfileScreen(

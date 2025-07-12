@@ -148,7 +148,7 @@ fun MyStateDialog(
                 onClick = { onCancel() },
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .padding(bottom = 80.dp)
+                    .padding(bottom = 110.dp)
                     .size(64.dp)
                     .border(3.dp, MaterialTheme.colorScheme.primary, CircleShape)
                     .background(

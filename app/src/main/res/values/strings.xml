@@ -150,7 +150,6 @@
     <string name="error_single_day">Нельзя выбрать один день. Выберите диапазон дат</string>
     <string name="error_backward">Нельзя выбирать даты раньше начальной даты диапазона</string>
     <string name="error_overlap">Диапазоны дат не должны пересекаться</string>
-    <string name="error_inside">Диапазоны не должны находиться один в другом</string>
     <string name="error_max_reached">Достигнуто максимальное количество диапазонов</string>
 
     <string name="free_lessons_title">Бесплатные уроки</string>
@@ -179,4 +178,16 @@
     <string name="status_gratitude">8 - Благодарность</string>
     <string name="status_love">9 - Любовь</string>
     <string name="note_label">Напишите заметку к этому дню</string>
+    <string name="calendar_cycles">Календарь цикла</string>
+    <string name="edit_cycles">Изменить циклы</string>
+    <string name="cycle_started">Месячные начались</string>
+    <string name="cycle_ended">Месячные закончились</string>
+    <string name="about_day">Об этом дне</string>
+    <string name="day_cycle">День цикла</string>
+    <string name="phase_cycle">Фаза цикла</string>
+    <string name="start_cycle">Начало цикла</string>
+    <string name="luteal">Лютеиновая фаза</string>
+    <string name="ovulation">Овуляция</string>
+    <string name="follicular">Фолликулярная фаза</string>
+    <string name="menstrual">Менструация</string>
 </resources>

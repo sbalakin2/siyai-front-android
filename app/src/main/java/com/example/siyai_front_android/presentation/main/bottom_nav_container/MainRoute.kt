@@ -25,6 +25,9 @@ sealed interface MainRoute {
     data object CalendarWithInfo: MainRoute
 
     @Serializable
+    data object EditCycles: MainRoute
+
+    @Serializable
     data object Profile: MainRoute
 
     @Serializable

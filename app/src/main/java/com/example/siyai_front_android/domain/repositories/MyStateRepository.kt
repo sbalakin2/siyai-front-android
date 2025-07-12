@@ -1,13 +1,16 @@
 package com.example.siyai_front_android.domain.repositories
 
 import com.example.siyai_front_android.domain.dto.Cycle
-import kotlinx.coroutines.flow.StateFlow
+import com.example.siyai_front_android.domain.dto.Daily
+import com.example.siyai_front_android.domain.dto.MyState
 
 interface MyStateRepository {
 
-    val cycles: StateFlow<List<Cycle>>
+    suspend fun changeCycles(cycles: List<Cycle>)
 
-    suspend fun addCycle(cycle: Cycle)
+    suspend fun getMyState(): MyState?
 
-    suspend fun removeCycle(id: Int)
+    suspend fun saveStateForToday(state: Int?, note: String?)
+
+    suspend fun getStateForDate(): Daily?
 }
